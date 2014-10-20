@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE void getContracts(bool);
     Q_INVOKABLE void downloadCarto(QString);
     Q_INVOKABLE void getStationDetails(QString, QString);
+    Q_INVOKABLE void downloadAllStationsDetails(QString);
     Q_INVOKABLE bool removeCacheDir();
 
     enum PendingAction {
@@ -34,11 +35,13 @@ signals:
     void cartoChanged();
     void networkStatusUpdated(bool connected);
     void gotStationDetails(QString stationDetails);
+    void gotAllStationsDetails(QString allStationsDetails);
 
 public slots:
     void getContractsFinished();
     void replyFinished();
     void stationDetailsFinished();
+    void allStationsDetailsFinished();
 
     void networkStatusChanged(bool);
 
@@ -49,6 +52,7 @@ private:
     QString _cartoJson;
     QString _currentCity;
     QString _cacheDir;
+    QString _apiKey;
 
     PendingAction _pendingAction;
 

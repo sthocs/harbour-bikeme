@@ -47,8 +47,6 @@ int main(int argc, char *argv[])
     //
     // To display the view, call "show()" (will show fullscreen on device).
     QGuiApplication* app = SailfishApp::application(argc, argv);
-    app->setApplicationName("harbour-bikeme");
-    app->setOrganizationName("sthocs");
     QQuickView* view = SailfishApp::createView();
 
     CacheManager* cacheManager = new CacheManager();

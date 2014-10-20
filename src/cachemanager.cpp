@@ -14,6 +14,7 @@ CacheManager::CacheManager()
 {
     _networkAccessManager = new QNetworkAccessManager(this);
     _cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/";
+    _apiKey = "changeme";
 
     _pendingAction = NONE;
     _networkConfigManager = new QNetworkConfigurationManager(this);
@@ -24,10 +25,10 @@ CacheManager::CacheManager()
 void CacheManager::networkStatusChanged(bool connected) {
     qDebug() << "Network status changed: ";
     qDebug() << connected;
+    networkStatusUpdated(connected);
     if (connected) {
         switch (_pendingAction) {
         case DOWNLOAD_STATIONS:
-            networkStatusUpdated(connected);
             downloadCarto(_currentCity);
             break;
         default:
@@ -68,7 +69,7 @@ void CacheManager::getStationDetails(QString city, QString stationNumber)
 {
     //qDebug() << "Getting station details...";
     QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations/" + stationNumber +
-                             "?contract=" + city + "&apiKey=changeme"));
+                             "?contract=" + city + "&apiKey=" + _apiKey));
     QSslConfiguration config = req.sslConfiguration();
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
     req.setSslConfiguration(config);
@@ -88,6 +89,7 @@ void CacheManager::downloadCarto(QString city)
         qint64 now = QDateTime::currentMSecsSinceEpoch();
         qint64 dayInMillis = 1000 * 60 * 60 * 24;
 
+        // TODO emit cartoChanged and then download it in the background.
         if (((now - fileAge) / dayInMillis) > 14) // If file is older than 2 weeks, refresh it.
         {
             qDebug() << "Removing current cached " + _currentCity + ".json";
@@ -113,6 +115,16 @@ void CacheManager::downloadCarto(QString city)
         QNetworkReply *reply = _networkAccessManager->get(req);
         connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
     }
+}
+
+void CacheManager::downloadAllStationsDetails(QString city)
+{
+    QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations?contract=" + city + "&apiKey=" + _apiKey));
+    QSslConfiguration config = req.sslConfiguration();
+    config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    req.setSslConfiguration(config);
+    QNetworkReply *reply = _networkAccessManager->get(req);
+    connect(reply, SIGNAL(finished()), this, SLOT(allStationsDetailsFinished()));
 }
 
 void CacheManager::replyFinished()
@@ -166,6 +178,25 @@ void CacheManager::stationDetailsFinished()
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
     emit gotStationDetails(stationDetails);
+    pReply->deleteLater();
+}
+
+void CacheManager::allStationsDetailsFinished()
+{
+    QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
+    if (pReply->error() != QNetworkReply::NoError)
+    {
+        qDebug() << "Error while getting all stations details";
+        QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
+                                                            "Not connected";
+        emit gotAllStationsDetails(error);
+        pReply->deleteLater();
+        return;
+    }
+
+    QByteArray data = pReply->readAll();
+    QString stationDetails = QString::fromUtf8(data);
+    emit gotAllStationsDetails(stationDetails);
     pReply->deleteLater();
 }
 

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
+import "../items"
 import "cachemanager.js" as JSCacheManager
 
 
@@ -15,9 +16,12 @@ Page {
     // Indicates if the user has requested to display his position
     property bool findMe: false
     property bool positionReceived: false
+
     property string city: "Paris"
-    property string selectedStationName: ""
     property int selectedStationNumber: 0
+    property bool displayAllStatus: true
+    property bool displayAvailableParking: false
+
     property string mapPlugin: "nokia"
     property int maxItemsOnMap: 200
 	property int nbStations
@@ -38,8 +42,8 @@ Page {
     //! Container for map element
     Rectangle {
         id : mapview
-        height: parent.height
-        width: parent.width
+        anchors.fill: parent
+        anchors.bottomMargin: Theme.itemSizeMedium
 
         //! Map element centered with current position
         Map {
@@ -57,7 +61,7 @@ Page {
             // Paris, Hotel de Ville by default. Updated after stations loading.
             center: QtPositioning.coordinate(48.856047, 2.353907)
 
-            zoomLevel: 9 /* does not work for now, always starts at 9 whatever the value */
+            zoomLevel: 9 /* does not work for now (Qt5.1), always starts at 9 whatever the value */
 
             Component.onCompleted: {
                 mapLoaded = true;
@@ -108,24 +112,39 @@ Page {
             console.log("Number of stations: " + nbStations);
             printStations(true);
             stationLoadingLabel.visible = false;
+            if (displayAllStatus) {
+                refreshLabel.visible = true;
+                cacheManager.downloadAllStationsDetails(city);
+            }
         }
         onNetworkStatusUpdated: {
             stationLoadingLabel.text = connected ? "Loading stations..." : "Not connected";
         }
 
         onGotStationDetails: {
-            station.clear();
             console.log("got station details: " + stationDetails);
-            station.append(JSON.parse(stationDetails));
+            var stationDetailsJSON = JSON.parse(stationDetails);
+            stationNameLabel.text = stationDetailsJSON.name.toLowerCase();
+            numberOfBikes.text = ": " + stationDetailsJSON.available_bikes;
+            numberOfParking.text = ": " + stationDetailsJSON.available_bike_stands;
+            lastUpdatedTime.text = calcDate(stationDetailsJSON.last_update);
+        }
+        onGotAllStationsDetails: {
+            try {
+                nbStations = JSCacheManager.saveStationsWithDetails(allStationsDetails);
+                console.log("Got all stations details; Number of stations: " + nbStations);
+                printStations(true, true);
+                stationLoadingLabel.visible = false;
+                refreshLabel.visible = false;
+            }
+            catch(e) {
+                refreshLabel.text = allStationsDetails;
+            }
         }
     }
 
     ListModel {
         id: stations
-    }
-
-    ListModel {
-        id: station
     }
 
     Repeater {
@@ -138,27 +157,30 @@ Page {
         parent: map
         model: stations
         delegate: MapQuickItem {
-            coordinate: QtPositioning.coordinate(model.latitude, model.longitude)
-            sourceItem: Image {
-                source: (name !== selectedStationName) ? "../icons/velib_pin.png" : "../icons/velib_selected.png"
+            coordinate: QtPositioning.coordinate(model.position.lat, model.position.lng)
+            sourceItem: StationMarker {
+                available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
+                selected: number === selectedStationNumber
             }
-            anchorPoint.x: 32
-            anchorPoint.y: 64
+
+            anchorPoint.x: Theme.iconSizeSmall / 2 // 16
+            anchorPoint.y: Theme.iconSizeSmall / 4 * 5 // 40
 
             MapMouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    stationNameLabel.text = "Updating...";
-                    selectedStationName = name;
-                    selectedStationNumber = 0;
-                    cacheManager.getStationDetails(city, number);
+                    selectedStationNumber = number;
+                    if (!displayAllStatus) {
+                        stationNameLabel.text = "Updating...";
+                        cacheManager.getStationDetails(city, number);
+                    }
                 }
             }
         }
     }
 
-    function printStations(centerMap) {
-        if (stations.count > 0 && stations.count === nbStations) {
+    function printStations(centerMap, forceRefresh) {
+        if (!forceRefresh && stations.count > 0 && stations.count === nbStations) {
             // all items are and will stay on map
             return;
         }
@@ -166,14 +188,16 @@ Page {
 //        var start = new Date();
 
         var stationsArray = JSCacheManager.getStations();
+        //TODO check if stationsArray is defined (when the stations are not yet downloaded)
+        // if (!stationsArray) return;
         if (centerMap) {
             var avgLat = 0;
             var avgLng = 0;
             var nbTestStations = 0;
             stationsArray.forEach(function(station) {
-                avgLat += station.latitude;
-                avgLng += station.longitude;
-                if (station.latitude === 0) {
+                avgLat += station.position.lat;
+                avgLng += station.position.lng;
+                if (station.position.lat === 0) {
                     ++nbTestStations;
                 }
             });
@@ -196,10 +220,10 @@ Page {
             console.log("TopLeft: " + topLeft.latitude + "/" + topLeft.longitude + " bottomRight: "+
                         bottomRight.latitude + "/" + bottomRight.longitude);
             for (var i = 0; i < stationsArray.length; ++i) {
-                if (stationsArray[i].latitude < topLeft.latitude &&
-                    stationsArray[i].latitude > bottomRight.latitude &&
-                    stationsArray[i].longitude > topLeft.longitude &&
-                    stationsArray[i].longitude < bottomRight.longitude) {
+                if (stationsArray[i].position.lat < topLeft.latitude &&
+                    stationsArray[i].position.lat > bottomRight.latitude &&
+                    stationsArray[i].position.lng > topLeft.longitude &&
+                    stationsArray[i].position.lng < bottomRight.longitude) {
                     stations.append(stationsArray[i]);
                     if (++nbItemsOnMap > maxItemsOnMap) {
                         break;
@@ -247,7 +271,7 @@ Page {
         source: "../icons/icon-m-back.png"
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: 12
+        anchors.leftMargin: Theme.paddingMedium
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -258,14 +282,14 @@ Page {
         }
     }
 
-    /* Add the selected station in favourites */
+    /* Button to add the selected station in favourites */
     Image {
         source: selectedStationNumber !== 0 ? "../icons/add_fav.png" : "../icons/add_fav_bw.png"
         anchors {
-            left: infoColumn.right
-            leftMargin: Theme.paddingLarge
+            right: centerPosIcon.left
+            rightMargin: Theme.paddingLarge
             bottom: parent.bottom
-            bottomMargin: Theme.paddingSmall
+            bottomMargin: Theme.paddingMedium
         }
         sourceSize.height: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2 /* =48px on Jolla */
         sourceSize.width: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2
@@ -282,16 +306,16 @@ Page {
     }
 
     Image {
-        id: radarIcon
-        source: findMe ? "../icons/radar.png" : "../icons/radar_bw.png"
+        id: gpsIcon
+        source: findMe ? "image://theme/icon-m-gps?" + Theme.highlightColor : "image://theme/icon-m-gps"
         anchors {
             right: parent.right
-            rightMargin: Theme.paddingSmall
+            rightMargin: Theme.paddingMedium
             bottom: parent.bottom
-            bottomMargin: Theme.paddingSmall
+            bottomMargin: Theme.paddingMedium
         }
-        sourceSize.height: Theme.iconSizeMedium * 9 / 10
-        sourceSize.width: Theme.iconSizeMedium * 9 / 10
+        sourceSize.height: Theme.iconSizeMedium
+        sourceSize.width: Theme.iconSizeMedium
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -306,15 +330,16 @@ Page {
     }
 
     Image {
-        source: positionReceived ? "../icons/center_position.png" : "../icons/center_position_bw.png"
+        id: centerPosIcon
+        source: positionReceived ? "image://theme/icon-cover-location" : "image://theme/icon-cover-location?gray"
         anchors {
-            right: radarIcon.left
+            right: gpsIcon.left
             rightMargin: Theme.paddingMedium
             bottom: parent.bottom
-            bottomMargin: Theme.paddingSmall
+            bottomMargin: Theme.paddingMedium
         }
-        sourceSize.height: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2
-        sourceSize.width: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2
+        sourceSize.height: Theme.iconSizeMedium
+        sourceSize.width: Theme.iconSizeMedium
         visible: findMe
 
         MouseArea {
@@ -331,67 +356,123 @@ Page {
         }
     }
 
+    Label {
+        id: stationLoadingLabel
+        visible: true
+        text: "Loading stations..."
+        color: "black"
+        anchors.bottom: mapview.bottom
+    }
+
     Column {
-        id: infoColumn
+        visible: !displayAllStatus
         anchors {
+            top: mapview.bottom
             bottom: parent.bottom
             bottomMargin: Theme.paddingSmall
             left: parent.left
             leftMargin: Theme.paddingSmall
         }
-        spacing: Theme.paddingSmall
 
         Label {
-            id: stationLoadingLabel
-            visible: true
-            text: "Loading stations..."
-            color: "black"
+            id: stationNameLabel
+            text: "-"
+            color: Theme.primaryColor
+            font.pixelSize: Theme.fontSizeExtraSmall
+            font.capitalization: Font.Capitalize
         }
-
-        Rectangle {
-            color: "#FFFFFF"
-            height: stationNameLabel.height
-            width: interactiveMap.width * 54 / 100
-
+        Row {
+            Image {
+                source: "../icons/bikeme.png"
+                sourceSize.height: Theme.fontSizeSmall
+                sourceSize.width: Theme.fontSizeSmall
+                anchors.verticalCenter: parent.verticalCenter
+            }
             Label {
-                id: stationNameLabel
-                text: ""
-                color: "black"
-                font.pixelSize: Theme.fontSizeSmall
-                font.capitalization: Font.Capitalize
+                id: numberOfBikes
+                text: ":"
+                color: Theme.primaryColor
+                font.pixelSize: Theme.fontSizeMedium
+                font.bold: true
+            }
+            Item {
+                width: Theme.paddingLarge
+                height: 1
+            }
+            Image {
+                source: "../icons/parking.png"
+                sourceSize.height: Theme.fontSizeSmall
+                sourceSize.width: Theme.fontSizeSmall
+                anchors.leftMargin: Theme.paddingSmall
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Label {
+                id: numberOfParking
+                text: ":"
+                color: Theme.primaryColor
+                font.pixelSize: Theme.fontSizeMedium
+                font.bold: true
             }
         }
+        Label {
+            id: lastUpdatedTime
+            text: "Updated:"
+            color: Theme.primaryColor
+            font.pixelSize: Theme.fontSizeExtraSmall
+        }
+    }
 
-        Rectangle {
-            color: "#FFFFFF"
-            height: stationNameLabel.height
-            width: interactiveMap.width * 54 / 100
+    Label {
+        id: refreshLabel
+        text: "Refreshing..."
+        color: "black"
+        visible: false
+        anchors.left: parent.left
+        anchors.bottom: rightControls.top
+        anchors.leftMargin: Theme.paddingMedium
+        anchors.bottomMargin: Theme.paddingMedium
+    }
+    Row {
+        id: rightControls
+        visible: displayAllStatus
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: Theme.paddingMedium
+        anchors.bottomMargin: Theme.paddingMedium
+        spacing: Theme.paddingSmall
 
-            Repeater {
-                model: station
-                delegate: Label {
-                    text: "Bikes: " + available_bikes + " ; Parking: " + available_bike_stands
-                    color: "black"
-                    font.pixelSize: Theme.fontSizeMedium
+        Image {
+            source: displayAvailableParking ? "../icons/bikeme_bw.png" : "../icons/bikeme.png"
+            sourceSize.height: Theme.itemSizeSmall
+            sourceSize.width: Theme.itemSizeSmall
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    displayAvailableParking = false;
                 }
             }
         }
-
-        Rectangle {
-            color: "#FFFFFF"
-            height: stationNameLabel.height
-            width: interactiveMap.width * 54 / 100
-
-            Repeater {
-                model: station
-                delegate: Label {
-                    text: calcDate(last_update)
-                    color: "black"
-                    font.pixelSize: Theme.fontSizeSmall
+        Image {
+            source: displayAvailableParking ? "../icons/parking.png" : "../icons/parking_bw.png"
+            sourceSize.height: Theme.itemSizeSmall
+            sourceSize.width: Theme.itemSizeSmall
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    displayAvailableParking = true;
                 }
-                onItemAdded: {
-                    stationNameLabel.text = station.get(0).name.toLowerCase();
-                    selectedStationNumber = station.get(0).number;
+            }
+        }
+        Image {
+            source: "image://theme/icon-m-refresh"
+            sourceSize.height: Theme.itemSizeSmall
+            sourceSize.width: Theme.itemSizeSmall
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    refreshLabel.text = qsTr("Refreshing...");
+                    refreshLabel.visible = true
+                    cacheManager.downloadAllStationsDetails(city);
                 }
             }
         }

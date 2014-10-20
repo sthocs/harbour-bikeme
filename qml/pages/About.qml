@@ -70,8 +70,10 @@ Page {
                   'provided by JCDecaux: <a href="http://en.cyclocity.com">CyclOcity</a><br/>' +
                   'It provides a simple interactive map displaying all CyclOcity stations by city, their number of ' +
                   'available bikes and free parking spots, and the geolocation.<br />' +
-                  ' Click on <img src="../icons/radar.png" width="32" height="32"/> to activate the geolocation and on ' +
-                  '<img src="../icons/center_position.png" width="32" height="32"/> to center the map on your position.<br/>' +
+                  ' Click on <img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' +
+                  Theme.iconSizeSmall + '"/> to activate the geolocation and on ' +
+                  '<img src="image://theme/icon-cover-location" width="' + Theme.iconSizeSmall + '" height="' +
+                  Theme.iconSizeSmall + '"/> to center the map on your position.<br/>' +
                   'Regular users: Save your favourites stations and see their status directly on the cover!'
         }
 
@@ -85,7 +87,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
-            text: "Version 0.1"
+            text: "Version 0.2"
         }
 
         Label {

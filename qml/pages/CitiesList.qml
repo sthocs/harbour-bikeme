@@ -58,8 +58,8 @@ Page {
 
                 Image {
                     source: "../icons/" + section + ".png"
-                    sourceSize.height: 43
-                    sourceSize.width: 64
+                    sourceSize.height: Theme.iconSizeMedium * 2 / 3
+                    sourceSize.width: Theme.iconSizeMedium
                 }
 
                 Label {
@@ -68,10 +68,6 @@ Page {
                     color: Theme.highlightColor
                 }
             }
-//            delegate: SectionHeader {
-//                text: section
-//                height: Theme.itemSizeSmall
-//            }
         }
 
         ViewPlaceholder {

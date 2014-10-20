@@ -25,6 +25,8 @@ OTHER_FILES += qml/harbour-bikeme.qml \
     rpm/harbour-bikeme.spec \
     rpm/harbour-bikeme.yaml \
     harbour-bikeme.desktop \
+    qml/items/StationMarker.qml \
+    qml/pages/Settings.qml
 
 HEADERS += \
     src/configmanager.h \

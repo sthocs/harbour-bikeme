@@ -1,6 +1,10 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+/* Themes values on Jolla:
+ * itemSizeExtraSmall=70; itemSizeSmall=80; itemSizeMedium=100
+ * iconSizeSmall=32; iconSizeMedium=64; iconSizeLarge=96
+ */
 
 Page {
     id: secondPage
@@ -20,10 +24,9 @@ Page {
         PullDownMenu {
             id: topMenu
             MenuItem {
-                text: "Map provider: " + mapPlugin
+                text: qsTr("Settings")
                 onClicked: {
-                    mapPlugin = mapPlugin == "nokia" ? "osm" : "nokia";
-                    configManager.saveSetting("mapProvider", mapPlugin);
+                    pageStack.push(Qt.resolvedUrl("Settings.qml"));
                 }
             }
         }
@@ -56,7 +59,8 @@ Page {
             onClicked: {
                 var pageParams = { city : city };
                 if (fileName == "InteractiveMap") {
-                    pageParams.mapPlugin = mapPlugin;
+                    pageParams.mapPlugin = configManager.getSetting("mapProvider") || "nokia";
+                    pageParams.displayAllStatus = configManager.getSetting("displayAllStatus") === "true";
                 }
                 pageStack.push(Qt.resolvedUrl(fileName + ".qml"), pageParams);
             }

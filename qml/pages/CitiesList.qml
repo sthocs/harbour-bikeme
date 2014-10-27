@@ -9,8 +9,9 @@ Page {
     Connections {
         target: cacheManager
         onContractsUpdated: {
+            var res = contracts;
             try {
-                var cities = JSON.parse(contracts);
+                var cities = JSON.parse(res);
                 cities.sort(function(a, b) {
                     return a.countryCode.charCodeAt(0) - b.countryCode.charCodeAt(0)
                 });
@@ -21,7 +22,7 @@ Page {
                 errorMsg.visible = false;
             }
             catch (e) {
-                errorMsg.text = contracts;
+                errorMsg.text = res;
                 errorMsg.visible = true;
             }
 

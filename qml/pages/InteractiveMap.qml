@@ -130,15 +130,16 @@ Page {
             lastUpdatedTime.text = calcDate(stationDetailsJSON.last_update);
         }
         onGotAllStationsDetails: {
+            var res = allStationsDetails;
             try {
-                nbStations = JSCacheManager.saveStationsWithDetails(allStationsDetails);
+                nbStations = JSCacheManager.saveStationsWithDetails(res);
                 console.log("Got all stations details; Number of stations: " + nbStations);
                 printStations(true, true);
                 stationLoadingLabel.visible = false;
                 refreshLabel.visible = false;
             }
             catch(e) {
-                refreshLabel.text = allStationsDetails;
+                refreshLabel.text = res;
             }
         }
     }

@@ -212,9 +212,10 @@ Page {
     Connections {
         target: cacheManager
         onGotStationDetails: {
-            console.log(stationDetails);
+            var res = stationDetails;
+            console.log(res);
             try {
-                var station_details = JSON.parse(stationDetails);
+                var station_details = JSON.parse(res);
                 for (var i = 0; i < favouritesModel.count; ++i) {
                     if (favouritesModel.get(i).number === station_details.number) {
                         if (favouritesModel.get(i).name !== station_details.name) {
@@ -234,7 +235,7 @@ Page {
                 errorMsg.visible = false;
             }
             catch (e) {
-                errorMsg.text = stationDetails;
+                errorMsg.text = res;
                 errorMsg.visible = true;
                 topMenu.busy = false;
             }

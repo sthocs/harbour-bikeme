@@ -22,7 +22,7 @@ Page {
                 errorMsg.visible = false;
             }
             catch (e) {
-                errorMsg.text = res;
+                errorMsg.text = e.message;
                 errorMsg.visible = true;
             }
 

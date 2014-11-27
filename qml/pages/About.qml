@@ -87,7 +87,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
-            text: "Version 0.2.1"
+            text: "Version 0.3"
         }
 
         Label {

@@ -10,9 +10,16 @@ TARGET = harbour-bikeme
 
 CONFIG += sailfishapp
 
+QT += xml
+
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
-    src/cachemanager.cpp
+    src/cachemanager.cpp \
+    src/citydata.cpp \
+    src/dataprovider.cpp \
+    src/parser/bikedataparserfactory.cpp \
+    src/parser/france/lillexmlparser.cpp \
+    src/parser/france/jcdecauxparser.cpp
 
 OTHER_FILES += qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
@@ -30,5 +37,11 @@ OTHER_FILES += qml/harbour-bikeme.qml \
 
 HEADERS += \
     src/configmanager.h \
-    src/cachemanager.h
+    src/cachemanager.h \
+    src/citydata.h \
+    src/dataprovider.h \
+    src/parser/bikedataparser.h \
+    src/parser/bikedataparserfactory.h \
+    src/parser/france/lillexmlparser.h \
+    src/parser/france/jcdecauxparser.h
 

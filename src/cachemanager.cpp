@@ -9,12 +9,16 @@
 #include <QSslConfiguration>
 #include <QSslSocket>
 
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
+
 
 CacheManager::CacheManager()
 {
     _networkAccessManager = new QNetworkAccessManager(this);
     _cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/";
-    _apiKey = "changeme";
 
     _pendingAction = NONE;
     _networkConfigManager = new QNetworkConfigurationManager(this);
@@ -68,8 +72,14 @@ void CacheManager::getContracts(bool forceRefresh)
 void CacheManager::getStationDetails(QString city, QString stationNumber)
 {
     //qDebug() << "Getting station details...";
-    QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations/" + stationNumber +
-                             "?contract=" + city + "&apiKey=" + _apiKey));
+    _currentCity = city;
+    QString url = _dataProvider.getStationDetailsUrl(city, stationNumber);
+    if (url == NULL) {
+        emit modeNotSupported();
+        return;
+    }
+    QUrl qurl(url);
+    QNetworkRequest req(qurl);
     QSslConfiguration config = req.sslConfiguration();
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
     req.setSslConfiguration(config);
@@ -101,14 +111,19 @@ void CacheManager::downloadCarto(QString city)
         qDebug() << "File exists, not downloading";
         file.open(QIODevice::ReadOnly);
         _cartoJson = QString::fromUtf8(file.readAll());
+        BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+        _cartoJson = parser->parseCarto(_cartoJson);
+        delete parser;
         file.close();
         emit cartoChanged();
     }
     else
-    {        
+    {
+        QNetworkRequest req;
         qDebug() << "Downloading carto to: " + _cacheDir;
         //QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations?contract=paris&apiKey=changeme"));
-        QNetworkRequest req(QUrl("https://developer.jcdecaux.com/rest/vls/stations/" + _currentCity + ".json"));
+        //QNetworkRequest req(QUrl("https://developer.jcdecaux.com/rest/vls/stations/" + _currentCity + ".json"));
+        req.setUrl(QUrl(_dataProvider.getCartoUrl(city)));
         QSslConfiguration config = req.sslConfiguration();
         config.setPeerVerifyMode(QSslSocket::VerifyNone);
         req.setSslConfiguration(config);
@@ -119,7 +134,13 @@ void CacheManager::downloadCarto(QString city)
 
 void CacheManager::downloadAllStationsDetails(QString city)
 {
-    QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations?contract=" + city + "&apiKey=" + _apiKey));
+    QString url = _dataProvider.getAllStationsDetailsUrl(city);
+    if (url == NULL) {
+        emit modeNotSupported();
+        return;
+    }
+    QUrl qurl(url);
+    QNetworkRequest req(qurl);
     QSslConfiguration config = req.sslConfiguration();
     config.setPeerVerifyMode(QSslSocket::VerifyNone);
     req.setSslConfiguration(config);
@@ -148,6 +169,9 @@ void CacheManager::replyFinished()
 
     QByteArray data = pReply->readAll();
     _cartoJson = QString::fromUtf8(data);
+    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    _cartoJson = parser->parseCarto(_cartoJson);
+    delete parser;
 
     QDir cacheDir(_cacheDir);
     if (!cacheDir.exists())
@@ -177,6 +201,9 @@ void CacheManager::stationDetailsFinished()
 
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
+    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    stationDetails = parser->parseStationDetails(stationDetails, pReply->request().url().toString());
+    delete parser;
     emit gotStationDetails(stationDetails);
     pReply->deleteLater();
 }
@@ -196,6 +223,9 @@ void CacheManager::allStationsDetailsFinished()
 
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
+    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    stationDetails = parser->parseAllStationsDetails(stationDetails);
+    delete parser;
     emit gotAllStationsDetails(stationDetails);
     pReply->deleteLater();
 }
@@ -215,7 +245,22 @@ void CacheManager::getContractsFinished()
     }
 
     QByteArray data = pReply->readAll();
-    QString contracts = QString::fromUtf8(data);
+
+    QJsonDocument jsonContracts = QJsonDocument::fromJson(data);
+    QJsonArray constractsArray = jsonContracts.array();
+    //{"name":"Rouen","cities":["Rouen"],"commercial_name":"cy'clic","country_code":"FR"}
+    QHash<QString, CityData> citiesData = _dataProvider.getCitiesData();
+    QHashIterator<QString, CityData> it(citiesData);
+    while (it.hasNext()) {
+        it.next();
+        QJsonObject city;
+        city["name"] = it.value().getName();
+        city["commercialName"] = it.value().getCommercialName();
+        city["countryCode"] = it.value().getCountryCode();
+        constractsArray.append(city);
+    }
+    jsonContracts.setArray(constractsArray);
+
     QDir cacheDir(_cacheDir);
     if (!cacheDir.exists())
     {
@@ -223,10 +268,10 @@ void CacheManager::getContractsFinished()
     }
     QFile file(cacheDir.filePath("contracts.json"));
     file.open(QIODevice::WriteOnly);
-    file.write(data);
+    file.write(jsonContracts.toJson(QJsonDocument::Compact));
     file.close();
 
-    emit contractsUpdated(contracts);
+    emit contractsUpdated(jsonContracts.toJson(QJsonDocument::Compact));
     pReply->deleteLater();
 }
 

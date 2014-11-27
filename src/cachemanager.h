@@ -8,6 +8,10 @@
 #include <QNetworkConfigurationManager>
 #include <QNetworkSession>
 
+#include "dataprovider.h"
+#include "parser/bikedataparser.h"
+#include "parser/bikedataparserfactory.h"
+
 class CacheManager : public QObject
 {
     Q_OBJECT
@@ -36,6 +40,7 @@ signals:
     void networkStatusUpdated(bool connected);
     void gotStationDetails(QString stationDetails);
     void gotAllStationsDetails(QString allStationsDetails);
+    void modeNotSupported();
 
 public slots:
     void getContractsFinished();
@@ -49,10 +54,12 @@ private:
     QNetworkAccessManager* _networkAccessManager;
     QNetworkConfigurationManager* _networkConfigManager;
 
+    BikeDataParserFactory _bikeDataParserFactory;
+    DataProvider _dataProvider;
+
     QString _cartoJson;
     QString _currentCity;
     QString _cacheDir;
-    QString _apiKey;
 
     PendingAction _pendingAction;
 

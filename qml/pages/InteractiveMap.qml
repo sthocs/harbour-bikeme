@@ -105,6 +105,36 @@ Page {
         }
     }
 
+    Rectangle {
+        id: alertPopup
+        visible: false
+        anchors.top: parent.top
+        anchors.right: parent.right
+        height: Theme.itemSizeSmall
+        width: parent.width * 2 / 3
+        color: "gray"
+        opacity: 0.8
+        radius: 7
+
+        Label {
+            id: alertMsg
+            text: "Mode not available"
+            color: "black"
+        }
+
+        Image {
+            source: "image://theme/icon-m-close"
+            anchors.right: parent.right
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    alertPopup.visible = false;
+                }
+            }
+        }
+    }
+
     Connections {
         target: cacheManager
         onCartoChanged: {
@@ -124,7 +154,12 @@ Page {
         onGotStationDetails: {
             console.log("got station details: " + stationDetails);
             var stationDetailsJSON = JSON.parse(stationDetails);
-            stationNameLabel.text = stationDetailsJSON.name.toLowerCase();
+            if (stationDetailsJSON.name) {
+                stationNameLabel.text = stationDetailsJSON.name.toLowerCase();
+            }
+            else if (stationDetailsJSON.address) {
+                stationNameLabel.text = stationDetailsJSON.address.toLowerCase();
+            }
             numberOfBikes.text = ": " + stationDetailsJSON.available_bikes;
             numberOfParking.text = ": " + stationDetailsJSON.available_bike_stands;
             lastUpdatedTime.text = calcDate(stationDetailsJSON.last_update);
@@ -141,6 +176,17 @@ Page {
             catch(e) {
                 refreshLabel.text = res;
             }
+        }
+        onModeNotSupported: {
+            if (displayAllStatus) {
+                alertMsg.text = "Can't display all status\nfor this city."
+                refreshLabel.visible = false;
+            }
+            else {
+                alertMsg.text = "Only \"all status\" mode\navailable for this city."
+            }
+            displayAllStatus = !displayAllStatus;
+            alertPopup.visible = true;
         }
     }
 
@@ -189,8 +235,9 @@ Page {
 //        var start = new Date();
 
         var stationsArray = JSCacheManager.getStations();
-        //TODO check if stationsArray is defined (when the stations are not yet downloaded)
-        // if (!stationsArray) return;
+        if (!stationsArray) {
+            return;
+        }
         if (centerMap) {
             var avgLat = 0;
             var avgLng = 0;
@@ -481,6 +528,9 @@ Page {
 
 
     function calcDate(updated) {
+        if (typeof updated === "string") {
+            return "Updated: " + updated;
+        }
         var now = new Date();
         var elapsedSeconds = (now.getTime() - updated) / 1000;
         var min = Math.floor(elapsedSeconds / 60);

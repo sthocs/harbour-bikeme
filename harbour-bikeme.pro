@@ -19,7 +19,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/dataprovider.cpp \
     src/parser/bikedataparserfactory.cpp \
     src/parser/france/lillexmlparser.cpp \
-    src/parser/france/jcdecauxparser.cpp
+    src/parser/france/jcdecauxparser.cpp \
+    src/parser/uk/londonxmlparser.cpp
 
 OTHER_FILES += qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
@@ -43,5 +44,6 @@ HEADERS += \
     src/parser/bikedataparser.h \
     src/parser/bikedataparserfactory.h \
     src/parser/france/lillexmlparser.h \
-    src/parser/france/jcdecauxparser.h
+    src/parser/france/jcdecauxparser.h \
+    src/parser/uk/londonxmlparser.h
 

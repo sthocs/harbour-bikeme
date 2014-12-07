@@ -30,6 +30,9 @@ public:
     Q_INVOKABLE void downloadAllStationsDetails(QString);
     Q_INVOKABLE bool removeCacheDir();
 
+    Q_INVOKABLE bool isGetSingleStationDataSupported(QString);
+    Q_INVOKABLE bool isGetAllStationsDataSupported(QString);
+
     enum PendingAction {
         NONE, DOWNLOAD_STATIONS
     };

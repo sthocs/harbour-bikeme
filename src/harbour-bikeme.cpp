@@ -32,6 +32,9 @@
 #include <QtQuick>
 #endif
 
+#include <QGuiApplication>
+#include <QQuickView>
+#include <QQmlContext>
 #include <sailfishapp.h>
 #include "cachemanager.h"
 #include "configmanager.h"

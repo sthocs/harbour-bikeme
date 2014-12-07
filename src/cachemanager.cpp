@@ -69,6 +69,14 @@ void CacheManager::getContracts(bool forceRefresh)
     }
 }
 
+bool CacheManager::isGetSingleStationDataSupported(QString city) {
+    return _dataProvider.getStationDetailsUrl(city, "1") != NULL;
+}
+
+bool CacheManager::isGetAllStationsDataSupported(QString city) {
+    return _dataProvider.getAllStationsDetailsUrl(city) != NULL;
+}
+
 void CacheManager::getStationDetails(QString city, QString stationNumber)
 {
     //qDebug() << "Getting station details...";
@@ -134,6 +142,7 @@ void CacheManager::downloadCarto(QString city)
 
 void CacheManager::downloadAllStationsDetails(QString city)
 {
+    _currentCity = city;
     QString url = _dataProvider.getAllStationsDetailsUrl(city);
     if (url == NULL) {
         emit modeNotSupported();

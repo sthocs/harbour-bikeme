@@ -184,6 +184,8 @@ Page {
             }
             else {
                 alertMsg.text = "Only \"all status\" mode\navailable for this city."
+                refreshLabel.visible = true;
+                cacheManager.downloadAllStationsDetails(city);
             }
             displayAllStatus = !displayAllStatus;
             alertPopup.visible = true;

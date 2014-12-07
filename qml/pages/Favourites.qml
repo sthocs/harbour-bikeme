@@ -70,9 +70,15 @@ Page {
                     MenuItem {
                         text: "Refresh"
                         onClicked: {
-                            topMenu.busy = true;
-                            nbRefreshingStations++;
-                            cacheManager.getStationDetails(city, model.number);
+                            if (cacheManager.isGetSingleStationDataSupported(city)) {
+                                topMenu.busy = true;
+                                nbRefreshingStations++;
+                                cacheManager.getStationDetails(city, model.number);
+                            }
+                            else {
+                                errorMsg.text = "Individual refresh not available for this city";
+                                errorMsg.visible = true;
+                            }
                         }
                     }
                     MenuItem {
@@ -219,14 +225,7 @@ Page {
                 for (var i = 0; i < favouritesModel.count; ++i) {
                     if (favouritesModel.get(i).number === station_details.number) {
                         if (favouritesModel.get(i).name !== station_details.name) {
-                            console.log("Updating name of station " + station_details.number);
-                            var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-
-                            db.transaction(
-                                        function(tx) {
-                                            tx.executeSql('UPDATE favourites SET name="' + station_details.name + '" WHERE city="' + city +
-                                                          '" AND station_nb=' + station_details.number);
-                                        });
+                            updateStationNameInDB(station_details.number, station_details.name);
                         }
                         favouritesModel.remove(i);
                         favouritesModel.insert(i, station_details);
@@ -242,36 +241,84 @@ Page {
 
             nbRefreshingStations--;
             if (nbRefreshingStations == 0) {
-                // Generating cover label: 5 first stations.
                 topMenu.busy = false;
-                coverLabel = "";
-                for (var i = 0; i < 5 && i < favouritesModel.count; ++i) {
-                    var name;
-                    if (favouritesModel.get(i).name.indexOf(" - ") !== -1) {
-                        name = favouritesModel.get(i).name.split(" - ");
-                    }
-                    else {
-                        name = favouritesModel.get(i).name.split("-");
-                    }
-
-                    if (name.length > 1) {
-                        name = name[1].substr(0, 7);
-                    }
-                    else {
-                        name = name[0].substr(0, 7);
-                    }
-
-                    coverLabel += "[" + name + "] B:" + favouritesModel.get(i).available_bikes +
-                            " P:" + favouritesModel.get(i).available_bike_stands + "\n";
-                }
+                updateCoverLabel();
             }
+        }
+
+        onGotAllStationsDetails: {
+            var res = allStationsDetails;
+            try {
+                var stationsDetails = JSON.parse(res);
+                stationsDetails.forEach(function(station) {
+                    for (var i = 0; i < favouritesModel.count; ++i) {
+                        if (favouritesModel.get(i).number === station.number) {
+                            if (favouritesModel.get(i).name !== station.name) {
+                                updateStationNameInDB(station.number, station.name);
+                            }
+                            favouritesModel.remove(i);
+                            favouritesModel.insert(i, station);
+                        }
+                    }
+                    errorMsg.visible = false;
+                });
+                topMenu.busy = false;
+                updateCoverLabel();
+            }
+            catch(e) {
+                errorMsg.text = e.message;
+                errorMsg.visible = true;
+                topMenu.busy = false;
+            }
+            nbRefreshingStations--;
         }
     }
 
     function refreshAll() {
-        for (var i = 0; i < favouritesModel.count; ++i) {
+        if (!cacheManager.isGetSingleStationDataSupported(city)) {
             nbRefreshingStations++;
-            cacheManager.getStationDetails(city, favouritesModel.get(i).number);
+            cacheManager.downloadAllStationsDetails(city);
         }
+        else {
+            for (var i = 0; i < favouritesModel.count; ++i) {
+                nbRefreshingStations++;
+                cacheManager.getStationDetails(city, favouritesModel.get(i).number);
+            }
+        }
+    }
+
+    function updateCoverLabel() {
+        // Generating cover label: 5 first stations.
+        coverLabel = "";
+        for (var i = 0; i < 5 && i < favouritesModel.count; ++i) {
+            var name;
+            if (favouritesModel.get(i).name.indexOf(" - ") !== -1) {
+                name = favouritesModel.get(i).name.split(" - ");
+            }
+            else {
+                name = favouritesModel.get(i).name.split("-");
+            }
+
+            if (name.length > 1) {
+                name = name[1].substr(0, 7);
+            }
+            else {
+                name = name[0].substr(0, 7);
+            }
+
+            coverLabel += "[" + name + "] B:" + favouritesModel.get(i).available_bikes +
+                    " P:" + favouritesModel.get(i).available_bike_stands + "\n";
+        }
+    }
+
+    function updateStationNameInDB(stationNumber, stationName) {
+        console.log("Updating name of station " + stationNumber);
+        var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
+
+        db.transaction(
+                    function(tx) {
+                        tx.executeSql('UPDATE favourites SET name="' + stationName + '" WHERE city="' + city +
+                                      '" AND station_nb=' + stationNumber);
+                    });
     }
 }

@@ -66,9 +66,15 @@ Page {
             }
         }
     }
+
+    Label {
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: Theme.paddingMedium
+
+        visible: city === "London"
+        font.pixelSize: Theme.fontSizeExtraSmall
+        color: Theme.secondaryColor
+        text: "Powered by TfL Open Data"
+    }
 }
-
-
-
-
-

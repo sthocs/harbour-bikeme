@@ -10,6 +10,10 @@ DataProvider::DataProvider()
                    "http://vlille.fr/stations/xml-stations.aspx",
                    NULL, "http://vlille.fr/stations/xml-station.aspx?borne=${number}");
     _citiesData["Lille"] = lille;
+    CityData london("London", "Barclays Cycle Hire", "UK",
+                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
+                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL);
+    _citiesData["London"] = london;
 }
 
 QHash<QString, CityData> DataProvider::getCitiesData()

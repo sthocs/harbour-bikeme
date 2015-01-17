@@ -50,17 +50,15 @@ QString CacheManager::cartoJson() const
 void CacheManager::getContracts(bool forceRefresh)
 {
     QFile file(_cacheDir + "contracts.json");
-    if (!forceRefresh && file.exists())
-    {
+    if (!forceRefresh && file.exists()) {
         qDebug() << "Contracts exists, not downloading";
         file.open(QIODevice::ReadOnly);
         QString contracts = QString::fromUtf8(file.readAll());
         file.close();
         emit contractsUpdated(contracts);
     }
-    else if (forceRefresh)
-    {
-        QNetworkRequest req(QUrl("https://developer.jcdecaux.com/rest/vls/contracts"));
+    else if (forceRefresh) {
+        QNetworkRequest req(QUrl(_dataProvider.getUrlForJCDecauxContracts()));
         QSslConfiguration config = req.sslConfiguration();
         config.setPeerVerifyMode(QSslSocket::VerifyNone);
         req.setSslConfiguration(config);
@@ -75,6 +73,11 @@ bool CacheManager::isGetSingleStationDataSupported(QString city) {
 
 bool CacheManager::isGetAllStationsDataSupported(QString city) {
     return _dataProvider.getAllStationsDetailsUrl(city) != NULL;
+}
+
+QString CacheManager::getCopyright(QString city)
+{
+    return _dataProvider.getCopyright(city);
 }
 
 void CacheManager::getStationDetails(QString city, QString stationNumber)
@@ -97,36 +100,26 @@ void CacheManager::getStationDetails(QString city, QString stationNumber)
 
 void CacheManager::downloadCarto(QString city)
 {
+    bool refreshCarto = false;
     _currentCity = city;
     QFile file(_cacheDir + _currentCity + ".json");
 
-    if (file.exists())
-    {
+    if (file.exists()) {
         QFileInfo fileInfo(_cacheDir + _currentCity + ".json");
         qint64 fileAge = fileInfo.created().toMSecsSinceEpoch();
         qint64 now = QDateTime::currentMSecsSinceEpoch();
         qint64 dayInMillis = 1000 * 60 * 60 * 24;
 
-        // TODO emit cartoChanged and then download it in the background.
-        if (((now - fileAge) / dayInMillis) > 14) // If file is older than 2 weeks, refresh it.
-        {
-            qDebug() << "Removing current cached " + _currentCity + ".json";
-            file.remove();
+        if (((now - fileAge) / dayInMillis) > 14) { // If file is older than 2 weeks, refresh it.
+            qDebug() << "Will refresh carto: " + _currentCity + ".json";
+            refreshCarto = true;
         }
-    }
-    if (file.exists())
-    {
-        qDebug() << "File exists, not downloading";
         file.open(QIODevice::ReadOnly);
         _cartoJson = QString::fromUtf8(file.readAll());
-        BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
-        _cartoJson = parser->parseCarto(_cartoJson);
-        delete parser;
         file.close();
         emit cartoChanged();
     }
-    else
-    {
+    if (!file.exists() || refreshCarto) {
         QNetworkRequest req;
         qDebug() << "Downloading carto to: " + _cacheDir;
         //QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations?contract=paris&apiKey=changeme"));
@@ -160,8 +153,7 @@ void CacheManager::downloadAllStationsDetails(QString city)
 void CacheManager::replyFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
-    if (pReply->error() != QNetworkReply::NoError)
-    {
+    if (pReply->error() != QNetworkReply::NoError) {
         if (!_networkConfigManager->isOnline()) {
             _pendingAction = DOWNLOAD_STATIONS;
         }
@@ -188,8 +180,8 @@ void CacheManager::replyFinished()
         cacheDir.mkpath(_cacheDir);
     }
     QFile file(cacheDir.filePath(_currentCity + ".json"));
-    file.open(QIODevice::WriteOnly);
-    file.write(data);
+    file.open(QIODevice::WriteOnly | QIODevice::Truncate);
+    file.write(_cartoJson.toUtf8());
     file.close();
     emit cartoChanged();
     pReply->deleteLater();
@@ -198,8 +190,7 @@ void CacheManager::replyFinished()
 void CacheManager::stationDetailsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
-    if (pReply->error() != QNetworkReply::NoError)
-    {
+    if (pReply->error() != QNetworkReply::NoError) {
         qDebug() << "Error while getting stations details";
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Please connect to Internet and retry.";
@@ -220,8 +211,7 @@ void CacheManager::stationDetailsFinished()
 void CacheManager::allStationsDetailsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
-    if (pReply->error() != QNetworkReply::NoError)
-    {
+    if (pReply->error() != QNetworkReply::NoError) {
         qDebug() << "Error while getting all stations details";
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Not connected";
@@ -242,8 +232,7 @@ void CacheManager::allStationsDetailsFinished()
 void CacheManager::getContractsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
-    if (pReply->error() != QNetworkReply::NoError)
-    {
+    if (pReply->error() != QNetworkReply::NoError) {
         qDebug() << "Error while getting cities list";
         //qDebug() << pReply->errorString();
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
@@ -264,15 +253,14 @@ void CacheManager::getContractsFinished()
         it.next();
         QJsonObject city;
         city["name"] = it.value().getName();
-        city["commercialName"] = it.value().getCommercialName();
-        city["countryCode"] = it.value().getCountryCode();
+        city["commercial_name"] = it.value().getCommercialName();
+        city["country_code"] = it.value().getCountryCode();
         constractsArray.append(city);
     }
     jsonContracts.setArray(constractsArray);
 
     QDir cacheDir(_cacheDir);
-    if (!cacheDir.exists())
-    {
+    if (!cacheDir.exists()) {
         cacheDir.mkpath(_cacheDir);
     }
     QFile file(cacheDir.filePath("contracts.json"));
@@ -292,7 +280,7 @@ bool CacheManager::removeCacheDir()
     if (dir.exists(_cacheDir)) {
         Q_FOREACH(QFileInfo info,
                   dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System |
-                                    QDir::Hidden  | QDir::AllDirs |
+                                    QDir::Hidden | QDir::AllDirs |
                                     QDir::Files, QDir::DirsFirst)) {
             result = QFile::remove(info.absoluteFilePath());
 
@@ -308,8 +296,7 @@ bool CacheManager::removeCacheDir()
 QString CacheManager::getAppState()
 {
     QFile file(_cacheDir + "app_state");
-    if (file.exists())
-    {
+    if (file.exists()) {
         file.open(QIODevice::ReadOnly);
         QString state = QString::fromUtf8(file.readAll());
         file.close();
@@ -321,8 +308,7 @@ QString CacheManager::getAppState()
 void CacheManager::saveAppState(QString appState)
 {
     QDir cacheDir(_cacheDir);
-    if (!cacheDir.exists())
-    {
+    if (!cacheDir.exists()) {
         cacheDir.mkpath(_cacheDir);
     }
     QFile file(cacheDir.filePath("app_state"));

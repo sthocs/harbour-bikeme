@@ -11,9 +11,11 @@ public:
     DataProvider();
 
     QHash<QString, CityData> getCitiesData();
+    QString getUrlForJCDecauxContracts();
     QString getCartoUrl(QString city);
     QString getAllStationsDetailsUrl(QString city);
     QString getStationDetailsUrl(QString city, QString stationNumber);
+    QString getCopyright(QString city);
 
 private:
     QString _jcdecauxApiKey;

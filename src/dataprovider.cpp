@@ -21,6 +21,12 @@ QHash<QString, CityData> DataProvider::getCitiesData()
     return _citiesData;
 }
 
+QString DataProvider::getUrlForJCDecauxContracts()
+{
+    // https://developer.jcdecaux.com/rest/vls/contracts
+    return "https://api.jcdecaux.com/vls/v1/contracts?apiKey=" + _jcdecauxApiKey;
+}
+
 QString DataProvider::getCartoUrl(QString city)
 {
     if (_citiesData.contains(city)) {
@@ -39,7 +45,8 @@ QString DataProvider::getAllStationsDetailsUrl(QString city)
     return "https://api.jcdecaux.com/vls/v1/stations?contract=" + city + "&apiKey=" + _jcdecauxApiKey;
 }
 
-QString DataProvider::getStationDetailsUrl(QString city, QString stationNumber) {
+QString DataProvider::getStationDetailsUrl(QString city, QString stationNumber)
+{
     if (_citiesData.contains(city)) {
         QString url = _citiesData.value(city).getUrlStationDetails();
         qDebug() << "station details for " << city << url;
@@ -47,4 +54,12 @@ QString DataProvider::getStationDetailsUrl(QString city, QString stationNumber) 
     }
     return "https://api.jcdecaux.com/vls/v1/stations/" + stationNumber +
             "?contract=" + city + "&apiKey=" + _jcdecauxApiKey;
+}
+
+QString DataProvider::getCopyright(QString city)
+{
+    if (city.compare("London") == 0) {
+        return "Powered by TfL Open Data";
+    }
+    return "";
 }

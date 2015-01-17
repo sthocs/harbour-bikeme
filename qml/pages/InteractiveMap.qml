@@ -169,7 +169,7 @@ Page {
             try {
                 nbStations = JSCacheManager.saveStationsWithDetails(res);
                 console.log("Got all stations details; Number of stations: " + nbStations);
-                printStations(true, true);
+                printStations(false, true);
                 stationLoadingLabel.visible = false;
                 refreshLabel.visible = false;
             }

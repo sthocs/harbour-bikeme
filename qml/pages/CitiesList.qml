@@ -12,8 +12,17 @@ Page {
             var res = contracts;
             try {
                 var cities = JSON.parse(res);
+                cities.forEach(function(city) {
+                    // Temporary fix after API change.
+                    if (city.countryCode) {
+                        city.country_code = city.countryCode;
+                    }
+                    if (city.commercialName) {
+                        city.commercial_name = city.commercialName;
+                    }
+                });
                 cities.sort(function(a, b) {
-                    return a.countryCode.charCodeAt(0) - b.countryCode.charCodeAt(0)
+                    return a.country_code.charCodeAt(0) - b.country_code.charCodeAt(0);
                 });
                 cityModel.clear();
                 for (var i = 0; i < cities.length; ++i) {
@@ -49,7 +58,7 @@ Page {
         header: PageHeader { title: "Cities" }
 
         section {
-            property: 'countryCode'
+            property: 'country_code'
 
             delegate: Row {
                 spacing: Theme.paddingMedium
@@ -114,7 +123,7 @@ Page {
                 Label {
                     id: subText
                     x: Theme.paddingLarge
-                    text: model.commercialName
+                    text: model.commercial_name
                     font.weight: Font.Light
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor

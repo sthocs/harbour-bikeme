@@ -33,6 +33,8 @@ public:
     Q_INVOKABLE bool isGetSingleStationDataSupported(QString);
     Q_INVOKABLE bool isGetAllStationsDataSupported(QString);
 
+    Q_INVOKABLE QString getCopyright(QString);
+
     enum PendingAction {
         NONE, DOWNLOAD_STATIONS
     };

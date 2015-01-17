@@ -72,9 +72,8 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: Theme.paddingMedium
 
-        visible: city === "London"
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
-        text: "Powered by TfL Open Data"
+        text: cacheManager.getCopyright(city)
     }
 }

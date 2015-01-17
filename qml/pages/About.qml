@@ -95,7 +95,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
-            text: "Copyright © 2014 Sthocs"
+            text: "Copyright © 2014, 2015 Sthocs"
         }
     }
 }

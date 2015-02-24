@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import "cachemanager.js" as JSCacheManager
+
 Page {
     Component.onCompleted: {
         cacheManager.getContracts(false);
@@ -28,6 +30,9 @@ Page {
                 for (var i = 0; i < cities.length; ++i) {
                     cityModel.append(cities[i]);
                 }
+                JSCacheManager.cities = cities;
+                listView.headerItem.filter.text = "";
+                listView.headerItem.filter.focus = false
                 errorMsg.visible = false;
             }
             catch (e) {
@@ -54,8 +59,32 @@ Page {
         anchors.fill: parent
 
         model: cityModel
+        currentIndex: -1
 
-        header: PageHeader { title: "Cities" }
+        header: Column {
+            property alias filter: searchField
+
+            width: parent.width
+
+            PageHeader { title: "Cities" }
+
+            SearchField {
+                id: searchField
+                width: parent.width
+                placeholderText: "Filter"
+
+                onTextChanged: {
+                    cityModel.clear();
+                    JSCacheManager.cities.forEach(function(city) {
+                        if (text === "" || city.name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+                            cityModel.append(city);
+                        }
+                    });
+                }
+                EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                EnterKey.onClicked: focus = false
+            }
+        }
 
         section {
             property: 'country_code'
@@ -82,7 +111,7 @@ Page {
 
         ViewPlaceholder {
             id: placeholder
-            enabled: listView.count == 0
+            enabled: listView.count == 0 && listView.headerItem.filter.text === ""
             text: "Welcome to BikeMe!"
             hintText: "Pull down to load cities list"
         }

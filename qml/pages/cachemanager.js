@@ -1,4 +1,5 @@
 var stationsArray;
+var cities;
 
 function saveStations(cartoJson) {
     stationsArray = JSON.parse(cartoJson);

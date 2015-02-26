@@ -1,9 +1,9 @@
-#ifndef NICEJSONPARSER_H
-#define NICEJSONPARSER_H
+#ifndef PARSERVELOWAY_H
+#define PARSERVELOWAY_H
 
 #include "../bikedataparser.h"
 
-class NiceJsonParser : public BikeDataParser
+class ParserVeloway : public BikeDataParser
 {
 public:
     QString parseCarto(QString carto);
@@ -14,4 +14,4 @@ private:
     QString parseJsonResult(QString jsonResult);
 };
 
-#endif // NICEJSONPARSER_H
+#endif // PARSERVELOWAY_H

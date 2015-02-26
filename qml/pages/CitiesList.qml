@@ -5,11 +5,11 @@ import "cachemanager.js" as JSCacheManager
 
 Page {
     Component.onCompleted: {
-        cacheManager.getContracts(false);
+        dataProvider.getContracts(false);
     }
 
     Connections {
-        target: cacheManager
+        target: dataProvider
         onContractsUpdated: {
             var res = contracts;
             try {
@@ -128,7 +128,7 @@ Page {
                 text: "Refresh cities list"
                 onClicked: {
                     topMenu.busy = true
-                    cacheManager.getContracts(true)
+                    dataProvider.getContracts(true)
                 }
             }
         }

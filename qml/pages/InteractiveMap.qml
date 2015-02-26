@@ -66,7 +66,7 @@ Page {
             Component.onCompleted: {
                 mapLoaded = true;
                 map.zoomLevel += 6;
-                cacheManager.downloadCarto(city);
+                dataProvider.downloadCarto(city);
             }
 
             gesture.onFlickFinished: {
@@ -136,15 +136,15 @@ Page {
     }
 
     Connections {
-        target: cacheManager
+        target: dataProvider
         onCartoChanged: {
-            nbStations = JSCacheManager.saveStations(cacheManager.cartoJson);
+            nbStations = JSCacheManager.saveStations(dataProvider.cartoJson);
             console.log("Number of stations: " + nbStations);
             printStations(true);
             stationLoadingLabel.visible = false;
             if (displayAllStatus) {
                 refreshLabel.visible = true;
-                cacheManager.downloadAllStationsDetails(city);
+                dataProvider.downloadAllStationsDetails(city);
             }
         }
         onNetworkStatusUpdated: {
@@ -185,7 +185,7 @@ Page {
             else {
                 alertMsg.text = "Only \"all status\" mode\navailable for this city."
                 refreshLabel.visible = true;
-                cacheManager.downloadAllStationsDetails(city);
+                dataProvider.downloadAllStationsDetails(city);
             }
             displayAllStatus = !displayAllStatus;
             alertPopup.visible = true;
@@ -221,7 +221,7 @@ Page {
                     selectedStationNumber = number;
                     if (!displayAllStatus) {
                         stationNameLabel.text = "Updating...";
-                        cacheManager.getStationDetails(city, number);
+                        dataProvider.getStationDetails(city, number);
                     }
                 }
             }
@@ -522,7 +522,7 @@ Page {
                 onClicked: {
                     refreshLabel.text = qsTr("Refreshing...");
                     refreshLabel.visible = true
-                    cacheManager.downloadAllStationsDetails(city);
+                    dataProvider.downloadAllStationsDetails(city);
                 }
             }
         }

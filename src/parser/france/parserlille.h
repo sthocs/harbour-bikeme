@@ -1,17 +1,14 @@
-#ifndef LONDONXMLPARSER_H
-#define LONDONXMLPARSER_H
+#ifndef PARSERLILLE_H
+#define PARSERLILLE_H
 
 #include "../bikedataparser.h"
 
-class LondonXmlParser : public BikeDataParser
+class ParserLille : public BikeDataParser
 {
 public:
     QString parseCarto(QString carto);
     QString parseStationDetails(QString stationDetails, QString url);
     QString parseAllStationsDetails(QString allStationsDetails);
-
-private:
-    QString parseXmlResult(QString xmlResult);
 };
 
-#endif // LONDONXMLPARSER_H
+#endif // PARSERLILLE_H

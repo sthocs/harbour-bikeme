@@ -3,24 +3,24 @@
 #include <QJsonArray>
 #include <QJsonValue>
 
-#include "nicejsonparser.h"
+#include "parserveloway.h"
 
-QString NiceJsonParser::parseCarto(QString carto)
+QString ParserVeloway::parseCarto(QString carto)
 {
     return parseJsonResult(carto);
 }
 
-QString NiceJsonParser::parseStationDetails(QString stationDetails, QString url)
+QString ParserVeloway::parseStationDetails(QString stationDetails, QString url)
 {
     return stationDetails;
 }
 
-QString NiceJsonParser::parseAllStationsDetails(QString allStationsDetails)
+QString ParserVeloway::parseAllStationsDetails(QString allStationsDetails)
 {
     return parseJsonResult(allStationsDetails);
 }
 
-QString NiceJsonParser::parseJsonResult(QString jsonResult)
+QString ParserVeloway::parseJsonResult(QString jsonResult)
 {
     QJsonDocument jsonAllStationDetails;
     QJsonArray jsonArray;

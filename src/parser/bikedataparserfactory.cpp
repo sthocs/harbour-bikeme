@@ -1,9 +1,9 @@
 #include "bikedataparserfactory.h"
 
 #include "france/jcdecauxparser.h"
-#include "france/lillexmlparser.h"
-#include "france/nicejsonparser.h"
-#include "uk/londonxmlparser.h"
+#include "france/parserlille.h"
+#include "france/parserveloway.h"
+#include "uk/parserlondon.h"
 
 BikeDataParserFactory::BikeDataParserFactory()
 {
@@ -12,13 +12,13 @@ BikeDataParserFactory::BikeDataParserFactory()
 BikeDataParser* BikeDataParserFactory::getBikeDataParser(QString city)
 {
     if (city.compare("Lille") == 0) {
-        return new LilleXmlParser();
+        return new ParserLille();
     }
     if (city.compare("Nice") == 0) {
-        return new NiceJsonParser();
+        return new ParserVeloway();
     }
     else if (city.compare("London") == 0) {
-        return new LondonXmlParser();
+        return new ParserLondon();
     }
     return new JCDecauxParser();
 }

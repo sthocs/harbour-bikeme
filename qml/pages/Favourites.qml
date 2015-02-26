@@ -70,10 +70,10 @@ Page {
                     MenuItem {
                         text: "Refresh"
                         onClicked: {
-                            if (cacheManager.isGetSingleStationDataSupported(city)) {
+                            if (dataProvider.isGetSingleStationDataSupported(city)) {
                                 topMenu.busy = true;
                                 nbRefreshingStations++;
-                                cacheManager.getStationDetails(city, model.number);
+                                dataProvider.getStationDetails(city, model.number);
                             }
                             else {
                                 errorMsg.text = "Individual refresh not available for this city";
@@ -216,7 +216,7 @@ Page {
     }
 
     Connections {
-        target: cacheManager
+        target: dataProvider
         onGotStationDetails: {
             var res = stationDetails;
             console.log(res);
@@ -275,14 +275,14 @@ Page {
     }
 
     function refreshAll() {
-        if (!cacheManager.isGetSingleStationDataSupported(city)) {
+        if (!dataProvider.isGetSingleStationDataSupported(city)) {
             nbRefreshingStations++;
-            cacheManager.downloadAllStationsDetails(city);
+            dataProvider.downloadAllStationsDetails(city);
         }
         else {
             for (var i = 0; i < favouritesModel.count; ++i) {
                 nbRefreshingStations++;
-                cacheManager.getStationDetails(city, favouritesModel.get(i).number);
+                dataProvider.getStationDetails(city, favouritesModel.get(i).number);
             }
         }
     }

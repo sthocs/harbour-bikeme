@@ -14,37 +14,37 @@ QT += xml
 
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
-    src/cachemanager.cpp \
     src/citydata.cpp \
     src/dataprovider.cpp \
+    src/staticdataprovider.cpp \
     src/parser/bikedataparserfactory.cpp \
     src/parser/france/jcdecauxparser.cpp \
-    src/parser/france/lillexmlparser.cpp \
-    src/parser/france/nicejsonparser.cpp \
-    src/parser/uk/londonxmlparser.cpp
+    src/parser/france/parserveloway.cpp \
+    src/parser/france/parserlille.cpp \
+    src/parser/uk/parserlondon.cpp
 
 OTHER_FILES += qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
+    qml/items/StationMarker.qml \
     qml/pages/CitiesList.qml \
     qml/pages/SecondPage.qml \
     qml/pages/Favourites.qml \
     qml/pages/InteractiveMap.qml \
     qml/pages/About.qml \
+    qml/pages/Settings.qml \
     qml/pages/cachemanager.js \
     rpm/harbour-bikeme.spec \
     rpm/harbour-bikeme.yaml \
-    harbour-bikeme.desktop \
-    qml/items/StationMarker.qml \
-    qml/pages/Settings.qml
+    harbour-bikeme.desktop
 
 HEADERS += \
     src/configmanager.h \
-    src/cachemanager.h \
     src/citydata.h \
     src/dataprovider.h \
+    src/staticdataprovider.h \
     src/parser/bikedataparser.h \
     src/parser/bikedataparserfactory.h \
     src/parser/france/jcdecauxparser.h \
-    src/parser/france/lillexmlparser.h \
-    src/parser/france/nicejsonparser.h \
-    src/parser/uk/londonxmlparser.h
+    src/parser/france/parserveloway.h \
+    src/parser/france/parserlille.h \
+    src/parser/uk/parserlondon.h

@@ -36,7 +36,7 @@
 #include <QQuickView>
 #include <QQmlContext>
 #include <sailfishapp.h>
-#include "cachemanager.h"
+#include "dataprovider.h"
 #include "configmanager.h"
 
 int main(int argc, char *argv[])
@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     QGuiApplication* app = SailfishApp::application(argc, argv);
     QQuickView* view = SailfishApp::createView();
 
-    CacheManager* cacheManager = new CacheManager();
+    DataProvider* dataProvider = new DataProvider();
     ConfigManager* configManager = new ConfigManager();
-    view->rootContext()->setContextProperty("cacheManager", cacheManager);
+    view->rootContext()->setContextProperty("dataProvider", dataProvider);
     view->rootContext()->setContextProperty("configManager", configManager);
     view->setSource(SailfishApp::pathTo("qml/harbour-bikeme.qml"));
     view->show();

@@ -7,21 +7,21 @@
 #include <QJsonValue>
 #include <QStringList>
 
-#include "londonxmlparser.h"
+#include "parserlondon.h"
 
-QString LondonXmlParser::parseCarto(QString xmlCarto) {
+QString ParserLondon::parseCarto(QString xmlCarto) {
     return parseXmlResult(xmlCarto);
 }
 
-QString LondonXmlParser::parseStationDetails(QString xmlStationDetails, QString url) {
+QString ParserLondon::parseStationDetails(QString xmlStationDetails, QString url) {
     return xmlStationDetails;
 }
 
-QString LondonXmlParser::parseAllStationsDetails(QString allStationsDetails) {
+QString ParserLondon::parseAllStationsDetails(QString allStationsDetails) {
     return parseXmlResult(allStationsDetails);
 }
 
-QString LondonXmlParser::parseXmlResult(QString xmlResult)
+QString ParserLondon::parseXmlResult(QString xmlResult)
 {
     QJsonDocument jsonAllStationDetails;
     QJsonArray jsonArray;

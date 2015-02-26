@@ -74,6 +74,6 @@ Page {
 
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
-        text: cacheManager.getCopyright(city)
+        text: dataProvider.getCopyright(city)
     }
 }

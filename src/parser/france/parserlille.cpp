@@ -7,9 +7,9 @@
 #include <QJsonValue>
 #include <QStringList>
 
-#include "lillexmlparser.h"
+#include "parserlille.h"
 
-QString LilleXmlParser::parseCarto(QString xmlCarto) {
+QString ParserLille::parseCarto(QString xmlCarto) {
     QJsonDocument jsonCarto;
     QJsonArray jsonArray;
 
@@ -36,7 +36,7 @@ QString LilleXmlParser::parseCarto(QString xmlCarto) {
     return jsonCarto.toJson(QJsonDocument::Compact);
 }
 
-QString LilleXmlParser::parseStationDetails(QString xmlStationDetails, QString url) {
+QString ParserLille::parseStationDetails(QString xmlStationDetails, QString url) {
     QJsonDocument jsonStationDetails;
     QJsonObject jsonObject;
     
@@ -70,6 +70,6 @@ QString LilleXmlParser::parseStationDetails(QString xmlStationDetails, QString u
     return jsonStationDetails.toJson(QJsonDocument::Compact);
 }
 
-QString LilleXmlParser::parseAllStationsDetails(QString allStationsDetails) {
+QString ParserLille::parseAllStationsDetails(QString allStationsDetails) {
     return allStationsDetails;
 }

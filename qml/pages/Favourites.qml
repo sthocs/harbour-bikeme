@@ -149,7 +149,7 @@ Page {
         }
 
         Component.onCompleted: {
-            var db = LocalStorage.openDatabaseSync("BikeMe", "0.1", "BikeMe DB", 1000000);
+            var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
 
             db.transaction(function(tx) {
                 // Create the database if it doesn't already exist

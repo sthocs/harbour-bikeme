@@ -6,8 +6,6 @@
 #include <QFile>
 #include <QDateTime>
 #include <QDebug>
-#include <QSslConfiguration>
-#include <QSslSocket>
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -59,9 +57,6 @@ void DataProvider::getContracts(bool forceRefresh)
     }
     else if (forceRefresh) {
         QNetworkRequest req(QUrl(_staticDataProvider.getUrlForJCDecauxContracts()));
-        QSslConfiguration config = req.sslConfiguration();
-        config.setPeerVerifyMode(QSslSocket::VerifyNone);
-        req.setSslConfiguration(config);
         QNetworkReply *reply = _networkAccessManager->get(req);
         connect(reply, SIGNAL(finished()), this, SLOT(getContractsFinished()));
     }
@@ -91,9 +86,6 @@ void DataProvider::getStationDetails(QString city, QString stationNumber)
     }
     QUrl qurl(url);
     QNetworkRequest req(qurl);
-    QSslConfiguration config = req.sslConfiguration();
-    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-    req.setSslConfiguration(config);
     QNetworkReply *reply = _networkAccessManager->get(req);
     connect(reply, SIGNAL(finished()), this, SLOT(stationDetailsFinished()));
 }
@@ -125,9 +117,6 @@ void DataProvider::downloadCarto(QString city)
         //QNetworkRequest req(QUrl("https://api.jcdecaux.com/vls/v1/stations?contract=paris&apiKey=changeme"));
         //QNetworkRequest req(QUrl("https://developer.jcdecaux.com/rest/vls/stations/" + _currentCity + ".json"));
         req.setUrl(QUrl(_staticDataProvider.getCartoUrl(city)));
-        QSslConfiguration config = req.sslConfiguration();
-        config.setPeerVerifyMode(QSslSocket::VerifyNone);
-        req.setSslConfiguration(config);
         QNetworkReply *reply = _networkAccessManager->get(req);
         connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
     }
@@ -143,9 +132,6 @@ void DataProvider::downloadAllStationsDetails(QString city)
     }
     QUrl qurl(url);
     QNetworkRequest req(qurl);
-    QSslConfiguration config = req.sslConfiguration();
-    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-    req.setSslConfiguration(config);
     QNetworkReply *reply = _networkAccessManager->get(req);
     connect(reply, SIGNAL(finished()), this, SLOT(allStationsDetailsFinished()));
 }

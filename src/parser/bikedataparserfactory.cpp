@@ -4,6 +4,7 @@
 #include "france/parserlille.h"
 #include "france/parserveloway.h"
 #include "uk/parserlondon.h"
+#include "russia/parsermoscow.h"
 
 
 BikeDataParser* BikeDataParserFactory::getJCDecauxParser()
@@ -24,4 +25,9 @@ BikeDataParser* BikeDataParserFactory::getLondonParser()
 BikeDataParser* BikeDataParserFactory::getVelowayParser()
 {
     return new ParserVeloway();
+}
+
+BikeDataParser *BikeDataParserFactory::getMoscowParser()
+{
+    return new ParserMoscow();
 }

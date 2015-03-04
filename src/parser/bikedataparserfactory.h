@@ -10,6 +10,7 @@ public:
     static BikeDataParser* getLilleParser();
     static BikeDataParser* getLondonParser();
     static BikeDataParser* getVelowayParser();
+    static BikeDataParser* getMoscowParser();
 };
 
 #endif // BIKEDATAPARSERFACTORY_H

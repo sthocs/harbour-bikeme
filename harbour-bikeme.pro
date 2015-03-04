@@ -21,7 +21,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/france/jcdecauxparser.cpp \
     src/parser/france/parserveloway.cpp \
     src/parser/france/parserlille.cpp \
-    src/parser/uk/parserlondon.cpp
+    src/parser/uk/parserlondon.cpp \
+    src/parser/russia/parsermoscow.cpp
 
 OTHER_FILES += qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
@@ -47,4 +48,5 @@ HEADERS += \
     src/parser/france/jcdecauxparser.h \
     src/parser/france/parserveloway.h \
     src/parser/france/parserlille.h \
-    src/parser/uk/parserlondon.h
+    src/parser/uk/parserlondon.h \
+    src/parser/russia/parsermoscow.h

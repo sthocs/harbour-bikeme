@@ -22,6 +22,10 @@ StaticDataProvider::StaticDataProvider()
                     "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
                     BikeDataParserFactory::getLondonParser);
     _citiesData["London"] = london;
+    CityData moscow("Moscow", "Velobike", "RU",
+                    "http://velobike.ru/proxy/parkings/", "http://velobike.ru/proxy/parkings/",
+                    NULL, BikeDataParserFactory::getMoscowParser);
+    _citiesData["Moscow"] = moscow;
 }
 
 QHash<QString, CityData> StaticDataProvider::getCitiesData()

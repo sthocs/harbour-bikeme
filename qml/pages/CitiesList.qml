@@ -24,7 +24,21 @@ Page {
                     }
                 });
                 cities.sort(function(a, b) {
-                    return a.country_code.charCodeAt(0) - b.country_code.charCodeAt(0);
+                    if (a.country_code === b.country_code) {
+                        if (a.name < b.name) {
+                            return -1
+                        }
+                        if (a.name > b.name) {
+                            return 1
+                        }
+                        return 0;
+                    }
+                    else if (a.country_code < b.country_code) {
+                        return -1;
+                    }
+                    else {
+                        return 1;
+                    }
                 });
                 cityModel.clear();
                 for (var i = 0; i < cities.length; ++i) {

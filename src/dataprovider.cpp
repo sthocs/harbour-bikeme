@@ -156,7 +156,7 @@ void DataProvider::replyFinished()
 
     QByteArray data = pReply->readAll();
     _cartoJson = QString::fromUtf8(data);
-    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    BikeDataParser* parser = _staticDataProvider.getBikeDataParser(_currentCity);
     _cartoJson = parser->parseCarto(_cartoJson);
     delete parser;
 
@@ -187,7 +187,7 @@ void DataProvider::stationDetailsFinished()
 
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
-    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    BikeDataParser* parser = _staticDataProvider.getBikeDataParser(_currentCity);
     stationDetails = parser->parseStationDetails(stationDetails, pReply->request().url().toString());
     delete parser;
     emit gotStationDetails(stationDetails);
@@ -208,7 +208,7 @@ void DataProvider::allStationsDetailsFinished()
 
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
-    BikeDataParser* parser = _bikeDataParserFactory.getBikeDataParser(_currentCity);
+    BikeDataParser* parser = _staticDataProvider.getBikeDataParser(_currentCity);
     stationDetails = parser->parseAllStationsDetails(stationDetails);
     delete parser;
     emit gotAllStationsDetails(stationDetails);

@@ -6,9 +6,10 @@
 class BikeDataParserFactory
 {
 public:
-    BikeDataParserFactory();
-
-    BikeDataParser* getBikeDataParser(QString city);
+    static BikeDataParser* getJCDecauxParser();
+    static BikeDataParser* getLilleParser();
+    static BikeDataParser* getLondonParser();
+    static BikeDataParser* getVelowayParser();
 };
 
 #endif // BIKEDATAPARSERFACTORY_H

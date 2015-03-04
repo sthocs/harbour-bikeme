@@ -16,6 +16,7 @@ public:
     QString getAllStationsDetailsUrl(QString city);
     QString getStationDetailsUrl(QString city, QString stationNumber);
     QString getCopyright(QString city);
+    BikeDataParser* getBikeDataParser(QString city);
 
 private:
     QString _jcdecauxApiKey;

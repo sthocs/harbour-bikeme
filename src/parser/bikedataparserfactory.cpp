@@ -5,20 +5,23 @@
 #include "france/parserveloway.h"
 #include "uk/parserlondon.h"
 
-BikeDataParserFactory::BikeDataParserFactory()
+
+BikeDataParser* BikeDataParserFactory::getJCDecauxParser()
 {
+   return new JCDecauxParser();
 }
 
-BikeDataParser* BikeDataParserFactory::getBikeDataParser(QString city)
+BikeDataParser* BikeDataParserFactory::getLilleParser()
 {
-    if (city.compare("Lille") == 0) {
-        return new ParserLille();
-    }
-    if (city.compare("Nice") == 0) {
-        return new ParserVeloway();
-    }
-    else if (city.compare("London") == 0) {
-        return new ParserLondon();
-    }
-    return new JCDecauxParser();
+    return new ParserLille();
+}
+
+BikeDataParser* BikeDataParserFactory::getLondonParser()
+{
+    return new ParserLondon();
+}
+
+BikeDataParser* BikeDataParserFactory::getVelowayParser()
+{
+    return new ParserVeloway();
 }

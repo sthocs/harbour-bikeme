@@ -1,6 +1,7 @@
 #include <QDebug>
 
 #include "staticdataprovider.h"
+#include "src/parser/bikedataparserfactory.h"
 
 StaticDataProvider::StaticDataProvider()
 {
@@ -8,15 +9,18 @@ StaticDataProvider::StaticDataProvider()
 
     CityData lille("Lille", "V'Lille", "FR",
                    "http://vlille.fr/stations/xml-stations.aspx",
-                   NULL, "http://vlille.fr/stations/xml-station.aspx?borne=${number}");
+                   NULL, "http://vlille.fr/stations/xml-station.aspx?borne=${number}",
+                   BikeDataParserFactory::getLilleParser);
     _citiesData["Lille"] = lille;
     CityData nice("Nice", "Vélo Bleu", "FR",
                   "http://www.velobleu.org/cartoV2/libProxyCarto.asp",
-                  "http://www.velobleu.org/cartoV2/libProxyCarto.asp", NULL);
+                  "http://www.velobleu.org/cartoV2/libProxyCarto.asp", NULL,
+                  BikeDataParserFactory::getVelowayParser);
     _citiesData["Nice"] = nice;
     CityData london("London", "Barclays Cycle Hire", "UK",
                     "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
-                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL);
+                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
+                    BikeDataParserFactory::getLondonParser);
     _citiesData["London"] = london;
 }
 
@@ -66,4 +70,13 @@ QString StaticDataProvider::getCopyright(QString city)
         return "Powered by TfL Open Data";
     }
     return "";
+}
+
+BikeDataParser* StaticDataProvider::getBikeDataParser(QString city)
+{
+    if (_citiesData.contains(city)) {
+        CityData tmp = _citiesData.value(city);
+        return tmp.getBikeDataParser();
+    }
+    return BikeDataParserFactory::getJCDecauxParser();
 }

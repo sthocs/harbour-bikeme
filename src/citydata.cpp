@@ -3,7 +3,8 @@
 CityData::CityData() {}
 
 CityData::CityData(QString name, QString commercialName, QString countryCode,
-                   QString urlCarto, QString urlAllStationDetails, QString urlStationDetails)
+                   QString urlCarto, QString urlAllStationDetails, QString urlStationDetails,
+                   BikeDataParser* (*ptr)())
 {
     _name = name;
     _commercialName = commercialName;
@@ -11,6 +12,7 @@ CityData::CityData(QString name, QString commercialName, QString countryCode,
     _urlCarto = urlCarto;
     _urlAllStationsDetails = urlAllStationDetails;
     _urlStationDetails = urlStationDetails;
+    _getParserFunction = ptr;
 }
 
 QString CityData::getName() const
@@ -41,4 +43,9 @@ QString CityData::getUrlAllStationsDetails() const
 QString CityData::getUrlStationDetails() const
 {
     return _urlStationDetails;
+}
+
+BikeDataParser* CityData::getBikeDataParser()
+{
+    return _getParserFunction();
 }

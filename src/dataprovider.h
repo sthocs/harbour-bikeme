@@ -10,7 +10,6 @@
 
 #include "staticdataprovider.h"
 #include "parser/bikedataparser.h"
-#include "parser/bikedataparserfactory.h"
 
 class DataProvider : public QObject
 {
@@ -59,7 +58,6 @@ private:
     QNetworkAccessManager* _networkAccessManager;
     QNetworkConfigurationManager* _networkConfigManager;
 
-    BikeDataParserFactory _bikeDataParserFactory;
     StaticDataProvider _staticDataProvider;
 
     QString _cartoJson;

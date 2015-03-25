@@ -43,7 +43,7 @@ ApplicationWindow
 
         if (city) {
             console.log("Restoring app state: " + city);
-            var pagesToPush = [Qt.resolvedUrl("pages/CitiesList.qml")];
+            var pagesToPush = [Qt.resolvedUrl("pages/CitiesBrowser.qml")];
             pagesToPush.push({
                 page: Qt.resolvedUrl("pages/SecondPage.qml"),
                 properties: { city: city }
@@ -52,7 +52,7 @@ ApplicationWindow
         }
         else {
             // Default page
-            pageStack.push(Qt.resolvedUrl("pages/CitiesList.qml"));
+            pageStack.push(Qt.resolvedUrl("pages/CitiesBrowser.qml"));
         }
     }
 }

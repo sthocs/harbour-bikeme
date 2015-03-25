@@ -24,19 +24,21 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/uk/parserlondon.cpp \
     src/parser/russia/parsermoscow.cpp
 
-OTHER_FILES += qml/harbour-bikeme.qml \
+OTHER_FILES += harbour-bikeme.desktop \
+    rpm/harbour-bikeme.spec \
+    rpm/harbour-bikeme.yaml \
+    qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
     qml/items/StationMarker.qml \
+    qml/pages/CitiesBrowser.qml \
+    qml/pages/CitiesDelegate.qml \
     qml/pages/CitiesList.qml \
     qml/pages/SecondPage.qml \
     qml/pages/Favourites.qml \
     qml/pages/InteractiveMap.qml \
     qml/pages/About.qml \
     qml/pages/Settings.qml \
-    qml/pages/cachemanager.js \
-    rpm/harbour-bikeme.spec \
-    rpm/harbour-bikeme.yaml \
-    harbour-bikeme.desktop
+    qml/pages/cachemanager.js
 
 HEADERS += \
     src/configmanager.h \

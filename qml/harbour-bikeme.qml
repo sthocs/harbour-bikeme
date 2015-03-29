@@ -40,10 +40,12 @@ ApplicationWindow
 
     Component.onCompleted: {
         var city = configManager.getSetting("city");
+        var firstPage = configManager.getSetting("citiesDisplay") === "list" ?
+                    "pages/CitiesList.qml" : "pages/CitiesBrowser.qml";
 
         if (city) {
             console.log("Restoring app state: " + city);
-            var pagesToPush = [Qt.resolvedUrl("pages/CitiesBrowser.qml")];
+            var pagesToPush = [Qt.resolvedUrl(firstPage)];
             pagesToPush.push({
                 page: Qt.resolvedUrl("pages/SecondPage.qml"),
                 properties: { city: city }
@@ -52,7 +54,7 @@ ApplicationWindow
         }
         else {
             // Default page
-            pageStack.push(Qt.resolvedUrl("pages/CitiesBrowser.qml"));
+            pageStack.push(firstPage);
         }
     }
 }

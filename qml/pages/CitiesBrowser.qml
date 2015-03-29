@@ -23,6 +23,13 @@ Page {
                 }
             }
             MenuItem {
+                text: qsTr("Display: Cities browser")
+                onClicked: {
+                    configManager.saveSetting("citiesDisplay", "list");
+                    pageStack.replace(Qt.resolvedUrl("CitiesList.qml"))
+                }
+            }
+            MenuItem {
                 text: qsTr("Refresh cities list")
                 onClicked: {
                     errorMsg.visible = false;

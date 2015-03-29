@@ -139,6 +139,13 @@ Page {
                 }
             }
             MenuItem {
+                text: qsTr("Display: List")
+                onClicked: {
+                    configManager.saveSetting("citiesDisplay", "browser");
+                    pageStack.replace(Qt.resolvedUrl("CitiesBrowser.qml"))
+                }
+            }
+            MenuItem {
                 text: "Refresh cities list"
                 onClicked: {
                     topMenu.busy = true

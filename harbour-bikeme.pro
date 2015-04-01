@@ -22,7 +22,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/france/parserveloway.cpp \
     src/parser/france/parserlille.cpp \
     src/parser/uk/parserlondon.cpp \
-    src/parser/russia/parsermoscow.cpp
+    src/parser/russia/parsermoscow.cpp \
+    src/parser/france/parsersmoove.cpp
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \
@@ -51,4 +52,5 @@ HEADERS += \
     src/parser/france/parserveloway.h \
     src/parser/france/parserlille.h \
     src/parser/uk/parserlondon.h \
-    src/parser/russia/parsermoscow.h
+    src/parser/russia/parsermoscow.h \
+    src/parser/france/parsersmoove.h

@@ -2,6 +2,7 @@
 
 #include "france/jcdecauxparser.h"
 #include "france/parserlille.h"
+#include "france/parsersmoove.h"
 #include "france/parserveloway.h"
 #include "uk/parserlondon.h"
 #include "russia/parsermoscow.h"
@@ -10,6 +11,11 @@
 BikeDataParser* BikeDataParserFactory::getJCDecauxParser()
 {
    return new JCDecauxParser();
+}
+
+BikeDataParser* BikeDataParserFactory::getSmooveParser()
+{
+   return new ParserSmoove();
 }
 
 BikeDataParser* BikeDataParserFactory::getLilleParser()

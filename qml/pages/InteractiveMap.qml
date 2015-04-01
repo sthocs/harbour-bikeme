@@ -209,7 +209,7 @@ Page {
             coordinate: QtPositioning.coordinate(model.position.lat, model.position.lng)
             sourceItem: StationMarker {
                 available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
-                selected: number === selectedStationNumber
+                selected: number != 0 && number === selectedStationNumber
             }
 
             anchorPoint.x: Theme.iconSizeSmall / 2 // 16

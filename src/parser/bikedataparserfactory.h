@@ -7,6 +7,7 @@ class BikeDataParserFactory
 {
 public:
     static BikeDataParser* getJCDecauxParser();
+    static BikeDataParser* getSmooveParser();
     static BikeDataParser* getLilleParser();
     static BikeDataParser* getLondonParser();
     static BikeDataParser* getVelowayParser();

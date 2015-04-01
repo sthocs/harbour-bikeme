@@ -22,6 +22,51 @@ StaticDataProvider::StaticDataProvider()
                     "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
                     BikeDataParserFactory::getLondonParser);
     _citiesData["London"] = london;
+
+    // Smoove systems
+    CityData montpellier("Montpellier", "Vélomagg'", "FR",
+                         "http://cli-velo-montpellier.gir.fr/tvcstations.xml",
+                         "http://cli-velo-montpellier.gir.fr/tvcstations.xml",
+                         NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Montpellier"] = montpellier;
+    CityData lorient("Lorient", "Vélo", "FR",
+                     "http://www.lorient-velo.fr/tvcstations.xml", "http://www.lorient-velo.fr/tvcstations.xml",
+                     NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Lorient"] = lorient;
+    CityData grand_chalon("Grand Chalon", "Réflex", "FR",
+                          "http://cli-velo-chalon.gir.fr/tvcstations.xml",
+                          "http://cli-velo-chalon.gir.fr/tvcstations.xml",
+                          NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Grand Chalon"] = grand_chalon;
+    CityData avignon("Avignon", "Vélopop", "FR",
+                     "http://www.velopop.fr/tvcstations.xml", "http://www.velopop.fr/tvcstations.xml",
+                     NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Avignon"] = avignon;
+    CityData saint_etienne("Saint-Etienne", "VéliVert", "FR",
+               "http://www.velivert.fr/tvcstations.xml", "http://www.velivert.fr/tvcstations.xml",
+               NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Saint-Etienne"] = saint_etienne;
+    CityData valence("Valence", "Libélo", "FR",
+                     "http://www.velo-libelo.fr/tvcstations.xml", "http://www.velo-libelo.fr/tvcstations.xml",
+                     NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Valence"] = valence;
+    CityData strasbourg("Strasbourg", "Vélhop", "FR",
+                        "http://velhop.strasbourg.eu/tvcstations.xml", "http://velhop.strasbourg.eu/tvcstations.xml",
+                        NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Strasbourg"] = strasbourg;
+    CityData belfort("Belfort", "", "FR",
+               "http://cli-velo-belfort.gir.fr/tvcstations.xml", "http://cli-velo-belfort.gir.fr/tvcstations.xml",
+               NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Belfort"] = belfort;
+    CityData clermont_ferrand("Clermont-Ferrand", "C.vélo", "FR",
+                              "http://cli-velo-clermont.gir.fr/tvcstations.xml",
+                              "http://cli-velo-clermont.gir.fr/tvcstations.xml",
+                              NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Clermont-Ferrand"] = clermont_ferrand;
+    CityData grenoble("Grenoble", "Métrovélo", "FR",
+                      "http://vms.metrovelo.fr/tvcstations.xml", "http://vms.metrovelo.fr/tvcstations.xml",
+                      NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Grenoble"] = grenoble;
     CityData moscow("Moscow", "Velobike", "RU",
                     "http://velobike.ru/proxy/parkings/", "http://velobike.ru/proxy/parkings/",
                     NULL, BikeDataParserFactory::getMoscowParser);

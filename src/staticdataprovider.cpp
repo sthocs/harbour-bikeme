@@ -71,6 +71,10 @@ StaticDataProvider::StaticDataProvider()
                     "http://velobike.ru/proxy/parkings/", "http://velobike.ru/proxy/parkings/",
                     NULL, BikeDataParserFactory::getMoscowParser);
     _citiesData["Moscow"] = moscow;
+    CityData astana("Astana", "Astana Bike", "KZ",
+                    "http://www.velobike.kz/rest/app.php/stations", "http://www.velobike.kz/rest/app.php/stations",
+                    NULL, BikeDataParserFactory::getAstanaParser);
+    _citiesData["Astana"] = astana;
 }
 
 QHash<QString, CityData> StaticDataProvider::getCitiesData()

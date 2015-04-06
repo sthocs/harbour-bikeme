@@ -53,8 +53,8 @@ Page {
                 name : mapPlugin;
 
                 parameters: [
-                    PluginParameter { name: "app_id"; value: "" },
-                    PluginParameter { name: "token"; value: "" }
+                    PluginParameter { name: "app_id"; value: "xVZRW0UNFmrrSNbaHNJq" },
+                    PluginParameter { name: "token"; value: "juUB8_LvQcf9EWQQegL4cw" }
                 ]
             }
             anchors.fill: parent

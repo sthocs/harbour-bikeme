@@ -67,6 +67,10 @@ StaticDataProvider::StaticDataProvider()
                       "http://vms.metrovelo.fr/tvcstations.xml", "http://vms.metrovelo.fr/tvcstations.xml",
                       NULL, BikeDataParserFactory::getSmooveParser);
     _citiesData["Grenoble"] = grenoble;
+    CityData batumi("Batumi", "Batumi Velo", "GE",
+                    "http://cli-velo-batumi.gir.fr/tvcstations.xml", "http://cli-velo-batumi.gir.fr/tvcstations.xml",
+                    NULL, BikeDataParserFactory::getSmooveParser);
+    _citiesData["Batumi"] = batumi;
     CityData moscow("Moscow", "Velobike", "RU",
                     "http://velobike.ru/proxy/parkings/", "http://velobike.ru/proxy/parkings/",
                     NULL, BikeDataParserFactory::getMoscowParser);

@@ -38,7 +38,7 @@ QString ParserSmoove::parseXmlResult(QString xmlResult)
         QJsonObject position;
 
         jsonStation["number"] = si.attribute("id").toInt();
-        jsonStation["name"] = si.attribute("id");
+        jsonStation["name"] = si.attribute("na");
         position["lat"] = si.attribute("la").toFloat();
         position["lng"] = si.attribute("lg").toFloat();
         jsonStation["available_bikes"] = si.attribute("av").toInt();

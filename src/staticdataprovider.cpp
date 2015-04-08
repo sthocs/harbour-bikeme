@@ -17,6 +17,16 @@ StaticDataProvider::StaticDataProvider()
                   "http://www.velobleu.org/cartoV2/libProxyCarto.asp", NULL,
                   BikeDataParserFactory::getVelowayParser);
     _citiesData["Nice"] = nice;
+    CityData vannes("Vannes", "Vélocéa", "FR",
+                    "http://www.velocea.fr/cartoV2/libProxyCarto.asp",
+                    "http://www.velocea.fr/cartoV2/libProxyCarto.asp", NULL,
+                    BikeDataParserFactory::getVelowayParser);
+    _citiesData["Vannes"] = vannes;
+    CityData calais("Calais", "Vel'In", "FR",
+                    "http://www.vel-in.fr/cartoV2/libProxyCarto.asp",
+                    "http://www.vel-in.fr/cartoV2/libProxyCarto.asp", NULL,
+                    BikeDataParserFactory::getVelowayParser);
+    _citiesData["Calais"] = calais;
     CityData london("London", "Barclays Cycle Hire", "UK",
                     "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
                     "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,

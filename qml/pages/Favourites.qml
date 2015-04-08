@@ -161,7 +161,7 @@ Page {
                 for (var i = 0; i < rs.rows.length; ++i) {
                     var name = rs.rows.item(i).name;
                     favouritesModel.append({ number: rs.rows.item(i).station_nb,
-                                             name: name ? name : 'Station ' + rs.rows.item(i).station_nb,
+                                             name: name ? removeHTML(name) : 'Station ' + rs.rows.item(i).station_nb,
                                              available_bikes: 0,
                                              available_bike_stands: 0});
                 }
@@ -227,6 +227,7 @@ Page {
                         if (favouritesModel.get(i).name !== station_details.name) {
                             updateStationNameInDB(station_details.number, station_details.name);
                         }
+                        station_details.name = removeHTML(station_details.name);
                         favouritesModel.remove(i);
                         favouritesModel.insert(i, station_details);
                     }
@@ -256,6 +257,7 @@ Page {
                             if (favouritesModel.get(i).name !== station.name) {
                                 updateStationNameInDB(station.number, station.name);
                             }
+                            station.name = removeHTML(station.name);
                             favouritesModel.remove(i);
                             favouritesModel.insert(i, station);
                         }
@@ -305,6 +307,7 @@ Page {
             else {
                 name = name[0].substr(0, 7);
             }
+            name = removeHTML(name);
 
             coverLabel += "[" + name + "] B:" + favouritesModel.get(i).available_bikes +
                     " P:" + favouritesModel.get(i).available_bike_stands + "\n";
@@ -320,5 +323,13 @@ Page {
                         tx.executeSql('UPDATE favourites SET name="' + stationName + '" WHERE city="' + city +
                                       '" AND station_nb=' + stationNumber);
                     });
+    }
+
+    function removeHTML(name) {
+        // The data of those cities are encoded :/
+        if (city === "Nice" || city === "Calais" || city === "Vannes") {
+            return decodeURIComponent(name).replace(/\+/g, ' ');
+        }
+        return name;
     }
 }

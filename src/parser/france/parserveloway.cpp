@@ -33,7 +33,7 @@ QString ParserVeloway::parseJsonResult(QString jsonResult)
         QJsonObject position;
         QJsonObject station = stations[i].toObject();
         jsonStation["number"] = station["id"].toString().toInt();
-        jsonStation["name"] = station["wcom"];
+        jsonStation["name"] = station["name"];
         position["lat"] = station["lat"].toString().toDouble();
         position["lng"] = station["lng"].toString().toDouble();
         jsonStation["position"] = position;

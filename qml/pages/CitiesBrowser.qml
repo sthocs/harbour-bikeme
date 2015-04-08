@@ -90,7 +90,12 @@ Page {
                         selectedIndex += itemsPerRow - selectedIndex % itemsPerRow;
 
                         CacheManager.citiesByCountry[selectedCountry].forEach(function(city) {
-                            citiesList.insert(selectedIndex++, city);
+                            if (selectedIndex > citiesList.count) {
+                                citiesList.append(city);
+                            }
+                            else {
+                                citiesList.insert(selectedIndex++, city);
+                            }
                         });
                     }
                 }

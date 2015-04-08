@@ -68,7 +68,7 @@ Page {
             onLinkActivated: Qt.openUrlExternally("http://en.cyclocity.com")
             text: 'This app helps you to find a bike or a free parking spot for various self-service bicycle ' +
                   'schemes arround the world:' +
-                  '<ul><li>JCDecaux</li><li>Smoove</li><li>And more...</li></ul>' +
+                  '<ul><li>JCDecaux</li><li>Smoove</li><li>And more!</li></ul>' +
                   'It provides a simple interactive map displaying all stations by city, their number of ' +
                   'available bikes and free parking spots, and the geolocation.<br />' +
                   ' Click on <img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' +

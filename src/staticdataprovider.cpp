@@ -28,8 +28,8 @@ StaticDataProvider::StaticDataProvider()
                     BikeDataParserFactory::getVelowayParser);
     _citiesData["Calais"] = calais;
     CityData london("London", "Barclays Cycle Hire", "UK",
-                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
-                    "http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
+                    "https://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
+                    "https://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
                     BikeDataParserFactory::getLondonParser);
     _citiesData["London"] = london;
 

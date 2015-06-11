@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
+import "./utils.js" as Utils
+import "./db.js" as Db
 
 Page {
     objectName: "favourites"
@@ -56,11 +58,47 @@ Page {
                     text: model.name.toLowerCase()
                     font.capitalization: Font.Capitalize
                 }
-                Label {
-                    id: station_infos
+                Row {
                     x: Theme.paddingLarge
-                    color: Theme.secondaryColor
-                    text: "Bikes: " + model.available_bikes + " - Parking: " + model.available_bike_stands
+                    Image {
+                        source: "../icons/bikeme.png"
+                        sourceSize.height: Theme.fontSizeSmall
+                        sourceSize.width: Theme.fontSizeSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: " : " + model.available_bikes
+                        color: Theme.primaryColor
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.bold: true
+                    }
+                    Item {
+                        width: Theme.paddingLarge
+                        height: 1
+                    }
+                    Image {
+                        source: "../icons/parking.png"
+                        sourceSize.height: Theme.fontSizeSmall
+                        sourceSize.width: Theme.fontSizeSmall
+                        anchors.leftMargin: Theme.paddingSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        text: " : " + model.available_bike_stands
+                        color: Theme.primaryColor
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.bold: true
+                    }
+                    Item {
+                        width: Theme.paddingLarge * 2
+                        height: 1
+                    }
+                    Label {
+                        id: numberOfParking
+                        text: "Updated: " + Utils.makeLastUpdateDateHumanReadable(model.last_update)
+                        color: Theme.secondaryColor
+                        font.pixelSize: Theme.fontSizeMedium
+                    }
                 }
             }
 
@@ -98,22 +136,8 @@ Page {
 
             function remove() {
                 remorseAction("Deleting", function() {
-                    var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-
-                    db.transaction(
-                                function(tx) {
-                                    tx.executeSql('DELETE FROM favourites WHERE city = "' + city +
-                                                  '" AND station_nb = ' + favouritesModel.get(index).number );
-                                });
-                    var i = index;
+                    Db.removeFavourite(city, favouritesModel.get(index).number);
                     favouritesModel.remove(index);
-                    for (i; i < favouritesModel.count; ++i) {
-                        db.transaction(
-                                    function(tx) {
-                                        tx.executeSql('UPDATE favourites SET rank="' + i + '" WHERE city="' + city +
-                                                      '" AND station_nb=' + favouritesModel.get(i).number );
-                                    });
-                    }
                 })
             }
             function moveDown() {
@@ -121,50 +145,23 @@ Page {
                     return;
                 }
                 var i = index;
-                favouritesModel.move(i, i + 1, 1);
-                var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-                db.transaction(
-                            function(tx) {
-                                tx.executeSql('UPDATE favourites SET rank="' + i + '" WHERE city="' + city +
-                                              '" AND station_nb=' + favouritesModel.get(i).number );
-                                tx.executeSql('UPDATE favourites SET rank="' + (i + 1) + '" WHERE city="' + city +
-                                              '" AND station_nb=' + favouritesModel.get(i + 1).number );
-                            });
+                favouritesModel.move(index, index + 1, 1);
+                Db.moveDown(city, favouritesModel.get(index).number);
             }
             function moveUp() {
                 if (index < 1) {
                     return;
                 }
                 var i = index;
-                favouritesModel.move(i - 1, i, 1);
-                var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-                db.transaction(
-                            function(tx) {
-                                tx.executeSql('UPDATE favourites SET rank="' + i + '" WHERE city="' + city +
-                                              '" AND station_nb=' + favouritesModel.get(i).number );
-                                tx.executeSql('UPDATE favourites SET rank="' + (i - 1) + '" WHERE city="' + city +
-                                              '" AND station_nb=' + favouritesModel.get(i - 1).number );
-                            });
+                favouritesModel.move(index - 1, index, 1);
+                Db.moveUp(city, favouritesModel.get(index).number)
             }
         }
 
         Component.onCompleted: {
-            var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-
-            db.transaction(function(tx) {
-                // Create the database if it doesn't already exist
-                tx.executeSql('CREATE TABLE IF NOT EXISTS favourites(city TEXT, station_nb INT, name TEXT, rank INT)');
-
-                tx.executeSql('DELETE FROM favourites WHERE station_nb IS NULL');
-                var rs = tx.executeSql('SELECT * FROM favourites WHERE city = "' + city + '" ORDER BY rank');
-
-                for (var i = 0; i < rs.rows.length; ++i) {
-                    var name = rs.rows.item(i).name;
-                    favouritesModel.append({ number: rs.rows.item(i).station_nb,
-                                             name: name ? removeHTML(name) : 'Station ' + rs.rows.item(i).station_nb,
-                                             available_bikes: 0,
-                                             available_bike_stands: 0});
-                }
+            var favs = Db.getFavourites(city);
+            favs.forEach(function(fav) {
+                favouritesModel.append(fav);
             });
         }
     }
@@ -194,16 +191,11 @@ Page {
                 favouritesModel.append({ number: stationNumber,
                                          name: 'Station ' + stationNumber,
                                          available_bikes: 0,
-                                         available_bike_stands: 0});
+                                         available_bike_stands: 0,
+                                         last_update: 0});
                 text = "";
                 listView.focus = true;
-                var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-
-                db.transaction(
-                            function(tx) {
-                                tx.executeSql('INSERT INTO favourites (city, station_nb, rank) VALUES(?, ?, ?)',
-                                              [ city, stationNumber, favouritesModel.count - 1 ]);
-                            });
+                Db.addFavourite(city, stationNumber);
             }
 
             Component.onCompleted: {
@@ -316,13 +308,7 @@ Page {
 
     function updateStationNameInDB(stationNumber, stationName) {
         console.log("Updating name of station " + stationNumber);
-        var db = LocalStorage.openDatabaseSync("BikeMe", dbVersion, "BikeMe DB", 1000000);
-
-        db.transaction(
-                    function(tx) {
-                        tx.executeSql('UPDATE favourites SET name="' + stationName + '" WHERE city="' + city +
-                                      '" AND station_nb=' + stationNumber);
-                    });
+        Db.updateStationName(city, stationNumber, stationName);
     }
 
     function removeHTML(name) {

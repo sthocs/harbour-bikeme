@@ -40,7 +40,9 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/pages/InteractiveMap.qml \
     qml/pages/About.qml \
     qml/pages/Settings.qml \
-    qml/pages/cachemanager.js
+    qml/pages/cachemanager.js \
+    qml/pages/utils.js \
+    qml/pages/db.js
 
 HEADERS += \
     src/configmanager.h \

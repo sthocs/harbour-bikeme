@@ -53,8 +53,8 @@ Page {
                 name : mapPlugin;
 
                 parameters: [
-                    PluginParameter { name: "app_id"; value: "xVZRW0UNFmrrSNbaHNJq" },
-                    PluginParameter { name: "token"; value: "juUB8_LvQcf9EWQQegL4cw" }
+                    PluginParameter { name: "app_id"; value: "" },
+                    PluginParameter { name: "token"; value: "" }
                 ]
             }
             anchors.fill: parent
@@ -138,13 +138,18 @@ Page {
     Connections {
         target: dataProvider
         onCartoChanged: {
-            nbStations = JSCacheManager.saveStations(dataProvider.cartoJson);
-            console.log("Number of stations: " + nbStations);
-            printStations(true);
-            stationLoadingLabel.visible = false;
-            if (displayAllStatus) {
-                refreshLabel.visible = true;
-                dataProvider.downloadAllStationsDetails(city);
+            try {
+                nbStations = JSCacheManager.saveStations(dataProvider.cartoJson);
+                console.log("Number of stations: " + nbStations);
+                printStations(true);
+                stationLoadingLabel.visible = false;
+                if (displayAllStatus) {
+                    refreshLabel.visible = true;
+                    dataProvider.downloadAllStationsDetails(city);
+                }
+            }
+            catch(e) {
+                stationLoadingLabel.text = e.message;
             }
         }
         onNetworkStatusUpdated: {

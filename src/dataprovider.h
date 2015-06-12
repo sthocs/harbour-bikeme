@@ -27,7 +27,7 @@ public:
     Q_INVOKABLE void downloadCarto(QString);
     Q_INVOKABLE void getStationDetails(QString, QString);
     Q_INVOKABLE void downloadAllStationsDetails(QString);
-    Q_INVOKABLE bool removeCacheDir();
+    Q_INVOKABLE bool removeCacheFiles();
 
     Q_INVOKABLE bool isGetSingleStationDataSupported(QString);
     Q_INVOKABLE bool isGetAllStationsDataSupported(QString);

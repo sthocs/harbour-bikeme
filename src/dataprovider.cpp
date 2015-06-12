@@ -258,23 +258,16 @@ void DataProvider::getContractsFinished()
     pReply->deleteLater();
 }
 
-bool DataProvider::removeCacheDir()
+bool DataProvider::removeCacheFiles()
 {
     bool result = true;
     QDir dir(_cacheDir);
 
     if (dir.exists(_cacheDir)) {
         Q_FOREACH(QFileInfo info,
-                  dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System |
-                                    QDir::Hidden | QDir::AllDirs |
-                                    QDir::Files, QDir::DirsFirst)) {
-            result = QFile::remove(info.absoluteFilePath());
-
-            if (!result) {
-                return result;
-            }
+                  dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files)) {
+            result &= QFile::remove(info.absoluteFilePath());
         }
-        result = dir.rmdir(_cacheDir);
     }
     return result;
 }

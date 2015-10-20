@@ -10,7 +10,6 @@ Page {
     property string city: "Paris"
     property string coverLabel: "Favourites"
     property int nbRefreshingStations: 0
-    property string dbVersion: "0.1"
     // passed by the InteractiveMap
     property int favouriteToAdd: 0
 

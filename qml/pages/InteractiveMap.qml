@@ -65,7 +65,7 @@ Page {
 
             Component.onCompleted: {
                 mapLoaded = true;
-                map.zoomLevel += 6;
+                map.zoomLevel += 5;
                 dataProvider.downloadCarto(city);
             }
 

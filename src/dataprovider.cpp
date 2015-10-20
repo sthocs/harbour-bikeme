@@ -151,6 +151,15 @@ void DataProvider::replyFinished()
         pReply->deleteLater();
         return;
     }
+    QUrl redirectUrl = pReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        QNetworkRequest req(redirectUrl);
+        QNetworkReply *reply = _networkAccessManager->get(req);
+        connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
+        pReply->deleteLater();
+        return;
+    }
 
     _pendingAction = NONE;
 
@@ -184,6 +193,15 @@ void DataProvider::stationDetailsFinished()
         pReply->deleteLater();
         return;
     }
+    QUrl redirectUrl = pReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        QNetworkRequest req(redirectUrl);
+        QNetworkReply *reply = _networkAccessManager->get(req);
+        connect(reply, SIGNAL(finished()), this, SLOT(stationDetailsFinished()));
+        pReply->deleteLater();
+        return;
+    }
 
     QByteArray data = pReply->readAll();
     QString stationDetails = QString::fromUtf8(data);
@@ -202,6 +220,15 @@ void DataProvider::allStationsDetailsFinished()
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Not connected";
         emit gotAllStationsDetails(error);
+        pReply->deleteLater();
+        return;
+    }
+    QUrl redirectUrl = pReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        QNetworkRequest req(redirectUrl);
+        QNetworkReply *reply = _networkAccessManager->get(req);
+        connect(reply, SIGNAL(finished()), this, SLOT(allStationsDetailsFinished()));
         pReply->deleteLater();
         return;
     }
@@ -224,6 +251,15 @@ void DataProvider::getContractsFinished()
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Please connect to Internet and retry.";
         emit contractsUpdated(error);
+        pReply->deleteLater();
+        return;
+    }
+    QUrl redirectUrl = pReply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        QNetworkRequest req(redirectUrl);
+        QNetworkReply *reply = _networkAccessManager->get(req);
+        connect(reply, SIGNAL(finished()), this, SLOT(getContractsFinished()));
         pReply->deleteLater();
         return;
     }

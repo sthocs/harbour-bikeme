@@ -28,8 +28,8 @@ StaticDataProvider::StaticDataProvider()
                     BikeDataParserFactory::getVelowayParser);
     _citiesData["Calais"] = calais;
     CityData london("London", "Barclays Cycle Hire", "UK",
-                    "https://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
-                    "https://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
+                    "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
+                    "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml", NULL,
                     BikeDataParserFactory::getLondonParser);
     _citiesData["London"] = london;
 
@@ -86,7 +86,7 @@ StaticDataProvider::StaticDataProvider()
                     NULL, BikeDataParserFactory::getMoscowParser);
     _citiesData["Moscow"] = moscow;
     CityData astana("Astana", "Astana Bike", "KZ",
-                    "http://www.velobike.kz/rest/app.php/stations", "http://www.velobike.kz/rest/app.php/stations",
+                    "http://velobike.kz/rest/app.php/stations", "http://velobike.kz/rest/app.php/stations",
                     NULL, BikeDataParserFactory::getAstanaParser);
     _citiesData["Astana"] = astana;
 }

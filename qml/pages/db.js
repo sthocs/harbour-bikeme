@@ -31,6 +31,18 @@ function getFavourites(city) {
     return res;
 }
 
+function isFavourite(city, stationNumber) {
+    if (isNaN(stationNumber)) {
+        return false;
+    }
+    var count;
+    db.transaction(function(tx) {
+        count = tx.executeSql('SELECT COUNT(*) as cnt FROM favourites WHERE city = ? AND station_nb = ?',
+                              [ city, stationNumber ]);
+    });
+    return count.rows.item(0).cnt === 1;
+}
+
 function addFavourite(city, stationNumber) {
     if (isNaN(stationNumber)) {
         return;

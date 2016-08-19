@@ -4,6 +4,7 @@ import QtLocation 5.0
 import QtPositioning 5.1
 import "../items"
 import "cachemanager.js" as JSCacheManager
+import "./db.js" as Db
 
 
 Page {
@@ -19,6 +20,7 @@ Page {
 
     property string city: "Paris"
     property int selectedStationNumber: 0
+    property bool isSelectedStationInFav: false
     property bool displayAllStatus: true
     property bool displayAvailableParking: false
 
@@ -224,6 +226,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     selectedStationNumber = number;
+                    isSelectedStationInFav = Db.isFavourite(city, number);
                     if (!displayAllStatus) {
                         stationNameLabel.text = "Updating...";
                         dataProvider.getStationDetails(city, number);
@@ -339,22 +342,27 @@ Page {
 
     /* Button to add the selected station in favourites */
     Image {
-        source: selectedStationNumber !== 0 ? "../icons/add_fav.png" : "../icons/add_fav_bw.png"
+        source: isSelectedStationInFav ? "image://theme/icon-m-favorite-selected" : "image://theme/icon-m-favorite"
         anchors {
             right: centerPosIcon.left
             rightMargin: Theme.paddingLarge
             bottom: parent.bottom
             bottomMargin: Theme.paddingMedium
         }
-        sourceSize.height: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2 /* =48px on Jolla */
-        sourceSize.width: (Theme.iconSizeSmall + Theme.iconSizeMedium) / 2
+        sourceSize.height: Theme.iconSizeMedium
+        sourceSize.width: Theme.iconSizeMedium
 
         MouseArea {
             anchors.fill: parent
             onClicked: {
                 if (selectedStationNumber !== 0) {
-                    pageStack.push(Qt.resolvedUrl("Favourites.qml"),
-                                   { city: city, favouriteToAdd: selectedStationNumber });
+                    if (isSelectedStationInFav) {
+                        Db.removeFavourite(city, selectedStationNumber);
+                    }
+                    else {
+                        Db.addFavourite(city, selectedStationNumber);
+                    }
+                    isSelectedStationInFav = !isSelectedStationInFav;
                 }
             }
         }

@@ -13,8 +13,8 @@ StaticDataProvider::StaticDataProvider()
                    BikeDataParserFactory::getLilleParser);
     _citiesData["Lille"] = lille;
     CityData nice("Nice", "Vélo Bleu", "FR",
-                  "http://www.velobleu.org/cartoV2/libProxyCarto.asp",
-                  "http://www.velobleu.org/cartoV2/libProxyCarto.asp", NULL,
+                  "https://www.velobleu.org/cartoV2/libProxyCarto.asp",
+                  "https://www.velobleu.org/cartoV2/libProxyCarto.asp", NULL,
                   BikeDataParserFactory::getVelowayParser);
     _citiesData["Nice"] = nice;
     CityData vannes("Vannes", "Vélocéa", "FR",

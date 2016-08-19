@@ -38,8 +38,12 @@ QString ParserMoscow::parseJsonResult(QString jsonResult)
         position["lat"] = srcPosition["Lat"].toDouble();
         position["lng"] = srcPosition["Lon"].toDouble();
         jsonStation["position"] = position;
-        int freePlaces = station["FreePlaces"].toInt();
-        int totalPlaces = station["TotalPlaces"].toInt();
+        int freePlaces = 0;
+        int totalPlaces = 0;
+        if (!station["IsLocked"].toBool()) {
+            freePlaces = station["FreePlaces"].toInt();
+            totalPlaces = station["TotalPlaces"].toInt();
+        }
         jsonStation["available_bikes"] = totalPlaces - freePlaces;
         jsonStation["available_bike_stands"] = freePlaces;
         jsonStation["last_update"] = -1;

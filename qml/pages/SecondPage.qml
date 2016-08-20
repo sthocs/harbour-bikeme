@@ -57,12 +57,7 @@ Page {
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
             }
             onClicked: {
-                var pageParams = { city : city };
-                if (fileName == "InteractiveMap") {
-                    pageParams.mapPlugin = configManager.getSetting("mapProvider") || "nokia";
-                    pageParams.displayAllStatus = configManager.getSetting("displayAllStatus") === "true";
-                }
-                pageStack.push(Qt.resolvedUrl(fileName + ".qml"), pageParams);
+                pageStack.push(Qt.resolvedUrl(fileName + ".qml"), { city : city });
             }
         }
     }

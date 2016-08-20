@@ -21,10 +21,10 @@ Page {
     property string city: "Paris"
     property int selectedStationNumber: 0
     property bool isSelectedStationInFav: false
-    property bool displayAllStatus: true
+    property bool displayAllStatus: configManager.getSetting("displayAllStatus") !== "false"
     property bool displayAvailableParking: false
 
-    property string mapPlugin: "nokia"
+    property string mapPlugin: configManager.getSetting("mapProvider") || "nokia"
     property int maxItemsOnMap: 200
 	property int nbStations
 

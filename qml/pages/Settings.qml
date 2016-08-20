@@ -62,7 +62,7 @@ Page {
             }
 
             Component.onCompleted: {
-                checked = configManager.getSetting("displayAllStatus") === "true";
+                checked = configManager.getSetting("displayAllStatus") !== "false";
             }
         }
     }

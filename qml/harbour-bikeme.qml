@@ -39,6 +39,8 @@ ApplicationWindow
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
     Component.onCompleted: {
+        var PAGES = ["default", "pages/InteractiveMap.qml", "pages/Favourites.qml"];
+
         var city = configManager.getSetting("city");
         var firstPage = configManager.getSetting("citiesDisplay") === "list" ?
                     "pages/CitiesList.qml" : "pages/CitiesBrowser.qml";
@@ -50,6 +52,14 @@ ApplicationWindow
                 page: Qt.resolvedUrl("pages/SecondPage.qml"),
                 properties: { city: city }
             });
+            var startPage = configManager.getSetting("startPage");
+            if (startPage > 0) {
+                pagesToPush.push({
+                    page: Qt.resolvedUrl(PAGES[startPage]),
+                    properties: { city: city }
+                });
+            }
+
             pageStack.push(pagesToPush);
         }
         else {

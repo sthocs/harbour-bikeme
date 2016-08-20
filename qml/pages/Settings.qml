@@ -29,6 +29,30 @@ Page {
             }
         }
 
+        ComboBox {
+            id: startPage
+            label: qsTr("Start page")
+
+            menu: ContextMenu {
+                MenuItem {
+                    text: "Default"
+                    onClicked: configManager.saveSetting("startPage", 0);
+                }
+                MenuItem {
+                    text: "Map"
+                    onClicked: configManager.saveSetting("startPage", 1);
+                }
+                MenuItem {
+                    text: "Favourites"
+                    onClicked: configManager.saveSetting("startPage", 2);
+                }
+            }
+
+            Component.onCompleted: {
+                currentIndex = configManager.getSetting("startPage") || 0;
+            }
+        }
+
         TextSwitch {
             id: activationSwitch
             text: "Display all stations status"

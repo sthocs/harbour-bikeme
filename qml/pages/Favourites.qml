@@ -162,6 +162,7 @@ Page {
             favs.forEach(function(fav) {
                 favouritesModel.append(fav);
             });
+            refreshAll();
         }
     }
 

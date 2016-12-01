@@ -14,7 +14,7 @@ Page {
 
             menu: ContextMenu {
                 MenuItem {
-                    text: "nokia"
+                    text: "here"
                     onClicked: configManager.saveSetting("mapProvider", text);
                 }
                 MenuItem {
@@ -24,7 +24,7 @@ Page {
             }
 
             Component.onCompleted: {
-                var mapProvider = configManager.getSetting("mapProvider") || "nokia";
+                var mapProvider = configManager.getSetting("mapProvider") || "here";
                 currentIndex = mapProvider === "osm" ? 1 : 0;
             }
         }

@@ -24,7 +24,7 @@ Page {
     property bool displayAllStatus: configManager.getSetting("displayAllStatus") !== "false"
     property bool displayAvailableParking: false
 
-    property string mapPlugin: configManager.getSetting("mapProvider") || "nokia"
+    property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
 	property int nbStations
 
@@ -56,7 +56,7 @@ Page {
 
                 parameters: [
                     PluginParameter { name: "app_id"; value: "" },
-                    PluginParameter { name: "token"; value: "" }
+                    PluginParameter { name: "app_code"; value: "" }
                 ]
             }
             anchors.fill: parent
@@ -551,5 +551,14 @@ Page {
         var min = Math.floor(elapsedSeconds / 60);
         var sec = Math.floor(elapsedSeconds % 60);
         return "Updated: " + min + " min " + sec + " sec"
+    }
+
+    function getMapPlugin() {
+        var supportedProviders = [ "here", "osm" ];
+        var savedProvider = configManager.getSetting("mapProvider");
+        if (supportedProviders.indexOf(savedProvider) >= 0) {
+            return savedProvider;
+        }
+        return supportedProviders[0];
     }
 }

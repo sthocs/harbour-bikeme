@@ -10,10 +10,8 @@ Page {
     id: secondPage
 
     property string city: "Paris"
-    property string mapPlugin: "nokia"
 
     Component.onCompleted: {
-        mapPlugin = configManager.getSetting("mapProvider") || "nokia";
         configManager.saveSetting("city", city);
     }
 

@@ -1,15 +1,15 @@
 Name: harbour-bikeme
 Summary: Find a bike with your Jolla!
 Version: 0.5
-Release: 1
+Release: 2
 Group: Qt/Qt
 URL: https://openrepos.net/users/sthocs
 License: LICENSE
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |-
-  Find a bike or a free parking spot for the self-service bicycle scheme provided by JCDecaux: CyclOcity (http://en.cyclocity.com).
-  This app provides a simple interactive map displaying all CyclOcity stations by city, their number of available bikes and free parking spots, and the geolocation.
+  Find a bike or a free parking spot for for various self-service bicycle schemes around the world: JCDecaux, Smoove, ...
+  This app provides an interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.
   Regular users can also save their favourites stations and see their status directly on the cover.
 Configure: none
 Builder: qtc5
@@ -20,7 +20,7 @@ PkgConfigBR:
 - Qt5Quick
 Requires:
 - qt5-plugin-geoservices-osm
-- qt5-plugin-geoservices-nokia
+- qt5-plugin-geoservices-here
 - qt5-qtdeclarative-import-location
 - qt5-qtdeclarative-import-positioning
 - sailfishsilica-qt5 >= 0.10.9

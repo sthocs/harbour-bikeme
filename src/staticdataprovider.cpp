@@ -56,10 +56,10 @@ StaticDataProvider::StaticDataProvider()
                "http://www.velivert.fr/tvcstations.xml", "http://www.velivert.fr/tvcstations.xml",
                NULL, BikeDataParserFactory::getSmooveParser);
     _citiesData["Saint-Etienne"] = saint_etienne;
-    CityData valence("Valence", "Libélo", "FR",
+    CityData valence("Valence (fr)", "Libélo", "FR",
                      "http://www.velo-libelo.fr/tvcstations.xml", "http://www.velo-libelo.fr/tvcstations.xml",
                      NULL, BikeDataParserFactory::getSmooveParser);
-    _citiesData["Valence"] = valence;
+    _citiesData["Valence (fr)"] = valence;
     CityData strasbourg("Strasbourg", "Vélhop", "FR",
                         "http://velhop.strasbourg.eu/tvcstations.xml", "http://velhop.strasbourg.eu/tvcstations.xml",
                         NULL, BikeDataParserFactory::getSmooveParser);

@@ -88,7 +88,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
-            text: "Version 0.5"
+            text: "Version 0.5.1"
         }
 
         Label {
@@ -96,7 +96,7 @@ Page {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
-            text: "Copyright © 2014 - 2016 Sthocs"
+            text: "Copyright © 2014 - 2017 Sthocs"
         }
     }
 }

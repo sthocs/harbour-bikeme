@@ -43,7 +43,7 @@ ApplicationWindow
 
         var city = configManager.getSetting("city");
         var firstPage = configManager.getSetting("citiesDisplay") === "list" ?
-                    "pages/CitiesList.qml" : "pages/CitiesBrowser.qml";
+                    "pages/CitiesList2.qml" : "pages/CitiesBrowser.qml";
 
         if (city) {
             console.log("Restoring app state: " + city);

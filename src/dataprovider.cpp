@@ -12,11 +12,10 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
-
 DataProvider::DataProvider()
 {
     _networkAccessManager = new QNetworkAccessManager(this);
-    _cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/";
+    _cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QDir::separator();
 
     _pendingAction = NONE;
     _networkConfigManager = new QNetworkConfigurationManager(this);
@@ -25,13 +24,12 @@ DataProvider::DataProvider()
 }
 
 void DataProvider::networkStatusChanged(bool connected) {
-    qDebug() << "Network status changed: ";
-    qDebug() << connected;
+    qDebug() << "Network status changed: " << connected;
     networkStatusUpdated(connected);
     if (connected) {
         switch (_pendingAction) {
         case DOWNLOAD_STATIONS:
-            downloadCarto(_currentCity);
+            getStationsLocation(_currentCity);
             break;
         default:
             break;
@@ -77,7 +75,6 @@ QString DataProvider::getCopyright(QString city)
 
 void DataProvider::getStationDetails(QString city, QString stationNumber)
 {
-    //qDebug() << "Getting station details...";
     _currentCity = city;
     QString url = _staticDataProvider.getStationDetailsUrl(city, stationNumber);
     if (url == NULL) {
@@ -90,7 +87,7 @@ void DataProvider::getStationDetails(QString city, QString stationNumber)
     connect(reply, SIGNAL(finished()), this, SLOT(stationDetailsFinished()));
 }
 
-void DataProvider::downloadCarto(QString city)
+void DataProvider::getStationsLocation(QString city)
 {
     bool refreshCarto = false;
     _currentCity = city;
@@ -103,7 +100,7 @@ void DataProvider::downloadCarto(QString city)
         qint64 dayInMillis = 1000 * 60 * 60 * 24;
 
         if (((now - fileAge) / dayInMillis) > 14) { // If file is older than 2 weeks, refresh it.
-            qDebug() << "Will refresh carto: " + _currentCity + ".json";
+            qDebug() << "Will refresh stations location: " + _currentCity + ".json";
             refreshCarto = true;
         }
         file.open(QIODevice::ReadOnly);
@@ -118,7 +115,7 @@ void DataProvider::downloadCarto(QString city)
         //QNetworkRequest req(QUrl("https://developer.jcdecaux.com/rest/vls/stations/" + _currentCity + ".json"));
         req.setUrl(QUrl(_staticDataProvider.getCartoUrl(city)));
         QNetworkReply *reply = _networkAccessManager->get(req);
-        connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
+        connect(reply, SIGNAL(finished()), this, SLOT(getStationsLocationFinished()));
     }
 }
 
@@ -136,15 +133,14 @@ void DataProvider::downloadAllStationsDetails(QString city)
     connect(reply, SIGNAL(finished()), this, SLOT(allStationsDetailsFinished()));
 }
 
-void DataProvider::replyFinished()
+void DataProvider::getStationsLocationFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
     if (pReply->error() != QNetworkReply::NoError) {
         if (!_networkConfigManager->isOnline()) {
             _pendingAction = DOWNLOAD_STATIONS;
         }
-        qDebug() << "Error while downloading carto";
-        //qDebug() << pReply->errorString();
+        qDebug() << "Error while downloading carto" << pReply->errorString();
         if (!_networkConfigManager->isOnline()) {
             emit networkStatusUpdated(false);
         }
@@ -156,17 +152,15 @@ void DataProvider::replyFinished()
     {
         QNetworkRequest req(redirectUrl);
         QNetworkReply *reply = _networkAccessManager->get(req);
-        connect(reply, SIGNAL(finished()), this, SLOT(replyFinished()));
+        connect(reply, SIGNAL(finished()), this, SLOT(getStationsLocationFinished()));
         pReply->deleteLater();
         return;
     }
 
     _pendingAction = NONE;
 
-    QByteArray data = pReply->readAll();
-    _cartoJson = QString::fromUtf8(data);
     BikeDataParser* parser = _staticDataProvider.getBikeDataParser(_currentCity);
-    _cartoJson = parser->parseCarto(_cartoJson);
+    _cartoJson = parser->parseCarto(QString::fromUtf8(pReply->readAll()));
     delete parser;
 
     QDir cacheDir(_cacheDir);
@@ -186,7 +180,7 @@ void DataProvider::stationDetailsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
     if (pReply->error() != QNetworkReply::NoError) {
-        qDebug() << "Error while getting stations details";
+        qDebug() << "Error while getting stations details: " << pReply->errorString();
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Please connect to Internet and retry.";
         emit gotStationDetails(error);
@@ -216,7 +210,7 @@ void DataProvider::allStationsDetailsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
     if (pReply->error() != QNetworkReply::NoError) {
-        qDebug() << "Error while getting all stations details";
+        qDebug() << "Error while getting all stations details: " << pReply->errorString();
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Not connected";
         emit gotAllStationsDetails(error);
@@ -246,8 +240,7 @@ void DataProvider::getContractsFinished()
 {
     QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
     if (pReply->error() != QNetworkReply::NoError) {
-        qDebug() << "Error while getting cities list";
-        //qDebug() << pReply->errorString();
+        qDebug() << "Error while getting cities list: " << pReply->errorString();
         QString error = _networkConfigManager->isOnline() ? pReply->errorString() :
                                                             "Please connect to Internet and retry.";
         emit contractsUpdated(error);

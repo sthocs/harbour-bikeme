@@ -9,6 +9,9 @@ public:
     QString parseCarto(QString carto);
     QString parseStationDetails(QString stationDetails, QString url);
     QString parseAllStationsDetails(QString allStationsDetails);
+
+    QList<City*> parseCities(QString cities);
 };
+Q_DECLARE_METATYPE(JCDecauxParser)
 
 #endif // JCDECAUXPARSER_H

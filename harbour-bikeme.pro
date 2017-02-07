@@ -24,7 +24,11 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/uk/parserlondon.cpp \
     src/parser/russia/parsermoscow.cpp \
     src/parser/france/parsersmoove.cpp \
-    src/parser/kazakhstan/parserastana.cpp
+    src/parser/kazakhstan/parserastana.cpp \
+    src/citiesmodel.cpp \
+    src/city.cpp \
+    src/citiesmodelproxy.cpp \
+    src/citiesloader.cpp
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \
@@ -35,6 +39,7 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/pages/CitiesBrowser.qml \
     qml/pages/CitiesDelegate.qml \
     qml/pages/CitiesList.qml \
+    qml/pages/CitiesList2.qml \
     qml/pages/SecondPage.qml \
     qml/pages/Favourites.qml \
     qml/pages/InteractiveMap.qml \
@@ -43,6 +48,12 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/pages/cachemanager.js \
     qml/pages/utils.js \
     qml/pages/db.js
+
+data.files = data
+data.path = /usr/share/$${TARGET}
+
+INSTALLS += \
+    data
 
 HEADERS += \
     src/configmanager.h \
@@ -57,4 +68,8 @@ HEADERS += \
     src/parser/uk/parserlondon.h \
     src/parser/russia/parsermoscow.h \
     src/parser/france/parsersmoove.h \
-    src/parser/kazakhstan/parserastana.h
+    src/parser/kazakhstan/parserastana.h \
+    src/citiesmodel.h \
+    src/city.h \
+    src/citiesmodelproxy.h \
+    src/citiesloader.h

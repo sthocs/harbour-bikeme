@@ -5,7 +5,7 @@
 
 StaticDataProvider::StaticDataProvider()
 {
-    _jcdecauxApiKey = "";
+    _jcdecauxApiKey = "992db598da3d81a8993aead9922b81222e4261cf";
 
     CityData lille("Lille", "V'Lille", "FR",
                    "http://vlille.fr/stations/xml-stations.aspx",

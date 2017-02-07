@@ -68,7 +68,7 @@ Page {
             Component.onCompleted: {
                 mapLoaded = true;
                 map.zoomLevel += 5;
-                dataProvider.downloadCarto(city);
+                dataProvider.getStationsLocation(city);
             }
 
             gesture.onFlickFinished: {

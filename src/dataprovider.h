@@ -24,7 +24,7 @@ public:
     Q_INVOKABLE QString getAppState();
     Q_INVOKABLE void saveAppState(QString);
     Q_INVOKABLE void getContracts(bool);
-    Q_INVOKABLE void downloadCarto(QString);
+    Q_INVOKABLE void getStationsLocation(QString);
     Q_INVOKABLE void getStationDetails(QString, QString);
     Q_INVOKABLE void downloadAllStationsDetails(QString);
     Q_INVOKABLE bool removeCacheFiles();
@@ -48,7 +48,7 @@ signals:
 
 public slots:
     void getContractsFinished();
-    void replyFinished();
+    void getStationsLocationFinished();
     void stationDetailsFinished();
     void allStationsDetailsFinished();
 

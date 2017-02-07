@@ -1,0 +1,9 @@
+[
+    {
+        "name": "JCDecaux",
+        "url": "https://api.jcdecaux.com/vls/v1/contracts?apiKey={apiKey}",
+        "stationDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations/%1?contract=%2&apiKey={apiKey}",
+        "allStationsDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations?contract=%1&apiKey={apiKey}",
+        "apiKey": ""
+    }
+]

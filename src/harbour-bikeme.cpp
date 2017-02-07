@@ -38,6 +38,9 @@
 #include <sailfishapp.h>
 #include "dataprovider.h"
 #include "configmanager.h"
+#include "citiesmodel.h"
+#include "citiesmodelproxy.h"
+#include "parser/france/jcdecauxparser.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,6 +54,11 @@ int main(int argc, char *argv[])
     // To display the view, call "show()" (will show fullscreen on device).
     QGuiApplication* app = SailfishApp::application(argc, argv);
     QQuickView* view = SailfishApp::createView();
+
+    qRegisterMetaType<JCDecauxParser>("JCDecaux");
+
+    qmlRegisterType<CitiesModel>("com.jolla.harbour.bikeme", 1, 0, "CitiesModel");
+    qmlRegisterType<CitiesModelProxy>("com.jolla.harbour.bikeme", 1, 0, "CitiesModelProxy");
 
     DataProvider* dataProvider = new DataProvider();
     ConfigManager* configManager = new ConfigManager();

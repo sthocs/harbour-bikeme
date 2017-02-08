@@ -1,11 +1,14 @@
-#include <QDebug>
-
 #include "citiesmodelproxy.h"
 
 CitiesModelProxy::CitiesModelProxy()
 {
     setDynamicSortFilter(true);
     sort(0);
+}
+
+void CitiesModelProxy::filter(QString filter)
+{
+    setFilterRegExp(QRegExp(filter, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 bool CitiesModelProxy::lessThan(const QModelIndex &left,
@@ -19,4 +22,13 @@ bool CitiesModelProxy::lessThan(const QModelIndex &left,
         return l_name.compare(r_name) < 0;
     }
     return l_country.compare(r_country) < 0;
+}
+
+bool CitiesModelProxy::filterAcceptsRow(int sourceRow,
+                                        const QModelIndex &sourceParent) const
+{
+    QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
+
+    return sourceModel()->data(index, CitiesModel::CityNameRole).toString().contains(filterRegExp())
+            || sourceModel()->data(index, CitiesModel::CommercialNameRole).toString().contains(filterRegExp());
 }

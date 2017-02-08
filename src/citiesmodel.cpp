@@ -20,6 +20,12 @@ void CitiesModel::addCities(QList<City*> cities)
     beginInsertRows(QModelIndex(), _list.size(), _list.size() + cities.size() - 1);
     _list.append(cities);
     endInsertRows();
+    emit countChanged();
+}
+
+int CitiesModel::count() const
+{
+    return rowCount();
 }
 
 // Virtual functions of QAbstractListModel

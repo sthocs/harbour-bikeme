@@ -29,6 +29,18 @@ Page {
             width: parent.width
 
             PageHeader { title: "Cities2" }
+
+            SearchField {
+                id: searchField
+                width: parent.width
+                placeholderText: "Filter"
+                visible: citiesModel.count > 0
+
+                onTextChanged: citiesModelProxy.filter(text)
+
+                EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                EnterKey.onClicked: focus = false
+            }
         }
 
         section {

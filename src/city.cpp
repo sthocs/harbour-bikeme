@@ -2,5 +2,4 @@
 
 City::City(QObject *parent) : QObject(parent)
 {
-
 }

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
+import com.jolla.harbour.bikeme 1.0
 import "../items"
 import "cachemanager.js" as JSCacheManager
 import "./db.js" as Db
@@ -18,7 +19,7 @@ Page {
     property bool findMe: false
     property bool positionReceived: false
 
-    property string city: "Paris"
+    property City city
     property int selectedStationNumber: 0
     property bool isSelectedStationInFav: false
     property bool displayAllStatus: configManager.getSetting("displayAllStatus") !== "false"
@@ -35,11 +36,6 @@ Page {
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
 
-    onIsPortraitChanged: {
-        if (mapLoaded) {
-            printStations()
-        }
-    }
 
     //! Container for map element
     Rectangle {
@@ -68,7 +64,8 @@ Page {
             Component.onCompleted: {
                 mapLoaded = true;
                 map.zoomLevel += 5;
-                dataProvider.getStationsLocation(city);
+                center = QtPositioning.coordinate(48.856047, 2.353907)
+                stations.loadAll();
             }
 
             gesture.onFlickFinished: {
@@ -76,11 +73,11 @@ Page {
             }
             gesture.onPanFinished: {
                 console.log("Pan FINISHED");
-                printStations();
+                updateFilter();
             }
             gesture.onPinchFinished: {
                 console.log("Pinch FINISHED");
-                printStations();
+                updateFilter();
             }
 
             //! Icon to display the current position
@@ -101,7 +98,7 @@ Page {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
                     map.zoomLevel = (map.zoomLevel + 1) < map.maximumZoomLevel ? map.zoomLevel + 1 :
                                                                                  map.maximumZoomLevel;
-                    printStations();
+                    updateFilter();
                 }
             }
         }
@@ -137,83 +134,38 @@ Page {
         }
     }
 
-    Connections {
-        target: dataProvider
-        onCartoChanged: {
-            try {
-                nbStations = JSCacheManager.saveStations(dataProvider.cartoJson);
-                console.log("Number of stations: " + nbStations);
-                printStations(true);
-                stationLoadingLabel.visible = false;
-                if (displayAllStatus) {
-                    refreshLabel.visible = true;
-                    dataProvider.downloadAllStationsDetails(city);
-                }
-            }
-            catch(e) {
-                stationLoadingLabel.text = e.message;
-            }
-        }
-        onNetworkStatusUpdated: {
-            stationLoadingLabel.text = connected ? "Loading stations..." : "Not connected";
-        }
+    StationsModel {
+        id: stations
+        providerName: city.providerName;
+        allStationsDetailsUrl: city.allStationsDetailsUrl
 
-        onGotStationDetails: {
-            console.log("got station details: " + stationDetails);
-            var stationDetailsJSON = JSON.parse(stationDetails);
-            if (stationDetailsJSON.name) {
-                stationNameLabel.text = stationDetailsJSON.name.toLowerCase();
-            }
-            else if (stationDetailsJSON.address) {
-                stationNameLabel.text = stationDetailsJSON.address.toLowerCase();
-            }
-            numberOfBikes.text = ": " + stationDetailsJSON.available_bikes;
-            numberOfParking.text = ": " + stationDetailsJSON.available_bike_stands;
-            lastUpdatedTime.text = calcDate(stationDetailsJSON.last_update);
+        onCenterChanged: {
+            map.center = center;
+            updateFilter();
         }
-        onGotAllStationsDetails: {
-            var res = allStationsDetails;
-            try {
-                nbStations = JSCacheManager.saveStationsWithDetails(res);
-                console.log("Got all stations details; Number of stations: " + nbStations);
-                printStations(false, true);
-                stationLoadingLabel.visible = false;
-                refreshLabel.visible = false;
-            }
-            catch(e) {
-                refreshLabel.text = res;
-            }
-        }
-        onModeNotSupported: {
-            if (displayAllStatus) {
-                alertMsg.text = "Can't display all status\nfor this city."
-                refreshLabel.visible = false;
-            }
-            else {
-                alertMsg.text = "Only \"all status\" mode\navailable for this city."
-                refreshLabel.visible = true;
-                dataProvider.downloadAllStationsDetails(city);
-            }
-            displayAllStatus = !displayAllStatus;
-            alertPopup.visible = true;
+        onStationsLoaded: {
+            stationLoadingLabel.visible = false
+            refreshLabel.visible = false
         }
     }
 
-    ListModel {
-        id: stations
+    StationsModelProxy {
+        id: stationsProxy
+        sourceModel: stations
     }
 
     Repeater {
         onItemAdded: {
-            map.addMapItem(item)
+            if (map.mapItems.length < maxItemsOnMap)
+                map.addMapItem(item)
         }
         onItemRemoved: {
             map.removeMapItem(item)
         }
         parent: map
-        model: stations
+        model: stationsProxy
         delegate: MapQuickItem {
-            coordinate: QtPositioning.coordinate(model.position.lat, model.position.lng)
+            coordinate: model.coordinates
             sourceItem: StationMarker {
                 available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
                 selected: number != 0 && number === selectedStationNumber
@@ -226,72 +178,16 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     selectedStationNumber = number;
-                    isSelectedStationInFav = Db.isFavourite(city, number);
-                    if (!displayAllStatus) {
+                    isSelectedStationInFav = Db.isFavourite(city.name, number);
+                    /*if (!displayAllStatus) {
                         stationNameLabel.text = "Updating...";
-                        dataProvider.getStationDetails(city, number);
-                    }
+                        dataProvider.getStationDetails(city.name, number);
+                    }*/
                 }
             }
         }
     }
 
-    function printStations(centerMap, forceRefresh) {
-        if (!forceRefresh && stations.count > 0 && stations.count === nbStations) {
-            // all items are and will stay on map
-            return;
-        }
-        stations.clear();
-//        var start = new Date();
-
-        var stationsArray = JSCacheManager.getStations();
-        if (!stationsArray) {
-            return;
-        }
-        if (centerMap) {
-            var avgLat = 0;
-            var avgLng = 0;
-            var nbTestStations = 0;
-            stationsArray.forEach(function(station) {
-                avgLat += station.position.lat;
-                avgLng += station.position.lng;
-                if (station.position.lat === 0) {
-                    ++nbTestStations;
-                }
-            });
-            avgLat /= (stationsArray.length - nbTestStations);
-            avgLng /= (stationsArray.length - nbTestStations);
-            map.center = QtPositioning.coordinate(avgLat, avgLng);
-        }
-//        var now = new Date();
-//        console.log('Elapsed time: ' + (now.getTime() - start.getTime()));
-
-        if (stationsArray.length < maxItemsOnMap) {
-            stationsArray.forEach(function(station) {
-                stations.append(station);
-            });
-        }
-        else {
-            var nbItemsOnMap = 0;
-            var topLeft = map.toCoordinate(Qt.point(0, 0));
-            var bottomRight = map.toCoordinate(Qt.point(map.width, map.height));
-            console.log("TopLeft: " + topLeft.latitude + "/" + topLeft.longitude + " bottomRight: "+
-                        bottomRight.latitude + "/" + bottomRight.longitude);
-            for (var i = 0; i < stationsArray.length; ++i) {
-                if (stationsArray[i].position.lat < topLeft.latitude &&
-                    stationsArray[i].position.lat > bottomRight.latitude &&
-                    stationsArray[i].position.lng > topLeft.longitude &&
-                    stationsArray[i].position.lng < bottomRight.longitude) {
-                    stations.append(stationsArray[i]);
-                    if (++nbItemsOnMap > maxItemsOnMap) {
-                        break;
-                    }
-                }
-            };
-        }
-//        now = new Date();
-//        console.log('Elapsed time: ' + (now.getTime() - start.getTime()));
-    }
 
     //! Source for retrieving the positioning information
     PositionSource {
@@ -310,7 +206,7 @@ Page {
                 var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                    positionSource.position.coordinate.longitude);
                 map.center = pos;
-                printStations();
+                updateFilter();
             }          
         }
     }
@@ -357,10 +253,10 @@ Page {
             onClicked: {
                 if (selectedStationNumber !== 0) {
                     if (isSelectedStationInFav) {
-                        Db.removeFavourite(city, selectedStationNumber);
+                        Db.removeFavourite(city.name, selectedStationNumber);
                     }
                     else {
-                        Db.addFavourite(city, selectedStationNumber);
+                        Db.addFavourite(city.name, selectedStationNumber);
                     }
                     isSelectedStationInFav = !isSelectedStationInFav;
                 }
@@ -413,7 +309,7 @@ Page {
                     var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                        positionSource.position.coordinate.longitude)
                     map.center = pos;
-                    printStations();
+                    updateFilter();
                 }
             }
         }
@@ -535,12 +431,17 @@ Page {
                 onClicked: {
                     refreshLabel.text = qsTr("Refreshing...");
                     refreshLabel.visible = true
-                    dataProvider.downloadAllStationsDetails(city);
+                    stations.loadAll();
                 }
             }
         }
     }
 
+
+    function updateFilter() {
+        stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
+                             map.toCoordinate(Qt.point(map.width, map.height)));
+    }
 
     function calcDate(updated) {
         if (typeof updated === "string") {

@@ -37,10 +37,10 @@ void CitiesLoader::loadCitiesFromProviders()
 
         ProviderInfo provider;
         provider.name = providerJson["name"].toString();
-        provider.url = QUrl(providerJson["url"].toString().replace("{apiKey}", apiKey));
-        provider.stationDetailsUrl = QUrl(providerJson["stationDetailsUrl"].toString().replace("{apiKey}", apiKey));
-        provider.allStationsDetailsUrl = QUrl(providerJson["allStationsDetailsUrl"].toString().replace("{apiKey}", apiKey));
-        _providers[provider.url.toString()] = provider;
+        provider.url = providerJson["url"].toString().replace("{apiKey}", apiKey);
+        provider.singleStationDetailsUrlTemplate = providerJson["stationDetailsUrl"].toString().replace("{apiKey}", apiKey);
+        provider.allStationsDetailsUrl = providerJson["allStationsDetailsUrl"].toString().replace("{apiKey}", apiKey);
+        _providers[provider.url] = provider;
 
         QNetworkRequest request(provider.url);
         QNetworkReply *reply = _networkAccessManager->get(request);
@@ -52,16 +52,18 @@ void CitiesLoader::bikeProviderFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 
+    //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << reply->errorString();
         reply->deleteLater();
         return;
     }
 
-    int id = QMetaType::type(_providers[reply->url().toString()].name.toLatin1().data());
+    ProviderInfo providerInfo = _providers[reply->url().toString()];
+    int id = QMetaType::type(providerInfo.name.toLatin1().data());
     if (id != -1) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        QList<City*> cities = parser->parseCities(QString::fromUtf8(reply->readAll()));
+        QList<City*> cities = parser->parseCities(QString::fromUtf8(reply->readAll()), providerInfo);
         delete parser;
         emit citiesAdded(cities);
     }

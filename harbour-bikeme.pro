@@ -10,7 +10,8 @@ TARGET = harbour-bikeme
 
 CONFIG += sailfishapp
 
-QT += xml
+QT += xml \
+positioning
 
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
@@ -28,7 +29,11 @@ SOURCES += src/harbour-bikeme.cpp \
     src/citiesmodel.cpp \
     src/city.cpp \
     src/citiesmodelproxy.cpp \
-    src/citiesloader.cpp
+    src/citiesloader.cpp \
+    src/station.cpp \
+    src/stationsloader.cpp \
+    src/stationsmodel.cpp \
+    src/stationsmodelproxy.cpp
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \
@@ -72,4 +77,12 @@ HEADERS += \
     src/citiesmodel.h \
     src/city.h \
     src/citiesmodelproxy.h \
-    src/citiesloader.h
+    src/citiesloader.h \
+    src/station.h \
+    src/stationsloader.h \
+    src/stationsmodel.h \
+    src/stationsmodelproxy.h
+
+DISTFILES += \
+    qml/pages/InteractiveMap2.qml \
+    qml/pages/SecondPage2.qml

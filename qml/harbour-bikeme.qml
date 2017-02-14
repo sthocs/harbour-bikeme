@@ -41,7 +41,8 @@ ApplicationWindow
     Component.onCompleted: {
         var PAGES = ["default", "pages/InteractiveMap.qml", "pages/Favourites.qml"];
 
-        var city = configManager.getSetting("city");
+        pageStack.push("pages/CitiesList2.qml");
+        /*var city = configManager.getSetting("city");
         var firstPage = configManager.getSetting("citiesDisplay") === "list" ?
                     "pages/CitiesList2.qml" : "pages/CitiesBrowser.qml";
 
@@ -65,7 +66,7 @@ ApplicationWindow
         else {
             // Default page
             pageStack.push(firstPage);
-        }
+        }*/
     }
 }
 

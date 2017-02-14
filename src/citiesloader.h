@@ -7,13 +7,6 @@
 
 #include "city.h"
 
-struct ProviderInfo {
-    QString name;
-    QUrl url;
-    QUrl stationDetailsUrl;
-    QUrl allStationsDetailsUrl;
-};
-
 class CitiesLoader : public QObject
 {
     Q_OBJECT

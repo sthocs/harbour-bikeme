@@ -125,7 +125,9 @@ Page {
                 }
             }
 
-            onClicked: pageStack.push(Qt.resolvedUrl("SecondPage.qml"), { city: name });
+            onClicked: {
+                pageStack.push(Qt.resolvedUrl("SecondPage2.qml"), { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
+            }
         }
     }
 }

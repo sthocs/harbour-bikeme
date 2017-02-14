@@ -22,6 +22,7 @@ public:
     explicit CitiesModel(QObject *parent = 0);
 
     Q_INVOKABLE void loadAll();
+    Q_INVOKABLE City* cityAt(int row);
 
     int count() const;
 

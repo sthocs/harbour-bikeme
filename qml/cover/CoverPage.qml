@@ -25,7 +25,8 @@ CoverBackground {
         anchors.left: cover.left
         anchors.right: cover.right
 
-        text: pageStack.currentPage.city || "BikeMe"
+        text: pageStack.currentPage.city ?
+                  pageStack.currentPage.city.name : "BikeMe"
     }
     Label {
         id: label

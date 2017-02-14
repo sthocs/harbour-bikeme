@@ -2,39 +2,51 @@
 #define CITY_H
 
 #include <QObject>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 #include <QUrl>
+
+struct ProviderInfo {
+    QString name;
+    QString url;
+    QString allStationsDetailsUrl;
+    QString singleStationDetailsUrlTemplate;
+};
 
 struct CityInfo {
     QString name;
     QString commercialName;
+    QString providerName;
     QString countryCode;
     QUrl stationsInfoUrl;
     QUrl allStationsDetailsUrl;
-    QUrl singleStationDetailsUrl;
+    QString singleStationDetailsUrlTemplate;
 };
 
 class City : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
+    Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
+    Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
+    Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate)
 public:
     explicit City(QObject *parent = 0);
 
+    QString getProviderName() const { return _info.providerName; }
     QString getName() const { return _info.name; }
     QString getCommercialName() const { return _info.commercialName; }
     QString getCountryCode() const { return _info.countryCode; }
     QUrl getStationsInfoUrl() const { return _info.stationsInfoUrl; }
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
-    QUrl getSingleStationDetailsUrl() const { return _info.singleStationDetailsUrl; }
+    QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
 
     void setInfo(const CityInfo info) { _info = info; }
 
-    void fetchStationsInfo();
-    void fetchBikesAvailabilityAtStation(int stationId);
-    void fetchBikesAvailability();
-
 signals:
-
-public slots:
+    void nameChanged();
+    void providerNameChanged();
+    void allStationsDetailsUrlChanged();
 
 protected:
     CityInfo _info;

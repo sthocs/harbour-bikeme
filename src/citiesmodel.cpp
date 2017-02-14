@@ -3,6 +3,7 @@
 CitiesModel::CitiesModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<City*>())
 {
+    connect(&citiesLoader, SIGNAL(citiesAdded(QList<City*>)), this, SLOT(addCities(QList<City*>)));
 }
 
 void CitiesModel::loadAll()
@@ -12,7 +13,6 @@ void CitiesModel::loadAll()
     _list.clear();
     endRemoveRows();
     citiesLoader.loadAll();
-    connect(&citiesLoader, SIGNAL(citiesAdded(QList<City*>)), this, SLOT(addCities(QList<City*>)));
 }
 
 void CitiesModel::addCities(QList<City*> cities)
@@ -26,6 +26,14 @@ void CitiesModel::addCities(QList<City*> cities)
 int CitiesModel::count() const
 {
     return rowCount();
+}
+
+City* CitiesModel::cityAt(int row)
+{
+    if (row < 0 || row >= _list.size())
+        return NULL;
+
+    return _list.at(row);
 }
 
 // Virtual functions of QAbstractListModel

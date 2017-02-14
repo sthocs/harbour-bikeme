@@ -40,6 +40,8 @@
 #include "configmanager.h"
 #include "citiesmodel.h"
 #include "citiesmodelproxy.h"
+#include "stationsmodel.h"
+#include "stationsmodelproxy.h"
 #include "parser/france/jcdecauxparser.h"
 
 int main(int argc, char *argv[])
@@ -57,8 +59,11 @@ int main(int argc, char *argv[])
 
     qRegisterMetaType<JCDecauxParser>("JCDecaux");
 
+    qmlRegisterType<City>("com.jolla.harbour.bikeme", 1, 0, "City");
     qmlRegisterType<CitiesModel>("com.jolla.harbour.bikeme", 1, 0, "CitiesModel");
     qmlRegisterType<CitiesModelProxy>("com.jolla.harbour.bikeme", 1, 0, "CitiesModelProxy");
+    qmlRegisterType<StationsModel>("com.jolla.harbour.bikeme", 1, 0, "StationsModel");
+    qmlRegisterType<StationsModelProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsModelProxy");
 
     DataProvider* dataProvider = new DataProvider();
     ConfigManager* configManager = new ConfigManager();

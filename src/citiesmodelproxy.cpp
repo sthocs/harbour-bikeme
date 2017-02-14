@@ -6,6 +6,11 @@ CitiesModelProxy::CitiesModelProxy()
     sort(0);
 }
 
+int CitiesModelProxy::realIndex(int row) const
+{
+    return mapToSource(index(row, 0)).row();
+}
+
 void CitiesModelProxy::filter(QString filter)
 {
     setFilterRegExp(QRegExp(filter, Qt::CaseInsensitive, QRegExp::FixedString));

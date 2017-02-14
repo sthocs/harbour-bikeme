@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import com.jolla.harbour.bikeme 1.0
+
 /* Themes values on Jolla:
  * itemSizeExtraSmall=70; itemSizeSmall=80; itemSizeMedium=100
  * iconSizeSmall=32; iconSizeMedium=64; iconSizeLarge=96
@@ -9,10 +11,10 @@ import Sailfish.Silica 1.0
 Page {
     id: secondPage
 
-    property string city: "Paris"
+    property City city
 
     Component.onCompleted: {
-        configManager.saveSetting("city", city);
+        configManager.saveSetting("city", city.name);
     }
 
     SilicaListView {
@@ -43,7 +45,7 @@ Page {
         }
 
         header: PageHeader {
-            title: city
+            title: city.name
         }
         delegate: BackgroundItem {
             id: delegate
@@ -67,6 +69,6 @@ Page {
 
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
-        text: dataProvider.getCopyright(city)
+        text: dataProvider.getCopyright(city.name)
     }
 }

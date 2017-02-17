@@ -4,6 +4,7 @@ CitiesModel::CitiesModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<City*>())
 {
     connect(&citiesLoader, SIGNAL(citiesAdded(QList<City*>)), this, SLOT(addCities(QList<City*>)));
+    citiesLoader.loadAll(true);
 }
 
 void CitiesModel::loadAll()
@@ -30,8 +31,9 @@ int CitiesModel::count() const
 
 City* CitiesModel::cityAt(int row)
 {
-    if (row < 0 || row >= _list.size())
+    if (row < 0 || row >= _list.size()) {
         return NULL;
+    }
 
     return _list.at(row);
 }
@@ -67,3 +69,4 @@ QVariant CitiesModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
+// End Virtual functions of QAbstractListModel

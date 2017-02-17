@@ -14,7 +14,7 @@ class CitiesLoader : public QObject
 public:
     explicit CitiesLoader(QObject *parent = 0);
 
-    void loadAll();
+    void loadAll(bool fromCache = false);
 
 signals:
     void cityAdded(City* city);
@@ -25,7 +25,8 @@ private slots:
 
 private:
     void loadCitiesFromFile();
-    void loadCitiesFromProviders();
+    void loadCitiesFromProviders(bool fromCache);
+    void parse(QString cities, ProviderInfo providerInfo);
 
     QNetworkAccessManager* _networkAccessManager;
 

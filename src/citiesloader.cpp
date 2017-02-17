@@ -1,5 +1,6 @@
 #include "citiesloader.h"
 
+#include <QDir>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -14,12 +15,12 @@ CitiesLoader::CitiesLoader(QObject *parent) : QObject(parent)
     _networkAccessManager = new QNetworkAccessManager(this);
 }
 
-void CitiesLoader::loadAll()
+void CitiesLoader::loadAll(bool fromCache)
 {
-    loadCitiesFromProviders();
+    loadCitiesFromProviders(fromCache);
 }
 
-void CitiesLoader::loadCitiesFromProviders()
+void CitiesLoader::loadCitiesFromProviders(bool fromCache)
 {
     QFile providersFile(SailfishApp::pathTo("data/bikesproviders.json").toLocalFile());
 
@@ -42,9 +43,19 @@ void CitiesLoader::loadCitiesFromProviders()
         provider.allStationsDetailsUrl = providerJson["allStationsDetailsUrl"].toString().replace("{apiKey}", apiKey);
         _providers[provider.url] = provider;
 
-        QNetworkRequest request(provider.url);
-        QNetworkReply *reply = _networkAccessManager->get(request);
-        connect(reply, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
+        if (fromCache) {
+            QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+                           + QDir::separator() + provider.name);
+            if (citiesFile.open(QIODevice::ReadOnly)) {
+                QByteArray savedData = citiesFile.readAll();
+                parse(savedData, provider);
+            }
+        }
+        else {
+            QNetworkRequest request(provider.url);
+            QNetworkReply *reply = _networkAccessManager->get(request);
+            connect(reply, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
+        }
     }
 }
 
@@ -60,12 +71,24 @@ void CitiesLoader::bikeProviderFetched()
     }
 
     ProviderInfo providerInfo = _providers[reply->url().toString()];
+    QString citiesString = QString::fromUtf8(reply->readAll());
+    QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+                   + QDir::separator() + providerInfo.name);
+    if (!citiesFile.open(QIODevice::WriteOnly)) {
+        qWarning() << "Couldn't open" << providerInfo.name;
+    }
+    citiesFile.write(citiesString.toUtf8());
+    parse(citiesString, providerInfo);
+    reply->deleteLater();
+}
+
+void CitiesLoader::parse(QString citiesString, ProviderInfo providerInfo)
+{
     int id = QMetaType::type(providerInfo.name.toLatin1().data());
     if (id != -1) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        QList<City*> cities = parser->parseCities(QString::fromUtf8(reply->readAll()), providerInfo);
+        QList<City*> cities = parser->parseCities(citiesString, providerInfo);
         delete parser;
         emit citiesAdded(cities);
     }
-    reply->deleteLater();
 }

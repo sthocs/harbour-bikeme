@@ -38,9 +38,9 @@ void CitiesLoader::loadCitiesFromProviders(bool fromCache)
 
         ProviderInfo provider;
         provider.name = providerJson["name"].toString();
-        provider.url = providerJson["url"].toString().replace("{apiKey}", apiKey);
-        provider.singleStationDetailsUrlTemplate = providerJson["stationDetailsUrl"].toString().replace("{apiKey}", apiKey);
-        provider.allStationsDetailsUrl = providerJson["allStationsDetailsUrl"].toString().replace("{apiKey}", apiKey);
+        provider.url = providerJson["url"].toString().arg(apiKey);
+        provider.singleStationDetailsUrlTemplate = providerJson["stationDetailsUrl"].toString().arg(apiKey);
+        provider.allStationsDetailsUrl = providerJson["allStationsDetailsUrl"].toString().arg(apiKey);
         _providers[provider.url] = provider;
 
         if (fromCache) {

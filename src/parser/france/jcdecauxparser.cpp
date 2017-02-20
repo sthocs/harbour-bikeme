@@ -27,7 +27,7 @@ QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo providerIn
         info.name = cityJson["name"].toString();
         info.commercialName = cityJson["commercial_name"].toString();
         info.countryCode = cityJson["country_code"].toString();
-        info.singleStationDetailsUrlTemplate = providerInfo.singleStationDetailsUrlTemplate;
+        info.singleStationDetailsUrlTemplate = providerInfo.singleStationDetailsUrlTemplate.arg(info.name);
         info.allStationsDetailsUrl = QUrl(providerInfo.allStationsDetailsUrl.arg(info.name));
         info.providerName = providerInfo.name;
         City* city = new City();
@@ -37,7 +37,7 @@ QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo providerIn
     return citiesList;
 }
 
-QList<Station*> JCDecauxParser::parseAllStationsDetails2(QString allStationsDetails)
+QList<Station*> JCDecauxParser::parseAllStations(QString allStationsDetails, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStationsDetails.toUtf8());
@@ -52,11 +52,35 @@ QList<Station*> JCDecauxParser::parseAllStationsDetails2(QString allStationsDeta
         QGeoCoordinate coord(position["lat"].toDouble(), position["lng"].toDouble());
         station->coordinates = coord;
         station->opened = stationJson["status"].toString().compare("OPEN") == 0;
-        station->bike_stands = stationJson["bike_stands"].toInt();
-        station->available_bike_stands = stationJson["available_bike_stands"].toInt();
-        station->available_bikes = stationJson["available_bikes"].toInt();
-        station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["last_update"].toInt());
+        if (withDetails) {
+            station->bike_stands = stationJson["bike_stands"].toInt();
+            station->available_bike_stands = stationJson["available_bike_stands"].toInt();
+            station->available_bikes = stationJson["available_bikes"].toInt();
+            station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["last_update"].toDouble());
+        }
+        else {
+            station->bike_stands = -1;
+            station->available_bike_stands = -1;
+            station->available_bikes = -1;
+        }
         stationsList.append(station);
     }
     return stationsList;
+}
+
+void JCDecauxParser::parseStationDetails2(QString stationDetails, Station* station)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(stationDetails.toUtf8());
+    QJsonObject stationJson = doc.object();
+    station->number = stationJson["number"].toInt();
+    station->name = stationJson["name"].toString();
+    station->address = stationJson["address"].toString();
+    QJsonObject position = stationJson["position"].toObject();
+    QGeoCoordinate coord(position["lat"].toDouble(), position["lng"].toDouble());
+    station->coordinates = coord;
+    station->opened = stationJson["status"].toString().compare("OPEN") == 0;
+    station->bike_stands = stationJson["bike_stands"].toInt();
+    station->available_bike_stands = stationJson["available_bike_stands"].toInt();
+    station->available_bikes = stationJson["available_bikes"].toInt();
+    station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["last_update"].toDouble());
 }

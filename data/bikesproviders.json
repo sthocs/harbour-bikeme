@@ -1,9 +1,9 @@
 [
     {
         "name": "JCDecaux",
-        "url": "https://api.jcdecaux.com/vls/v1/contracts?apiKey={apiKey}",
-        "stationDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations/%1?contract=%2&apiKey={apiKey}",
-        "allStationsDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations?contract=%1&apiKey={apiKey}",
+        "url": "https://api.jcdecaux.com/vls/v1/contracts?apiKey=%1",
+        "stationDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations/%3?contract=%2&apiKey=%1",
+        "allStationsDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations?contract=%2&apiKey=%1",
         "apiKey": ""
     }
 ]

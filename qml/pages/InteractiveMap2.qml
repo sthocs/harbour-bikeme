@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
 import com.jolla.harbour.bikeme 1.0
+
 import "../items"
 import "cachemanager.js" as JSCacheManager
 import "./db.js" as Db
@@ -27,7 +28,6 @@ Page {
 
     property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
-	property int nbStations
 
 
     //! Used to indicate if device is in portrait mode
@@ -51,8 +51,8 @@ Page {
                 name : mapPlugin;
 
                 parameters: [
-                    PluginParameter { name: "app_id"; value: "xVZRW0UNFmrrSNbaHNJq" },
-                    PluginParameter { name: "app_code"; value: "juUB8_LvQcf9EWQQegL4cw" }
+                    PluginParameter { name: "app_id"; value: "" },
+                    PluginParameter { name: "app_code"; value: "" }
                 ]
             }
             anchors.fill: parent
@@ -65,6 +65,7 @@ Page {
                 mapLoaded = true;
                 map.zoomLevel += 5;
                 center = QtPositioning.coordinate(48.856047, 2.353907)
+                updateFilter();
                 stations.loadAll();
             }
 

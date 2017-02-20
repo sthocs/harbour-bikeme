@@ -40,7 +40,7 @@ Page {
             }
             ListElement {
                 name: "Favourites"
-                fileName: "Favourites"
+                fileName: "Favourites2"
             }
         }
 

@@ -29,7 +29,7 @@ class City : public QObject
     Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
-    Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate)
+    Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate NOTIFY singleStationDetailsUrlTemplateChanged)
 public:
     explicit City(QObject *parent = 0);
 
@@ -47,6 +47,7 @@ signals:
     void nameChanged();
     void providerNameChanged();
     void allStationsDetailsUrlChanged();
+    void singleStationDetailsUrlTemplateChanged();
 
 protected:
     CityInfo _info;

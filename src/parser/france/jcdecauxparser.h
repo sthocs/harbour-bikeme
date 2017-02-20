@@ -12,7 +12,8 @@ public:
     QString parseAllStationsDetails(QString allStationsDetails);
 
     QList<City*> parseCities(QString cities, ProviderInfo providerInfo);
-    QList<Station*> parseAllStationsDetails2(QString allStationsDetails);
+    QList<Station*> parseAllStations(QString allStations, bool withDetails);
+    void parseStationDetails2(QString stationDetails, Station* station);
 };
 Q_DECLARE_METATYPE(JCDecauxParser)
 

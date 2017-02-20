@@ -12,26 +12,37 @@ class StationsModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(QGeoCoordinate center READ getCenter NOTIFY centerChanged)
     Q_PROPERTY(QString providerName READ getProviderName WRITE setProviderName)
+    Q_PROPERTY(QString cityName READ getCityName WRITE setCityName)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl WRITE setAllStationsDetailsUrl)
+    Q_PROPERTY(QString stationDetailsUrlTemplate READ getStationDetailsUrlTemplate WRITE setStationDetailsUrlTemplate)
 
 public:
     enum Roles {
         NumberRole = Qt::UserRole + 1,
+        NameRole,
         CoordinatesRole,
         BikesNbRole,
-        FreeSlotsNbRole
+        FreeSlotsNbRole,
+        LastUpdateRole
     };
 
     explicit StationsModel(QObject *parent = 0);
 
     Q_INVOKABLE void loadAll();
+    Q_INVOKABLE void loadStationsList();
+    bool fetchStationInformation(QModelIndex index);
+    void fetchStationsInformation(QList<QModelIndex> indexes);
 
     QGeoCoordinate getCenter() const;
     QString getProviderName() const;
+    QString getCityName() const;
     QUrl getAllStationsDetailsUrl() const;
+    QString getStationDetailsUrlTemplate() const;
 
     void setProviderName(QString providerName);
+    void setCityName(QString cityName);
     void setAllStationsDetailsUrl(QUrl allStationsDetailsUrl);
+    void setStationDetailsUrlTemplate(QString stationDetailsUrlTemplate);
 
     // pure virtuals of QAbstractListModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -40,16 +51,20 @@ public:
 
 signals:
     void centerChanged();
-    void stationsLoaded();
+    void stationsLoaded(bool withDetails);
 
 private slots:
+    void setStationsList(QList<Station*> stations);
     void addStations(QList<Station*> stations);
+    void emitDataChanged(Station* station);
 
 private:
     QList<Station*> _list;
     QGeoCoordinate _center;
     QString _providerName;
+    QString _cityName;
     QUrl _allStationsDetailsUrl;
+    QString _singleStationDetailsUrlTemplate;
 
     StationsLoader _stationsLoader;
 

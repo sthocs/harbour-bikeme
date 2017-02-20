@@ -14,7 +14,8 @@ public:
     virtual QString parseAllStationsDetails(QString allStationsDetails) = 0;
 
     virtual QList<City*> parseCities(QString cities, ProviderInfo providerInfo) { return QList<City*>(); }
-    virtual QList<Station*> parseAllStationsDetails2(QString allStationsDetails) { return QList<Station*>(); }
+    virtual QList<Station*> parseAllStations(QString allStations, bool withDetails) { return QList<Station*>(); }
+    virtual void parseStationDetails2(QString stationDetails, Station* station) {}
 };
 
 #endif // MASTERPARSER_H

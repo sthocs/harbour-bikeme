@@ -42,6 +42,7 @@
 #include "citiesmodelproxy.h"
 #include "stationsmodel.h"
 #include "stationsmodelproxy.h"
+#include "stationsfavouritesproxy.h"
 #include "parser/france/jcdecauxparser.h"
 
 int main(int argc, char *argv[])
@@ -64,6 +65,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<CitiesModelProxy>("com.jolla.harbour.bikeme", 1, 0, "CitiesModelProxy");
     qmlRegisterType<StationsModel>("com.jolla.harbour.bikeme", 1, 0, "StationsModel");
     qmlRegisterType<StationsModelProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsModelProxy");
+    qmlRegisterType<StationsFavouritesProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsFavouritesProxy");
 
     DataProvider* dataProvider = new DataProvider();
     ConfigManager* configManager = new ConfigManager();

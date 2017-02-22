@@ -10,6 +10,7 @@
 class StationsModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(QGeoCoordinate center READ getCenter NOTIFY centerChanged)
     Q_PROPERTY(QString providerName READ getProviderName WRITE setProviderName)
     Q_PROPERTY(QString cityName READ getCityName WRITE setCityName)
@@ -27,10 +28,11 @@ public:
     };
 
     explicit StationsModel(QObject *parent = 0);
+    ~StationsModel();
 
     Q_INVOKABLE void loadAll();
     Q_INVOKABLE void loadStationsList();
-    bool fetchStationInformation(QModelIndex index);
+    Q_INVOKABLE bool fetchStationInformation(int index);
     void fetchStationsInformation(QList<QModelIndex> indexes);
 
     QGeoCoordinate getCenter() const;
@@ -50,13 +52,15 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 signals:
+    void countChanged();
     void centerChanged();
+    void stationUpdated(Station* station);
     void stationsLoaded(bool withDetails);
 
 private slots:
     void setStationsList(QList<Station*> stations);
     void addStations(QList<Station*> stations);
-    void emitDataChanged(Station* station);
+    void stationDetailsFetched(Station* station);
 
 private:
     QList<Station*> _list;

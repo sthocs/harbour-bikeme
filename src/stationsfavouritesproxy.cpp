@@ -41,7 +41,7 @@ void StationsFavouritesProxy::move(int from, int to)
 
 bool StationsFavouritesProxy::refreshStationInfo(int row)
 {
-    ((StationsModel*)sourceModel())->fetchStationInformation(mapToSource(index(row, 0)));
+    ((StationsModel*)sourceModel())->fetchStationInformation(mapToSource(index(row, 0)).row());
 }
 
 void StationsFavouritesProxy::refreshAll()

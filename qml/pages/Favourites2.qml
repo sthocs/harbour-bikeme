@@ -129,18 +129,23 @@ Page {
                         }
                     }
                     MenuItem {
-                        text: "Move Down"
+                        text: "Move Up"
                         onClicked: {
-                            Db.moveDown(city.name, number);
-                            favouritesModel.move(index, index + 1, 1);
-
+                            if (index < 1) {
+                                return;
+                            }
+                            Db.moveUp(city.name, number);
+                            favouritesModel.move(index - 1, index, 1);
                         }
                     }
                     MenuItem {
-                        text: "Move Up"
+                        text: "Move Down"
                         onClicked: {
-                            Db.moveUp(city.name, number);
-                            favouritesModel.move(index - 1, index, 1);
+                            if (index > favouritesModel.count - 2) {
+                                return;
+                            }
+                            Db.moveDown(city.name, number);
+                            favouritesModel.move(index, index + 1, 1);
                         }
                     }
                     MenuItem {

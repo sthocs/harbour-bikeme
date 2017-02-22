@@ -9,7 +9,7 @@
 class CitiesModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
 public:
     enum Roles {
@@ -20,11 +20,10 @@ public:
     };
 
     explicit CitiesModel(QObject *parent = 0);
+    ~CitiesModel();
 
     Q_INVOKABLE void loadAll();
     Q_INVOKABLE City* cityAt(int row);
-
-    int count() const;
 
     // pure virtuals of QAbstractListModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

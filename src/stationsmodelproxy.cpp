@@ -1,13 +1,12 @@
 #include "stationsmodelproxy.h"
 
-StationsModelProxy::StationsModelProxy() : _filter(false)
+StationsModelProxy::StationsModelProxy() : _filter(true)
 {
 
 }
 
 void StationsModelProxy::filter(QGeoCoordinate topLeft, QGeoCoordinate bottomRight)
 {
-    _filter = true;
     _topLeftFilter = topLeft;
     _bottomRightFilter = bottomRight;
     invalidateFilter();
@@ -24,4 +23,9 @@ bool StationsModelProxy::filterAcceptsRow(int sourceRow,
             coordinates.latitude() > _bottomRightFilter.latitude() &&
             coordinates.longitude() > _topLeftFilter.longitude() &&
             coordinates.longitude() < _bottomRightFilter.longitude();
+}
+
+int StationsModelProxy::sourceRow(int row)
+{
+    return mapToSource(index(row, 0)).row();
 }

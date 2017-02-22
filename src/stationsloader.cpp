@@ -21,7 +21,7 @@ void StationsLoader::setCity(QString cityName)
     _cityName = cityName;
 }
 
-void StationsLoader::cacheFileName() const
+QString StationsLoader::cacheFileName() const
 {
     return _providerName + _cityName;
 }

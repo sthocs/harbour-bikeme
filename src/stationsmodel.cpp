@@ -5,33 +5,31 @@ StationsModel::StationsModel(QObject *parent) : QAbstractListModel(parent),
 {
     connect(&_stationsLoader, SIGNAL(allStationsDetailsFetched(QList<Station*>)), this, SLOT(addStations(QList<Station*>)));
     connect(&_stationsLoader, SIGNAL(allStationsListFetched(QList<Station*>)), this, SLOT(setStationsList(QList<Station*>)));
-    connect(&_stationsLoader, SIGNAL(stationDetailsFetched(Station*)), this, SLOT(emitDataChanged(Station*)));
+    connect(&_stationsLoader, SIGNAL(stationDetailsFetched(Station*)), this, SLOT(stationDetailsFetched(Station*)));
+}
+
+StationsModel::~StationsModel()
+{
+    qDeleteAll(_list);
+    _list.clear();
 }
 
 void StationsModel::loadStationsList()
 {
-    beginRemoveRows(QModelIndex(), 0, _list.size() - 1);
-    qDeleteAll(_list);
-    _list.clear();
-    endRemoveRows();
     _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
 }
 
 void StationsModel::loadAll()
 {
-    beginRemoveRows(QModelIndex(), 0, _list.size() - 1);
-    qDeleteAll(_list);
-    _list.clear();
-    endRemoveRows();
     _stationsLoader.fetchAllStationsDetails(_allStationsDetailsUrl);
 }
 
-bool StationsModel::fetchStationInformation(QModelIndex index)
+bool StationsModel::fetchStationInformation(int index)
 {
     if (_singleStationDetailsUrlTemplate.isEmpty()) {
         return false;
     }
-    _stationsLoader.fetchStationDetails(_list.at(index.row()), _singleStationDetailsUrlTemplate);
+    _stationsLoader.fetchStationDetails(_list.at(index), _singleStationDetailsUrlTemplate);
     return true;
 }
 
@@ -49,27 +47,34 @@ void StationsModel::fetchStationsInformation(QList<QModelIndex> indexes)
 
 void StationsModel::setStationsList(QList<Station*> stations)
 {
-    beginInsertRows(QModelIndex(), _list.size(), _list.size() + stations.size() - 1);
+    beginResetModel();
+    qDeleteAll(_list);
+    _list.clear();
     _list.append(stations);
-    endInsertRows();
+    endResetModel();
     updateCenter();
+    emit countChanged();
     emit stationsLoaded(false);
 }
 
 void StationsModel::addStations(QList<Station*> stations)
 {
-    beginInsertRows(QModelIndex(), _list.size(), _list.size() + stations.size() - 1);
+    beginResetModel();
+    qDeleteAll(_list);
+    _list.clear();
     _list.append(stations);
-    endInsertRows();
+    endResetModel();
     updateCenter();
+    emit countChanged();
     emit stationsLoaded(true);
 }
 
-void StationsModel::emitDataChanged(Station* station)
+void StationsModel::stationDetailsFetched(Station* station)
 {
     for (int row = 0; row < _list.size(); ++row) {
         if (_list.at(row) == station) {
             emit dataChanged(index(row), index(row));
+            emit stationUpdated(station);
         }
     }
 }
@@ -138,6 +143,7 @@ void StationsModel::setCityName(QString cityName)
     _cityName = cityName;
     _stationsLoader.setCity(_cityName);
 }
+
 
 // Virtual functions of QAbstractListModel
 int StationsModel::rowCount(const QModelIndex &parent) const

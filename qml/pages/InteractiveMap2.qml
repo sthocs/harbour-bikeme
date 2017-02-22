@@ -5,8 +5,8 @@ import QtPositioning 5.1
 import com.jolla.harbour.bikeme 1.0
 
 import "../items"
-import "cachemanager.js" as JSCacheManager
 import "./db.js" as Db
+import "./utils.js" as Utils
 
 
 Page {
@@ -57,16 +57,21 @@ Page {
             }
             anchors.fill: parent
             // Paris, Hotel de Ville by default. Updated after stations loading.
-            center: QtPositioning.coordinate(48.856047, 2.353907)
+            center: QtPositioning.coordinate(48.85604723, 2.35390723)
 
             zoomLevel: 9 /* does not work for now (Qt5.1), always starts at 9 whatever the value */
 
             Component.onCompleted: {
                 mapLoaded = true;
                 map.zoomLevel += 5;
-                center = QtPositioning.coordinate(48.856047, 2.353907)
+                center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 updateFilter();
-                stations.loadAll();
+                if (displayAllStatus) {
+                    stations.loadAll();
+                }
+                else {
+                    stations.loadStationsList();
+                }
             }
 
             gesture.onFlickFinished: {
@@ -137,8 +142,10 @@ Page {
 
     StationsModel {
         id: stations
-        providerName: city.providerName;
+        providerName: city.providerName
+        cityName: city.name
         allStationsDetailsUrl: city.allStationsDetailsUrl
+        stationDetailsUrlTemplate: city.singleStationDetailsUrlTemplate
 
         onCenterChanged: {
             map.center = center;
@@ -147,6 +154,15 @@ Page {
         onStationsLoaded: {
             stationLoadingLabel.visible = false
             refreshLabel.visible = false
+            stationsProxy.applyFilter = count > maxItemsOnMap
+        }
+        onStationUpdated: {
+            if (station.number === selectedStationNumber) {
+                stationNameLabel.text = station.name;
+                numberOfBikes.text = ": " + station.available_bikes;
+                numberOfParking.text = ": " + station.available_bike_stands;
+                lastUpdatedTime.text = "Updated: " + Utils.makeLastUpdateDateHumanReadable2(station.last_update);
+            }
         }
     }
 
@@ -168,6 +184,7 @@ Page {
         delegate: MapQuickItem {
             coordinate: model.coordinates
             sourceItem: StationMarker {
+                displayAllStatus: interactiveMap.displayAllStatus
                 available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
                 selected: number != 0 && number === selectedStationNumber
             }
@@ -180,10 +197,10 @@ Page {
                 onClicked: {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.name, number);
-                    /*if (!displayAllStatus) {
+                    if (!displayAllStatus) {
                         stationNameLabel.text = "Updating...";
-                        dataProvider.getStationDetails(city.name, number);
-                    }*/
+                        stations.fetchStationInformation(stationsProxy.sourceRow(index));
+                    }
                 }
             }
         }

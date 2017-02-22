@@ -7,12 +7,18 @@ CitiesModel::CitiesModel(QObject *parent) : QAbstractListModel(parent),
     citiesLoader.loadAll(true);
 }
 
-void CitiesModel::loadAll()
+CitiesModel::~CitiesModel()
 {
-    beginRemoveRows(QModelIndex(), 0, _list.size() - 1);
     qDeleteAll(_list);
     _list.clear();
-    endRemoveRows();
+}
+
+void CitiesModel::loadAll()
+{
+    beginResetModel();
+    qDeleteAll(_list);
+    _list.clear();
+    endResetModel();
     citiesLoader.loadAll();
 }
 
@@ -22,11 +28,6 @@ void CitiesModel::addCities(QList<City*> cities)
     _list.append(cities);
     endInsertRows();
     emit countChanged();
-}
-
-int CitiesModel::count() const
-{
-    return rowCount();
 }
 
 City* CitiesModel::cityAt(int row)

@@ -24,6 +24,7 @@ public:
 
     Q_INVOKABLE void loadAll();
     Q_INVOKABLE City* cityAt(int row);
+    Q_INVOKABLE City* getByName(QString name);
 
     // pure virtuals of QAbstractListModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

@@ -32,25 +32,31 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import com.jolla.harbour.bikeme 1.0
 import "pages"
 
 ApplicationWindow
 {
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
+    CitiesModel {
+        id: citiesModel
+    }
+
     Component.onCompleted: {
-        var PAGES = ["default", "pages/InteractiveMap.qml", "pages/Favourites.qml"];
+        var PAGES = ["default", "pages/InteractiveMap2.qml", "pages/Favourites2.qml"];
 
-        pageStack.push("pages/CitiesList2.qml");
-        /*var city = configManager.getSetting("city");
-        var firstPage = configManager.getSetting("citiesDisplay") === "list" ?
-                    "pages/CitiesList2.qml" : "pages/CitiesBrowser.qml";
+        var firstPage = {
+            page: Qt.resolvedUrl("pages/CitiesList2.qml"),
+            properties: { citiesModel: citiesModel }
+        };
 
+        var city = citiesModel.getByName(configManager.getSetting("city"));
         if (city) {
-            console.log("Restoring app state: " + city);
-            var pagesToPush = [Qt.resolvedUrl(firstPage)];
+            console.log("Restoring app state: " + city.name);
+            var pagesToPush = [firstPage];
             pagesToPush.push({
-                page: Qt.resolvedUrl("pages/SecondPage.qml"),
+                page: Qt.resolvedUrl("pages/SecondPage2.qml"),
                 properties: { city: city }
             });
             var startPage = configManager.getSetting("startPage");
@@ -66,7 +72,7 @@ ApplicationWindow
         else {
             // Default page
             pageStack.push(firstPage);
-        }*/
+        }
     }
 }
 

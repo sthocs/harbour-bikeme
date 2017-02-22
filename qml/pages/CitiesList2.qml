@@ -4,15 +4,14 @@ import Sailfish.Silica 1.0
 import com.jolla.harbour.bikeme 1.0
 
 Page {
+    property CitiesModel citiesModel;
+
     Label {
         id: errorMsg
         visible: false
         font.pixelSize: Theme.fontSizeExtraSmall
     }
 
-    CitiesModel {
-        id: citiesModel
-    }
     CitiesModelProxy {
         id: citiesModelProxy
         sourceModel: citiesModel
@@ -126,7 +125,8 @@ Page {
             }
 
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("SecondPage2.qml"), { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
+                pageStack.push(Qt.resolvedUrl("SecondPage2.qml"),
+                               { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
             }
         }
     }

@@ -39,6 +39,17 @@ City* CitiesModel::cityAt(int row)
     return _list.at(row);
 }
 
+City* CitiesModel::getByName(QString name)
+{
+    qDebug()<<"seach by name" << name;
+    foreach (City* city, _list) {
+        if (city->getName().compare(name) == 0) {
+            return city;
+        }
+    }
+    return NULL;
+}
+
 // Virtual functions of QAbstractListModel
 int CitiesModel::rowCount(const QModelIndex &parent) const
 {

@@ -41,6 +41,8 @@ public:
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
     QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
 
+    Q_INVOKABLE bool isSingleStationSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }
+
     void setInfo(const CityInfo info) { _info = info; }
 
 signals:

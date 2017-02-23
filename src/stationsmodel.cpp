@@ -14,9 +14,9 @@ StationsModel::~StationsModel()
     _list.clear();
 }
 
-void StationsModel::loadStationsList()
+bool StationsModel::loadStationsList()
 {
-    _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
+    return _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
 }
 
 void StationsModel::loadAll()
@@ -156,6 +156,7 @@ QHash<int, QByteArray> StationsModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[NumberRole] = "number";
     roles[NameRole] = "name";
+    roles[OpenedRole] = "opened";
     roles[CoordinatesRole] = "coordinates";
     roles[BikesNbRole] = "available_bikes";
     roles[FreeSlotsNbRole] = "available_bike_stands";
@@ -173,6 +174,8 @@ QVariant StationsModel::data(const QModelIndex &index, int role) const
         return _list.at(index.row())->number;
     case NameRole:
         return _list.at(index.row())->name;
+    case OpenedRole:
+        return _list.at(index.row())->opened;
     case CoordinatesRole:
         return QVariant::fromValue(_list.at(index.row())->coordinates);
     case BikesNbRole:

@@ -2,7 +2,6 @@
 #define JCDECAUXPARSER_H
 
 #include "../bikedataparser.h"
-#include "../../citiesloader.h"
 
 class JCDecauxParser : public BikeDataParser
 {

@@ -5,6 +5,7 @@ Item {
     width: Theme.iconSizeSmall // 32
     height: Theme.iconSizeSmall
     property bool displayAllStatus: false
+    property bool opened
     property int available: -1
     property bool selected
 
@@ -19,6 +20,9 @@ Item {
         width: Theme.iconSizeSmall; height: Theme.iconSizeSmall
         radius: 10
         color: {
+            if (!opened) {
+                return "grey";
+            }
             if (!displayAllStatus || available < 0) {
                 return "white";
             }
@@ -32,12 +36,13 @@ Item {
             }
         }
 
-        border.color: (available >= 0 && displayAllStatus) ? "black" : selected ? _COLOR_SELECTED2 : _COLOR_AVAILABLE
-        border.width: (available < 0 || !displayAllStatus) ? 3 : 1
+        border.color: (!opened ||available >= 0 && displayAllStatus) ?
+                        "black" : selected ? _COLOR_SELECTED2 : _COLOR_AVAILABLE
+        border.width: (opened && (available < 0 || !displayAllStatus)) ? 3 : 1
 
         Label {
             visible: displayAllStatus && available != -1
-            text: available
+            text: opened ? available : "x"
             font.pixelSize: Theme.fontSizeMedium
             color: "black"
             font.weight: Font.Bold
@@ -55,6 +60,9 @@ Item {
         x: Theme.iconSizeSmall / 4; y: Theme.iconSizeSmall / 4 * 2.5
         width: Theme.iconSizeSmall / 2; height: Theme.iconSizeSmall / 2 // c²=512 -> c=22.63 -> c/2=11.31
         color: {
+            if (!opened) {
+                return "grey";
+            }
             if (selected) {
                 if (displayAllStatus) return _COLOR_SELECTED1;
                 else return _COLOR_SELECTED2

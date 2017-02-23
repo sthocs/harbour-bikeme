@@ -18,7 +18,7 @@ function makeLastUpdateDateHumanReadable(update_date) {
 }
 
 function makeLastUpdateDateHumanReadable2(update_date) {
-    if (!update_date) {
+    if (isNaN(update_date)) {
         return "N/A";
     }
     var now = new Date();

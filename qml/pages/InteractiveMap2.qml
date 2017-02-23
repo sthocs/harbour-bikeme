@@ -66,11 +66,8 @@ Page {
                 map.zoomLevel += 5;
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 updateFilter();
-                if (displayAllStatus) {
+                if (stations.loadStationsList() && displayAllStatus) {
                     stations.loadAll();
-                }
-                else {
-                    stations.loadStationsList();
                 }
             }
 
@@ -185,6 +182,7 @@ Page {
             coordinate: model.coordinates
             sourceItem: StationMarker {
                 displayAllStatus: interactiveMap.displayAllStatus
+                opened: model.opened
                 available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
                 selected: number != 0 && number === selectedStationNumber
             }
@@ -198,6 +196,13 @@ Page {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.name, number);
                     if (!displayAllStatus) {
+                        if (!city.isSingleStationSupported()) {
+                            alertMsg.text = "Only \"all status\" mode\navailable for this city."
+                            alertPopup.visible = true;
+                            refreshLabel.visible = true;
+                            displayAllStatus = true;
+                            stations.loadAll();
+                        }
                         stationNameLabel.text = "Updating...";
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
                     }

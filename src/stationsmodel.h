@@ -21,6 +21,7 @@ public:
     enum Roles {
         NumberRole = Qt::UserRole + 1,
         NameRole,
+        OpenedRole,
         CoordinatesRole,
         BikesNbRole,
         FreeSlotsNbRole,
@@ -31,7 +32,7 @@ public:
     ~StationsModel();
 
     Q_INVOKABLE void loadAll();
-    Q_INVOKABLE void loadStationsList();
+    Q_INVOKABLE bool loadStationsList();
     Q_INVOKABLE bool fetchStationInformation(int index);
     void fetchStationsInformation(QList<QModelIndex> indexes);
 

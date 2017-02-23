@@ -16,7 +16,7 @@ public:
 
     void setProvider(QString providerName);
     void setCity(QString cityName);
-    void fetchAllStationsList(QUrl allStationsListUrl);
+    bool fetchAllStationsList(QUrl allStationsListUrl);
     void fetchAllStationsDetails(QUrl allStationsDetailsUrl);
     void fetchStationDetails(Station* station, QString urlTemplate);
 

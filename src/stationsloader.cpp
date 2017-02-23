@@ -26,19 +26,21 @@ QString StationsLoader::cacheFileName() const
     return _providerName + _cityName;
 }
 
-void StationsLoader::fetchAllStationsList(QUrl allStationsListUrl)
+bool StationsLoader::fetchAllStationsList(QUrl allStationsListUrl)
 {
     QFile stationsFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                        + QDir::separator() + cacheFileName());
     if (stationsFile.open(QIODevice::ReadOnly)) {
         QByteArray savedData = stationsFile.readAll();
         parseStationsList(savedData);
+        return true;
     }
     else {
         QNetworkRequest request(allStationsListUrl);
         QNetworkReply *reply = _networkAccessManager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(allStationsListFetched()));
     }
+    return false;
 }
 
 void StationsLoader::fetchAllStationsDetails(QUrl allStationsDetailsUrl)

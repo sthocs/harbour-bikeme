@@ -51,14 +51,15 @@ QList<Station*> JCDecauxParser::parseAllStations(QString allStationsDetails, boo
         QJsonObject position = stationJson["position"].toObject();
         QGeoCoordinate coord(position["lat"].toDouble(), position["lng"].toDouble());
         station->coordinates = coord;
-        station->opened = stationJson["status"].toString().compare("OPEN") == 0;
         if (withDetails) {
+            station->opened = stationJson["status"].toString().compare("OPEN") == 0;
             station->bike_stands = stationJson["bike_stands"].toInt();
             station->available_bike_stands = stationJson["available_bike_stands"].toInt();
             station->available_bikes = stationJson["available_bikes"].toInt();
             station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["last_update"].toDouble());
         }
         else {
+            station->opened = true;
             station->bike_stands = -1;
             station->available_bike_stands = -1;
             station->available_bikes = -1;

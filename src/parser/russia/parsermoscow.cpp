@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
+#include <QGeoCoordinate>
 
 #include "parsermoscow.h"
 
@@ -53,3 +54,33 @@ QString ParserMoscow::parseJsonResult(QString jsonResult)
     return jsonAllStationDetails.toJson(QJsonDocument::Compact);
 }
 
+QList<Station*> ParserMoscow::parseAllStations(QString allStations, bool withDetails)
+{
+    QList<Station*> stationsList;
+    QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());
+    QJsonArray stationsArray = doc.object()["Items"].toArray();
+    for (int i = 0; i < stationsArray.size(); ++i) {
+        QJsonObject stationJson = stationsArray[i].toObject();
+        Station* station = new Station();
+        station->number = stationJson["Id"].toString().toInt();
+        station->name = stationJson["Address"].toString();
+        station->address = stationJson["Address"].toString();
+        QJsonObject position = stationJson["Position"].toObject();
+        QGeoCoordinate coord(position["Lat"].toDouble(), position["Lon"].toDouble());
+        station->coordinates = coord;
+        if (withDetails) {
+            station->opened = !stationJson["IsLocked"].toBool();
+            station->bike_stands = stationJson["TotalPlaces"].toInt();
+            station->available_bike_stands = stationJson["FreePlaces"].toInt();
+            station->available_bikes = station->available_bike_stands - station->available_bike_stands;
+        }
+        else {
+            station->opened = true;
+            station->bike_stands = -1;
+            station->available_bike_stands = -1;
+            station->available_bikes = -1;
+        }
+        stationsList.append(station);
+    }
+    return stationsList;
+}

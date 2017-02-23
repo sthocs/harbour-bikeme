@@ -1,0 +1,9 @@
+[
+    {
+        "provider": "Velobike",
+        "name": "Moscow",
+        "commercial_name": "Velobike",
+        "country_code": "RU",
+        "allStationsDetailsUrl": "http://velobike.ru/proxy/parkings/"
+    }
+]

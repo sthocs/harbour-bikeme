@@ -71,7 +71,7 @@ ApplicationWindow
         }
         else {
             // Default page
-            pageStack.push(firstPage);
+            pageStack.push(firstPage.page, firstPage.properties);
         }
     }
 }

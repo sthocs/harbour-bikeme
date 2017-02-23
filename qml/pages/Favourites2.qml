@@ -53,7 +53,7 @@ Page {
             MenuItem {
                 text: "Refresh all"
                 onClicked: {
-                    topMenu.busy = favouritesModel.count > 0;
+                    //topMenu.busy =  favouritesModel.count > 0;
                     favouritesModel.refreshAll();
                 }
             }
@@ -82,7 +82,7 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + model.available_bikes
+                        text: " : " + (opened ? available_bikes : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true
@@ -99,7 +99,7 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + model.available_bike_stands
+                        text: " : " + (opened ? available_bike_stands : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true
@@ -109,7 +109,8 @@ Page {
                         height: 1
                     }
                     Label {
-                        text: "Updated: " + Utils.makeLastUpdateDateHumanReadable2(model.last_update)
+                        text: opened ? "Updated: " + Utils.makeLastUpdateDateHumanReadable2(model.last_update) :
+                                       "Closed"
                         color: Theme.secondaryColor
                         font.pixelSize: Theme.fontSizeMedium
                     }

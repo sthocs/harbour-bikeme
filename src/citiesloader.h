@@ -25,7 +25,7 @@ private slots:
 
 private:
     void loadCitiesFromFile();
-    void loadCitiesFromProviders(bool fromCache);
+    bool loadCitiesFromProviders(bool fromCache);
     void parse(QString cities, ProviderInfo providerInfo);
 
     QNetworkAccessManager* _networkAccessManager;

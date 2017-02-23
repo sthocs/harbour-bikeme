@@ -17,15 +17,18 @@ CitiesLoader::CitiesLoader(QObject *parent) : QObject(parent)
 
 void CitiesLoader::loadAll(bool fromCache)
 {
-    loadCitiesFromProviders(fromCache);
+    if (loadCitiesFromProviders(fromCache)) {
+        loadCitiesFromFile();
+    }
 }
 
-void CitiesLoader::loadCitiesFromProviders(bool fromCache)
+bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
 {
+    bool res = false;
     QFile providersFile(SailfishApp::pathTo("data/bikesproviders.json").toLocalFile());
 
     if (!providersFile.open(QIODevice::ReadOnly))
-        return;
+        return false;
 
     QByteArray json = providersFile.readAll();
     providersFile.close();
@@ -49,14 +52,45 @@ void CitiesLoader::loadCitiesFromProviders(bool fromCache)
             if (citiesFile.open(QIODevice::ReadOnly)) {
                 QByteArray savedData = citiesFile.readAll();
                 parse(savedData, provider);
+                res = true;
             }
         }
         else {
             QNetworkRequest request(provider.url);
             QNetworkReply *reply = _networkAccessManager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
+            res = true;
         }
     }
+    return res;
+}
+
+void CitiesLoader::loadCitiesFromFile()
+{
+    QFile citiesFile(SailfishApp::pathTo("data/cities.json").toLocalFile());
+    if (!citiesFile.open(QIODevice::ReadOnly)) {
+        return;
+    }
+
+    QList<City*> citiesList;
+    QByteArray json = citiesFile.readAll();
+    citiesFile.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(json);
+    QJsonArray providersArray = doc.array();
+    for (int i = 0; i < providersArray.size(); ++i) {
+        QJsonObject cityJson = providersArray[i].toObject();
+        CityInfo info;
+        info.providerName = cityJson["provider"].toString();
+        info.name = cityJson["name"].toString();
+        info.commercialName = cityJson["commercial_name"].toString();
+        info.countryCode = cityJson["country_code"].toString();
+        info.allStationsDetailsUrl = QUrl(cityJson["allStationsDetailsUrl"].toString());
+        City* city = new City();
+        city->setInfo(info);
+        citiesList.append(city);
+    }
+    emit citiesAdded(citiesList);
 }
 
 void CitiesLoader::bikeProviderFetched()

@@ -85,7 +85,9 @@ void CitiesLoader::loadCitiesFromFile()
         info.name = cityJson["name"].toString();
         info.commercialName = cityJson["commercial_name"].toString();
         info.countryCode = cityJson["country_code"].toString();
+        info.stationsInfoUrl = QUrl(cityJson["stationsListUrl"].toString());
         info.allStationsDetailsUrl = QUrl(cityJson["allStationsDetailsUrl"].toString());
+        info.singleStationDetailsUrlTemplate = cityJson["stationDetailsUrl"].toString();
         City* city = new City();
         city->setInfo(info);
         citiesList.append(city);

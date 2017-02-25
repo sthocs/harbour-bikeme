@@ -14,6 +14,7 @@ class StationsModel : public QAbstractListModel
     Q_PROPERTY(QGeoCoordinate center READ getCenter NOTIFY centerChanged)
     Q_PROPERTY(QString providerName READ getProviderName WRITE setProviderName)
     Q_PROPERTY(QString cityName READ getCityName WRITE setCityName)
+    Q_PROPERTY(QUrl stationsListUrl WRITE setStationsListUrl)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl WRITE setAllStationsDetailsUrl)
     Q_PROPERTY(QString stationDetailsUrlTemplate READ getStationDetailsUrlTemplate WRITE setStationDetailsUrlTemplate)
 
@@ -44,6 +45,7 @@ public:
 
     void setProviderName(QString providerName);
     void setCityName(QString cityName);
+    void setStationsListUrl(QUrl stationsListUrl);
     void setAllStationsDetailsUrl(QUrl allStationsDetailsUrl);
     void setStationDetailsUrlTemplate(QString stationDetailsUrlTemplate);
 
@@ -68,6 +70,7 @@ private:
     QGeoCoordinate _center;
     QString _providerName;
     QString _cityName;
+    QUrl _stationsListUrl;
     QUrl _allStationsDetailsUrl;
     QString _singleStationDetailsUrlTemplate;
 

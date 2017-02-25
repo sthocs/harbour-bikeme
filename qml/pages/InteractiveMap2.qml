@@ -67,7 +67,14 @@ Page {
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 updateFilter();
                 if (stations.loadStationsList() && displayAllStatus) {
-                    stations.loadAll();
+                    if (city.isAllStationModeSupported()) {
+                        stations.loadAll();
+                    }
+                    else {
+                        displayAllStatus = false;
+                        alertMsg.text = "Can't display all status\nfor this city."
+                        alertPopup.visible = true;
+                    }
                 }
             }
 
@@ -141,6 +148,7 @@ Page {
         id: stations
         providerName: city.providerName
         cityName: city.name
+        stationsListUrl: city.stationsListUrl
         allStationsDetailsUrl: city.allStationsDetailsUrl
         stationDetailsUrlTemplate: city.singleStationDetailsUrlTemplate
 
@@ -196,7 +204,7 @@ Page {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.identifier, number);
                     if (!displayAllStatus) {
-                        if (!city.isSingleStationSupported()) {
+                        if (!city.isSingleStationModeSupported()) {
                             alertMsg.text = "Only \"all status\" mode\navailable for this city."
                             alertPopup.visible = true;
                             refreshLabel.visible = true;

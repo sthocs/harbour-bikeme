@@ -29,6 +29,7 @@ class City : public QObject
     Q_PROPERTY(QString identifier READ identifier)
     Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
+    Q_PROPERTY(QUrl stationsListUrl READ getStationsListUrl NOTIFY stationsListUrlChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
     Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate NOTIFY singleStationDetailsUrlTemplateChanged)
 public:
@@ -39,17 +40,19 @@ public:
     QString getName() const { return _info.name; }
     QString getCommercialName() const { return _info.commercialName; }
     QString getCountryCode() const { return _info.countryCode; }
-    QUrl getStationsInfoUrl() const { return _info.stationsInfoUrl; }
+    QUrl getStationsListUrl() const { return _info.stationsInfoUrl; }
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
     QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
 
-    Q_INVOKABLE bool isSingleStationSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }
+    Q_INVOKABLE bool isSingleStationModeSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }
+    Q_INVOKABLE bool isAllStationModeSupported() const { return !_info.allStationsDetailsUrl.isEmpty(); }
 
     void setInfo(const CityInfo info) { _info = info; }
 
 signals:
     void nameChanged();
     void providerNameChanged();
+    void stationsListUrlChanged();
     void allStationsDetailsUrlChanged();
     void singleStationDetailsUrlTemplateChanged();
 

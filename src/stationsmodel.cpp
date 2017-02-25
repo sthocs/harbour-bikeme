@@ -16,7 +16,12 @@ StationsModel::~StationsModel()
 
 bool StationsModel::loadStationsList()
 {
-    return _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
+    if (!_stationsListUrl.isEmpty()) {
+        return _stationsLoader.fetchAllStationsList(_stationsListUrl);
+    }
+    else {
+        return _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
+    }
 }
 
 void StationsModel::loadAll()
@@ -120,6 +125,11 @@ QUrl StationsModel::getAllStationsDetailsUrl() const
 QString StationsModel::getStationDetailsUrlTemplate() const
 {
     return _singleStationDetailsUrlTemplate;
+}
+
+void StationsModel::setStationsListUrl(QUrl stationsListUrl)
+{
+    _stationsListUrl = stationsListUrl;
 }
 
 void StationsModel::setAllStationsDetailsUrl(QUrl allStationsDetailsUrl)

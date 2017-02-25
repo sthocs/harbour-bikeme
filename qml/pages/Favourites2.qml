@@ -17,6 +17,7 @@ Page {
         id: stations
         providerName: city.providerName;
         cityName: city.name
+        stationsListUrl: city.stationsListUrl
         allStationsDetailsUrl: city.allStationsDetailsUrl
         stationDetailsUrlTemplate: city.singleStationDetailsUrlTemplate
 
@@ -54,6 +55,7 @@ Page {
                 text: "Refresh all"
                 onClicked: {
                     //topMenu.busy =  favouritesModel.count > 0;
+                    errorMsg.visible = false;
                     favouritesModel.refreshAll();
                 }
             }

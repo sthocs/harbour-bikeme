@@ -125,7 +125,7 @@ Page {
             }
 
             onClicked: {
-                configManager.saveSetting("city", model.identifier);
+                configManager.saveSetting("city", identifier);
                 pageStack.push(Qt.resolvedUrl("SecondPage2.qml"),
                                { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
             }

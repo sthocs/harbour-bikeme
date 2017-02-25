@@ -1,5 +1,13 @@
 [
     {
+        "provider": "Transpole",
+        "name": "Lille",
+        "commercial_name": "V'Lille",
+        "country_code": "FR",
+        "stationsListUrl": "http://vlille.fr/stations/xml-stations.aspx",
+        "stationDetailsUrl": "http://vlille.fr/stations/xml-station.aspx?borne=%1"
+    },
+    {
         "provider": "Smoove",
         "name": "Montpellier",
         "commercial_name": "Vélomagg",

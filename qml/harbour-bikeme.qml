@@ -51,7 +51,7 @@ ApplicationWindow
             properties: { citiesModel: citiesModel }
         };
 
-        var city = citiesModel.getByName(configManager.getSetting("city"));
+        var city = citiesModel.get(configManager.getSetting("city"));
         if (city) {
             console.log("Restoring app state: " + city.name);
             var pagesToPush = [firstPage];

@@ -24,6 +24,9 @@ void CitiesModel::loadAll()
 
 void CitiesModel::addCities(QList<City*> cities)
 {
+    foreach (City* city, cities) {
+        city->setParent(this); // Don't let QML destroy it
+    }
     beginInsertRows(QModelIndex(), _list.size(), _list.size() + cities.size() - 1);
     _list.append(cities);
     endInsertRows();
@@ -39,11 +42,10 @@ City* CitiesModel::cityAt(int row)
     return _list.at(row);
 }
 
-City* CitiesModel::getByName(QString name)
+City* CitiesModel::get(QString identifier)
 {
-    qDebug()<<"seach by name" << name;
     foreach (City* city, _list) {
-        if (city->getName().compare(name) == 0) {
+        if (city->identifier().compare(identifier) == 0) {
             return city;
         }
     }
@@ -59,6 +61,7 @@ int CitiesModel::rowCount(const QModelIndex &parent) const
 
 QHash<int, QByteArray> CitiesModel::roleNames() const {
     QHash<int, QByteArray> roles;
+    roles[IdRole] = "identifier";
     roles[CountryRole] = "country_code";
     roles[CityNameRole] = "name";
     roles[CommercialNameRole] = "commercial_name";
@@ -71,6 +74,8 @@ QVariant CitiesModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch(role) {
+    case IdRole:
+        return _list.at(index.row())->identifier();
     case CountryRole:
         return _list.at(index.row())->getCountryCode();
     case CityNameRole:

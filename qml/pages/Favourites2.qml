@@ -135,7 +135,7 @@ Page {
                             if (index < 1) {
                                 return;
                             }
-                            Db.moveUp(city.name, number);
+                            Db.moveUp(city.identifier, number);
                             favouritesModel.move(index - 1, index, 1);
                         }
                     }
@@ -145,7 +145,7 @@ Page {
                             if (index > favouritesModel.count - 2) {
                                 return;
                             }
-                            Db.moveDown(city.name, number);
+                            Db.moveDown(city.identifier, number);
                             favouritesModel.move(index, index + 1, 1);
                         }
                     }
@@ -158,14 +158,14 @@ Page {
 
             function remove() {
                 remorseAction("Deleting", function() {
-                    Db.removeFavourite(city.name, number);
+                    Db.removeFavourite(city.identifier, number);
                     favouritesModel.remove(index);
                 });
             }
         }
 
         Component.onCompleted: {
-            var favs = Db.getFavourites(city.name);
+            var favs = Db.getFavourites(city.identifier);
             var numbers = [];
             favs.forEach(function(fav) {
                 numbers.push(fav.number);
@@ -199,7 +199,7 @@ Page {
                 }
 
                 if (favouritesModel.add(stationNumber)) {
-                    Db.addFavourite(city.name, stationNumber);
+                    Db.addFavourite(city.identifier, stationNumber);
                 }
                 text = "";
                 listView.focus = true;

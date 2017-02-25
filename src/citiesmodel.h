@@ -13,7 +13,8 @@ class CitiesModel : public QAbstractListModel
 
 public:
     enum Roles {
-        CountryRole = Qt::UserRole + 1,
+        IdRole = Qt::UserRole + 1,
+        CountryRole,
         CityNameRole,
         CommercialNameRole,
         FlagRole
@@ -24,7 +25,7 @@ public:
 
     Q_INVOKABLE void loadAll();
     Q_INVOKABLE City* cityAt(int row);
-    Q_INVOKABLE City* getByName(QString name);
+    Q_INVOKABLE City* get(QString identifier);
 
     // pure virtuals of QAbstractListModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

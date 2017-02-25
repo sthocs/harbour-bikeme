@@ -43,8 +43,7 @@
 #include "stationsmodel.h"
 #include "stationsmodelproxy.h"
 #include "stationsfavouritesproxy.h"
-#include "parser/france/jcdecauxparser.h"
-#include "parser/russia/parsermoscow.h"
+#include "parser/parsersregistry.h"
 
 int main(int argc, char *argv[])
 {
@@ -59,8 +58,8 @@ int main(int argc, char *argv[])
     QGuiApplication* app = SailfishApp::application(argc, argv);
     QQuickView* view = SailfishApp::createView();
 
-    qRegisterMetaType<JCDecauxParser>("JCDecaux");
-    qRegisterMetaType<ParserMoscow>("Velobike");
+    ParsersRegistry registry;
+    registry.registerParsers();
 
     qmlRegisterType<City>("com.jolla.harbour.bikeme", 1, 0, "City");
     qmlRegisterType<CitiesModel>("com.jolla.harbour.bikeme", 1, 0, "CitiesModel");
@@ -78,4 +77,3 @@ int main(int argc, char *argv[])
 
     return app->exec();
 }
-

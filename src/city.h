@@ -26,6 +26,7 @@ struct CityInfo {
 class City : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString identifier READ identifier)
     Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
@@ -33,6 +34,7 @@ class City : public QObject
 public:
     explicit City(QObject *parent = 0);
 
+    QString identifier() const { return _info.name + "_" + _info.countryCode; }
     QString getProviderName() const { return _info.providerName; }
     QString getName() const { return _info.name; }
     QString getCommercialName() const { return _info.commercialName; }

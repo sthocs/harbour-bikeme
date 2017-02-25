@@ -4,7 +4,7 @@ import Sailfish.Silica 1.0
 import com.jolla.harbour.bikeme 1.0
 
 Page {
-    property CitiesModel citiesModel;
+    property CitiesModel citiesModel
 
     Label {
         id: errorMsg
@@ -125,6 +125,7 @@ Page {
             }
 
             onClicked: {
+                configManager.saveSetting("city", model.identifier);
                 pageStack.push(Qt.resolvedUrl("SecondPage2.qml"),
                                { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
             }

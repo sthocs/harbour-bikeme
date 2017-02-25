@@ -9,13 +9,7 @@ import com.jolla.harbour.bikeme 1.0
  */
 
 Page {
-    id: secondPage
-
     property City city
-
-    Component.onCompleted: {
-        configManager.saveSetting("city", city.name);
-    }
 
     SilicaListView {
         id: listView

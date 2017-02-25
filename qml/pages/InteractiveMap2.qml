@@ -194,7 +194,7 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     selectedStationNumber = number;
-                    isSelectedStationInFav = Db.isFavourite(city.name, number);
+                    isSelectedStationInFav = Db.isFavourite(city.identifier, number);
                     if (!displayAllStatus) {
                         if (!city.isSingleStationSupported()) {
                             alertMsg.text = "Only \"all status\" mode\navailable for this city."
@@ -276,10 +276,10 @@ Page {
             onClicked: {
                 if (selectedStationNumber !== 0) {
                     if (isSelectedStationInFav) {
-                        Db.removeFavourite(city.name, selectedStationNumber);
+                        Db.removeFavourite(city.identifier, selectedStationNumber);
                     }
                     else {
-                        Db.addFavourite(city.name, selectedStationNumber);
+                        Db.addFavourite(city.identifier, selectedStationNumber);
                     }
                     isSelectedStationInFav = !isSelectedStationInFav;
                 }

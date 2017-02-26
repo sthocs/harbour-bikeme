@@ -32,9 +32,10 @@ public:
     explicit StationsModel(QObject *parent = 0);
     ~StationsModel();
 
-    Q_INVOKABLE void loadAll();
-    Q_INVOKABLE bool loadStationsList();
+    Q_INVOKABLE void loadStationsList();
+    Q_INVOKABLE void loadAllStationsDetails();
     Q_INVOKABLE bool fetchStationInformation(int index);
+    Q_INVOKABLE bool exists(int number);
     void fetchStationsInformation(QList<QModelIndex> indexes);
 
     QGeoCoordinate getCenter() const;

@@ -66,16 +66,8 @@ Page {
                 map.zoomLevel += 5;
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 updateFilter();
-                if (stations.loadStationsList() && displayAllStatus) {
-                    if (city.isAllStationModeSupported()) {
-                        stations.loadAll();
-                    }
-                    else {
-                        displayAllStatus = false;
-                        alertMsg.text = "Can't display all status\nfor this city."
-                        alertPopup.visible = true;
-                    }
-                }
+                stationLoadingLabel.visible = true;
+                stations.loadStationsList();
             }
 
             gesture.onFlickFinished: {
@@ -157,9 +149,20 @@ Page {
             updateFilter();
         }
         onStationsLoaded: {
-            stationLoadingLabel.visible = false
-            refreshLabel.visible = false
-            stationsProxy.applyFilter = count > maxItemsOnMap
+            stationLoadingLabel.visible = false;
+            refreshLabel.visible = false;
+            stationsProxy.applyFilter = count > maxItemsOnMap;
+            if (!withDetails && displayAllStatus) {
+                if (city.isAllStationModeSupported()) {
+                    refreshLabel.visible = true;
+                    stations.loadAllStationsDetails();
+                }
+                else {
+                    displayAllStatus = false;
+                    alertMsg.text = "Can't display all status\nfor this city.";
+                    alertPopup.visible = true;
+                }
+            }
         }
         onStationUpdated: {
             if (station.number === selectedStationNumber) {
@@ -209,7 +212,7 @@ Page {
                             alertPopup.visible = true;
                             refreshLabel.visible = true;
                             displayAllStatus = true;
-                            stations.loadAll();
+                            stations.loadAllStationsDetails();
                         }
                         stationNameLabel.text = "Updating...";
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
@@ -462,7 +465,7 @@ Page {
                 onClicked: {
                     refreshLabel.text = qsTr("Refreshing...");
                     refreshLabel.visible = true
-                    stations.loadAll();
+                    stations.loadAllStationsDetails();
                 }
             }
         }

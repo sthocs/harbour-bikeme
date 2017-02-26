@@ -200,7 +200,7 @@ Page {
                     return;
                 }
 
-                if (favouritesModel.add(stationNumber)) {
+                if (stations.exists(stationNumber) && favouritesModel.add(stationNumber)) {
                     Db.addFavourite(city.identifier, stationNumber);
                 }
                 text = "";

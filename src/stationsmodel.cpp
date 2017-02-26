@@ -14,17 +14,17 @@ StationsModel::~StationsModel()
     _list.clear();
 }
 
-bool StationsModel::loadStationsList()
+void StationsModel::loadStationsList()
 {
     if (!_stationsListUrl.isEmpty()) {
-        return _stationsLoader.fetchAllStationsList(_stationsListUrl);
+        _stationsLoader.fetchAllStationsList(_stationsListUrl);
     }
     else {
-        return _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
+        _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
     }
 }
 
-void StationsModel::loadAll()
+void StationsModel::loadAllStationsDetails()
 {
     _stationsLoader.fetchAllStationsDetails(_allStationsDetailsUrl);
 }
@@ -41,13 +41,23 @@ bool StationsModel::fetchStationInformation(int index)
 void StationsModel::fetchStationsInformation(QList<QModelIndex> indexes)
 {
     if (_singleStationDetailsUrlTemplate.isEmpty()) {
-        loadAll();
+        loadAllStationsDetails();
     }
     else {
         foreach (QModelIndex index, indexes) {
             _stationsLoader.fetchStationDetails(_list.at(index.row()), _singleStationDetailsUrlTemplate);
         }
     }
+}
+
+bool StationsModel::exists(int number)
+{
+    foreach (Station* station, _list) {
+        if (station->number == number) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void StationsModel::setStationsList(QList<Station*> stations)

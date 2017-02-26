@@ -41,13 +41,13 @@ void StationsFavouritesProxy::move(int from, int to)
 
 bool StationsFavouritesProxy::refreshStationInfo(int row)
 {
-    ((StationsModel*)sourceModel())->fetchStationInformation(mapToSource(index(row, 0)).row());
+    return ((StationsModel*)sourceModel())->fetchStationInformation(mapToSource(index(row, 0)).row());
 }
 
 void StationsFavouritesProxy::refreshAll()
 {
     QList<QModelIndex> indexes;
-    for (int i = 0; i < _favourites.size(); ++i) {
+    for (int i = 0; i < rowCount(); ++i) {
         indexes.append(mapToSource(index(i, 0)));
     }
     ((StationsModel*)sourceModel())->fetchStationsInformation(indexes);

@@ -10,8 +10,11 @@ public:
     QString parseStationDetails(QString stationDetails, QString url);
     QString parseAllStationsDetails(QString allStationsDetails);
 
+    QList<Station*> parseAllStations(QString allStations, bool withDetails);
+
 private:
     QString parseXmlResult(QString xmlResult);
 };
+Q_DECLARE_METATYPE(ParserLondon)
 
 #endif // PARSERLONDON_H

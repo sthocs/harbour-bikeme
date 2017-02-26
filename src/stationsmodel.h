@@ -62,8 +62,7 @@ signals:
     void stationsLoaded(bool withDetails);
 
 private slots:
-    void setStationsList(QList<Station*> stations);
-    void addStations(QList<Station*> stations);
+    void setStations(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
 
 private:

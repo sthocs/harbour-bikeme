@@ -105,6 +105,16 @@ void CitiesLoader::bikeProviderFetched()
         reply->deleteLater();
         return;
     }
+    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        _providers[redirectUrl.toString()] = _providers[reply->url().toString()];
+        QNetworkRequest req(redirectUrl);
+        QNetworkReply *rep = _networkAccessManager->get(req);
+        connect(rep, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
+        reply->deleteLater();
+        return;
+    }
 
     ProviderInfo providerInfo = _providers[reply->url().toString()];
     QString citiesString = QString::fromUtf8(reply->readAll());

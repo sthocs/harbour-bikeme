@@ -72,7 +72,7 @@ Page {
                 Label {
                     id: station_name
                     x: Theme.paddingLarge
-                    text: model.name.toLowerCase()
+                    text: decodeURIComponent(model.name.toLowerCase())
                     font.capitalization: Font.Capitalize
                 }
                 Row {
@@ -84,7 +84,8 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + (opened ? available_bikes : 0)
+                        text: " : " + (opened && available_bikes != -1 ?
+                                           available_bikes : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true
@@ -101,7 +102,8 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + (opened ? available_bike_stands : 0)
+                        text: " : " + (opened && available_bike_stands != -1 ?
+                                           available_bike_stands : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true

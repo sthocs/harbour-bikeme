@@ -8,6 +8,27 @@
         "stationDetailsUrl": "http://vlille.fr/stations/xml-station.aspx?borne=%1"
     },
     {
+        "provider": "Veloway",
+        "name": "Nice",
+        "commercial_name": "Vélo Bleu",
+        "country_code": "FR",
+        "allStationsDetailsUrl": "https://www.velobleu.org/cartoV2/libProxyCarto.asp"
+    },
+    {
+        "provider": "Veloway",
+        "name": "Calais",
+        "commercial_name": "Vel'In",
+        "country_code": "FR",
+        "allStationsDetailsUrl": "https://www.vel-in.fr/cartoV2/libProxyCarto.asp"
+    },
+    {
+        "provider": "Veloway",
+        "name": "Vannes",
+        "commercial_name": "Vélocéa",
+        "country_code": "FR",
+        "allStationsDetailsUrl": "https://www.velocea.fr/cartoV2/libProxyCarto.asp"
+    },
+    {
         "provider": "Smoove",
         "name": "Montpellier",
         "commercial_name": "Vélomagg",
@@ -85,10 +106,24 @@
         "allStationsDetailsUrl": "http://cli-velo-batumi.gir.fr/tvcstations.xml"
     },
     {
+        "provider": "TfL",
+        "name": "London",
+        "commercial_name": "Barclays Cycle Hire",
+        "country_code": "UK",
+        "allStationsDetailsUrl": "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml"
+    },
+    {
         "provider": "Velobike",
         "name": "Moscow",
         "commercial_name": "Velobike",
         "country_code": "RU",
         "allStationsDetailsUrl": "http://velobike.ru/proxy/parkings/"
+    },
+    {
+        "provider": "VelobikeKz",
+        "name": "Astana",
+        "commercial_name": "Astana Bike",
+        "country_code": "KZ",
+        "allStationsDetailsUrl": "http://velobike.kz/rest/app.php/stations"
     }
 ]

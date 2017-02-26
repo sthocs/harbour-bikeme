@@ -3,8 +3,7 @@
 StationsModel::StationsModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<Station*>())
 {
-    connect(&_stationsLoader, SIGNAL(allStationsDetailsFetched(QList<Station*>)), this, SLOT(addStations(QList<Station*>)));
-    connect(&_stationsLoader, SIGNAL(allStationsListFetched(QList<Station*>)), this, SLOT(setStationsList(QList<Station*>)));
+    connect(&_stationsLoader, SIGNAL(stationsFetched(QList<Station*>, bool)), this, SLOT(setStations(QList<Station*>, bool)));
     connect(&_stationsLoader, SIGNAL(stationDetailsFetched(Station*)), this, SLOT(stationDetailsFetched(Station*)));
 }
 
@@ -60,7 +59,7 @@ bool StationsModel::exists(int number)
     return false;
 }
 
-void StationsModel::setStationsList(QList<Station*> stations)
+void StationsModel::setStations(QList<Station*> stations, bool withDetails)
 {
     beginResetModel();
     qDeleteAll(_list);
@@ -69,19 +68,7 @@ void StationsModel::setStationsList(QList<Station*> stations)
     endResetModel();
     updateCenter();
     emit countChanged();
-    emit stationsLoaded(false);
-}
-
-void StationsModel::addStations(QList<Station*> stations)
-{
-    beginResetModel();
-    qDeleteAll(_list);
-    _list.clear();
-    _list.append(stations);
-    endResetModel();
-    updateCenter();
-    emit countChanged();
-    emit stationsLoaded(true);
+    emit stationsLoaded(withDetails);
 }
 
 void StationsModel::stationDetailsFetched(Station* station)

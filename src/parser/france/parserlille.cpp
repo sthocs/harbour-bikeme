@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QStringList>
+#include <QGeoCoordinate>
 
 #include "parserlille.h"
 

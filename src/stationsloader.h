@@ -21,8 +21,7 @@ public:
     void fetchStationDetails(Station* station, QString urlTemplate);
 
 signals:
-    void allStationsListFetched(QList<Station*> stations);
-    void allStationsDetailsFetched(QList<Station*> stations);
+    void stationsFetched(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
 
 public slots:

@@ -4,7 +4,10 @@
 #include "france/jcdecauxparser.h"
 #include "france/parserlille.h"
 #include "france/parsersmoove.h"
+#include "france/parserveloway.h"
+#include "kazakhstan/parserastana.h"
 #include "russia/parsermoscow.h"
+#include "uk/parserlondon.h"
 
 class ParsersRegistry
 {

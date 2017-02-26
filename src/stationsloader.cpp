@@ -62,9 +62,15 @@ void StationsLoader::allStationsListFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
-    //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << reply->errorString();
+        reply->deleteLater();
+        return;
+    }
+    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        fetchAllStationsList(redirectUrl);
         reply->deleteLater();
         return;
     }
@@ -87,9 +93,15 @@ void StationsLoader::allStationsDetailsFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
-    //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << reply->errorString();
+        reply->deleteLater();
+        return;
+    }
+    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if(!redirectUrl.isEmpty())
+    {
+        fetchAllStationsDetails(redirectUrl);
         reply->deleteLater();
         return;
     }
@@ -109,7 +121,7 @@ void StationsLoader::allStationsDetailsFetched()
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
         QList<Station*> stations = parser->parseAllStations(stationsString, true);
         delete parser;
-        emit allStationsDetailsFetched(stations);
+        emit stationsFetched(stations, true);
     }
     reply->deleteLater();
 }
@@ -143,6 +155,6 @@ void StationsLoader::parseStationsList(QString stationsString)
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
         QList<Station*> stations = parser->parseAllStations(stationsString, false);
         delete parser;
-        emit allStationsListFetched(stations);
+        emit stationsFetched(stations, false);
     }
 }

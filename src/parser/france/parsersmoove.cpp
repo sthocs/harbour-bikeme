@@ -74,11 +74,6 @@ QList<Station*> ParserSmoove::parseAllStations(QString allStationsDetails, bool 
             station->available_bike_stands = si.attribute("fr").toInt();
             station->available_bikes = si.attribute("av").toInt();
         }
-        else {
-            station->bike_stands = -1;
-            station->available_bike_stands = -1;
-            station->available_bikes = -1;
-        }
         stationsList.append(station);
         si_node = si_node.nextSibling();
     }

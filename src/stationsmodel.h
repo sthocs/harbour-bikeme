@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include <QGeoCoordinate>
 
+#include "city.h"
 #include "station.h"
 #include "stationsloader.h"
 
@@ -12,11 +13,7 @@ class StationsModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(QGeoCoordinate center READ getCenter NOTIFY centerChanged)
-    Q_PROPERTY(QString providerName READ getProviderName WRITE setProviderName)
-    Q_PROPERTY(QString cityName READ getCityName WRITE setCityName)
-    Q_PROPERTY(QUrl stationsListUrl WRITE setStationsListUrl)
-    Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl WRITE setAllStationsDetailsUrl)
-    Q_PROPERTY(QString stationDetailsUrlTemplate READ getStationDetailsUrlTemplate WRITE setStationDetailsUrlTemplate)
+    Q_PROPERTY(City* city WRITE setCity)
 
 public:
     enum Roles {
@@ -39,16 +36,8 @@ public:
     void fetchStationsInformation(QList<QModelIndex> indexes);
 
     QGeoCoordinate getCenter() const;
-    QString getProviderName() const;
-    QString getCityName() const;
-    QUrl getAllStationsDetailsUrl() const;
-    QString getStationDetailsUrlTemplate() const;
 
-    void setProviderName(QString providerName);
-    void setCityName(QString cityName);
-    void setStationsListUrl(QUrl stationsListUrl);
-    void setAllStationsDetailsUrl(QUrl allStationsDetailsUrl);
-    void setStationDetailsUrlTemplate(QString stationDetailsUrlTemplate);
+    void setCity(City* city);
 
     // pure virtuals of QAbstractListModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -68,11 +57,7 @@ private slots:
 private:
     QList<Station*> _list;
     QGeoCoordinate _center;
-    QString _providerName;
-    QString _cityName;
-    QUrl _stationsListUrl;
-    QUrl _allStationsDetailsUrl;
-    QString _singleStationDetailsUrlTemplate;
+    City* _city;
 
     StationsLoader _stationsLoader;
 

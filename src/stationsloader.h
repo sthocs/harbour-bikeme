@@ -6,6 +6,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QHash>
 
+#include "city.h"
 #include "station.h"
 
 class StationsLoader : public QObject
@@ -13,30 +14,28 @@ class StationsLoader : public QObject
     Q_OBJECT
 public:
     explicit StationsLoader(QObject *parent = 0);
+    ~StationsLoader();
 
-    void setProvider(QString providerName);
-    void setCity(QString cityName);
-    void fetchAllStationsList(QUrl allStationsListUrl);
-    void fetchAllStationsDetails(QUrl allStationsDetailsUrl);
-    void fetchStationDetails(Station* station, QString urlTemplate);
+    void setCity(City* city);
+    void fetchAllStationsList();
+    void fetchAllStationsDetails();
+    void fetchStationDetails(Station* station);
 
 signals:
     void stationsFetched(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
 
 public slots:
-    void allStationsListFetched();
-    void allStationsDetailsFetched();
+    void stationsListFetched();
     void stationDetailsFetched();
 
 private:
-    void parseStationsList(QString stations);
+    void parseStationsList(QString stations, bool withDetails);
     QString cacheFileName() const;
 
     QNetworkAccessManager* _networkAccessManager;
 
-    QString _providerName;
-    QString _cityName;
+    City* _city;
     QHash<QString, Station*> _stations;
 };
 

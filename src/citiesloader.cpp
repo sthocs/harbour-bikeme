@@ -15,6 +15,11 @@ CitiesLoader::CitiesLoader(QObject *parent) : QObject(parent)
     _networkAccessManager = new QNetworkAccessManager(this);
 }
 
+CitiesLoader::~CitiesLoader()
+{
+    delete _networkAccessManager;
+}
+
 void CitiesLoader::loadAll(bool fromCache)
 {
     if (loadCitiesFromProviders(fromCache)) {

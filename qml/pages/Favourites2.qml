@@ -15,11 +15,6 @@ Page {
 
     StationsModel {
         id: stations
-        providerName: city.providerName;
-        cityName: city.name
-        stationsListUrl: city.stationsListUrl
-        allStationsDetailsUrl: city.allStationsDetailsUrl
-        stationDetailsUrlTemplate: city.singleStationDetailsUrlTemplate
 
         onStationsLoaded: {
             if (!withDetails) {
@@ -176,6 +171,7 @@ Page {
             });
             console.log('setting favs ' + JSON.stringify(numbers));
             favouritesModel.setFavourites(numbers);
+            stations.city = city;
             stations.loadStationsList();
         }
     }

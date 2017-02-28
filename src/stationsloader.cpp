@@ -11,46 +11,48 @@ StationsLoader::StationsLoader(QObject *parent) : QObject(parent)
     _networkAccessManager = new QNetworkAccessManager(this);
 }
 
-void StationsLoader::setProvider(QString providerName)
+StationsLoader::~StationsLoader()
 {
-    _providerName = providerName;
+    delete _networkAccessManager;
 }
 
-void StationsLoader::setCity(QString cityName)
+void StationsLoader::setCity(City* city)
 {
-    _cityName = cityName;
+    _city = city;
 }
 
 QString StationsLoader::cacheFileName() const
 {
-    return _providerName + _cityName;
+    return _city->getProviderName() + _city->getName();
 }
 
-void StationsLoader::fetchAllStationsList(QUrl allStationsListUrl)
+void StationsLoader::fetchAllStationsList()
 {
     QFile stationsFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                        + QDir::separator() + cacheFileName());
     if (stationsFile.open(QIODevice::ReadOnly)) {
         QByteArray savedData = stationsFile.readAll();
-        parseStationsList(savedData);
+        parseStationsList(savedData, false);
     }
     else {
-        QNetworkRequest request(allStationsListUrl);
+        QNetworkRequest request(_city->getStationsListUrl().isEmpty() ?
+                                    _city->getAllStationsDetailsUrl() :
+                                    _city->getStationsListUrl());
         QNetworkReply *reply = _networkAccessManager->get(request);
-        connect(reply, SIGNAL(finished()), this, SLOT(allStationsListFetched()));
+        connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
     }
 }
 
-void StationsLoader::fetchAllStationsDetails(QUrl allStationsDetailsUrl)
+void StationsLoader::fetchAllStationsDetails()
 {
-    QNetworkRequest request(allStationsDetailsUrl);
+    QNetworkRequest request(_city->getAllStationsDetailsUrl());
     QNetworkReply *reply = _networkAccessManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(allStationsDetailsFetched()));
+    connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
 }
 
-void StationsLoader::fetchStationDetails(Station *station, QString urlTemplate)
+void StationsLoader::fetchStationDetails(Station *station)
 {
-    QString url(urlTemplate.arg(station->number));
+    QString url(_city->getSingleStationDetailsUrlTemplate().arg(station->number));
     _stations[url] = station;
 
     QNetworkRequest request(url);
@@ -58,7 +60,7 @@ void StationsLoader::fetchStationDetails(Station *station, QString urlTemplate)
     connect(reply, SIGNAL(finished()), this, SLOT(stationDetailsFetched()));
 }
 
-void StationsLoader::allStationsListFetched()
+void StationsLoader::stationsListFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
@@ -70,13 +72,19 @@ void StationsLoader::allStationsListFetched()
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if(!redirectUrl.isEmpty())
     {
-        fetchAllStationsList(redirectUrl);
+        if (_city->getStationsListUrl().isEmpty()) {
+            _city->setAllStationsDetailsUrl(redirectUrl);
+        }
+        else {
+            _city->setStationsListUrl(redirectUrl);
+        }
+        fetchAllStationsList();
         reply->deleteLater();
         return;
     }
 
     QString stationsString = QString::fromUtf8(reply->readAll());
-    if (!_cityName.isEmpty()) {
+    if (!cacheFileName().isEmpty()) {
         QFile stationsFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                            + QDir::separator() + cacheFileName());
         if (!stationsFile.open(QIODevice::WriteOnly)) {
@@ -85,44 +93,7 @@ void StationsLoader::allStationsListFetched()
         stationsFile.write(stationsString.toUtf8());
     }
 
-    parseStationsList(stationsString);
-    reply->deleteLater();
-}
-
-void StationsLoader::allStationsDetailsFetched()
-{
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-
-    if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->errorString();
-        reply->deleteLater();
-        return;
-    }
-    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if(!redirectUrl.isEmpty())
-    {
-        fetchAllStationsDetails(redirectUrl);
-        reply->deleteLater();
-        return;
-    }
-
-    QString stationsString = QString::fromUtf8(reply->readAll());
-    if (!_cityName.isEmpty()) {
-        QFile stationsFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                           + QDir::separator() + cacheFileName());
-        if (!stationsFile.open(QIODevice::WriteOnly)) {
-            qWarning() << "Couldn't open" << cacheFileName();
-        }
-        stationsFile.write(stationsString.toUtf8());
-    }
-
-    int id = QMetaType::type(_providerName.toLatin1().data());
-    if (id != -1) {
-        BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        QList<Station*> stations = parser->parseAllStations(stationsString, true);
-        delete parser;
-        emit stationsFetched(stations, true);
-    }
+    parseStationsList(stationsString, _city->getStationsListUrl().isEmpty());
     reply->deleteLater();
 }
 
@@ -138,7 +109,7 @@ void StationsLoader::stationDetailsFetched()
     }
 
     Station* station = _stations[reply->url().toString()];
-    int id = QMetaType::type(_providerName.toLatin1().data());
+    int id = QMetaType::type(_city->getProviderName().toLatin1().data());
     if (id != -1) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
         parser->parseStationDetails2(QString::fromUtf8(reply->readAll()), station);
@@ -148,13 +119,13 @@ void StationsLoader::stationDetailsFetched()
     reply->deleteLater();
 }
 
-void StationsLoader::parseStationsList(QString stationsString)
+void StationsLoader::parseStationsList(QString stationsString, bool withDetails)
 {
-    int id = QMetaType::type(_providerName.toLatin1().data());
+    int id = QMetaType::type(_city->getProviderName().toLatin1().data());
     if (id != -1) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        QList<Station*> stations = parser->parseAllStations(stationsString, false);
+        QList<Station*> stations = parser->parseAllStations(stationsString, withDetails);
         delete parser;
-        emit stationsFetched(stations, false);
+        emit stationsFetched(stations, withDetails);
     }
 }

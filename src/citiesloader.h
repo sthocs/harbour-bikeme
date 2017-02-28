@@ -13,6 +13,7 @@ class CitiesLoader : public QObject
 
 public:
     explicit CitiesLoader(QObject *parent = 0);
+    ~CitiesLoader();
 
     void loadAll(bool fromCache = false);
 

@@ -48,6 +48,8 @@ public:
     Q_INVOKABLE bool isAllStationModeSupported() const { return !_info.allStationsDetailsUrl.isEmpty(); }
 
     void setInfo(const CityInfo info) { _info = info; }
+    void setStationsListUrl(QUrl url) { _info.stationsInfoUrl = url; }
+    void setAllStationsDetailsUrl(QUrl url) { _info.allStationsDetailsUrl = url; }
 
 signals:
     void nameChanged();

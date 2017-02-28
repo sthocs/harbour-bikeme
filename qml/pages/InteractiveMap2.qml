@@ -67,6 +67,7 @@ Page {
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 updateFilter();
                 stationLoadingLabel.visible = true;
+                stations.city = city;
                 stations.loadStationsList();
             }
 
@@ -138,11 +139,6 @@ Page {
 
     StationsModel {
         id: stations
-        providerName: city.providerName
-        cityName: city.name
-        stationsListUrl: city.stationsListUrl
-        allStationsDetailsUrl: city.allStationsDetailsUrl
-        stationDetailsUrlTemplate: city.singleStationDetailsUrlTemplate
 
         onCenterChanged: {
             map.center = center;
@@ -153,7 +149,7 @@ Page {
             refreshLabel.visible = false;
             stationsProxy.applyFilter = count > maxItemsOnMap;
             if (!withDetails && displayAllStatus) {
-                if (city.isAllStationModeSupported()) {
+                if (interactiveMap.city.isAllStationModeSupported()) {
                     refreshLabel.visible = true;
                     stations.loadAllStationsDetails();
                 }
@@ -241,7 +237,7 @@ Page {
                                                    positionSource.position.coordinate.longitude);
                 map.center = pos;
                 updateFilter();
-            }          
+            }
         }
     }
 

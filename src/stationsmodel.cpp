@@ -15,36 +15,31 @@ StationsModel::~StationsModel()
 
 void StationsModel::loadStationsList()
 {
-    if (!_stationsListUrl.isEmpty()) {
-        _stationsLoader.fetchAllStationsList(_stationsListUrl);
-    }
-    else {
-        _stationsLoader.fetchAllStationsList(_allStationsDetailsUrl);
-    }
+    _stationsLoader.fetchAllStationsList();
 }
 
 void StationsModel::loadAllStationsDetails()
 {
-    _stationsLoader.fetchAllStationsDetails(_allStationsDetailsUrl);
+    _stationsLoader.fetchAllStationsDetails();
 }
 
 bool StationsModel::fetchStationInformation(int index)
 {
-    if (_singleStationDetailsUrlTemplate.isEmpty()) {
+    if (_city->getSingleStationDetailsUrlTemplate().isEmpty()) {
         return false;
     }
-    _stationsLoader.fetchStationDetails(_list.at(index), _singleStationDetailsUrlTemplate);
+    _stationsLoader.fetchStationDetails(_list.at(index));
     return true;
 }
 
 void StationsModel::fetchStationsInformation(QList<QModelIndex> indexes)
 {
-    if (_singleStationDetailsUrlTemplate.isEmpty()) {
+    if (_city->getSingleStationDetailsUrlTemplate().isEmpty()) {
         loadAllStationsDetails();
     }
     else {
         foreach (QModelIndex index, indexes) {
-            _stationsLoader.fetchStationDetails(_list.at(index.row()), _singleStationDetailsUrlTemplate);
+            _stationsLoader.fetchStationDetails(_list.at(index.row()));
         }
     }
 }
@@ -104,51 +99,10 @@ QGeoCoordinate StationsModel::getCenter() const
     return _center;
 }
 
-QString StationsModel::getProviderName() const
+void StationsModel::setCity(City* city)
 {
-    return _providerName;
-}
-
-QString StationsModel::getCityName() const
-{
-    return _cityName;
-}
-
-QUrl StationsModel::getAllStationsDetailsUrl() const
-{
-    return _allStationsDetailsUrl;
-}
-
-QString StationsModel::getStationDetailsUrlTemplate() const
-{
-    return _singleStationDetailsUrlTemplate;
-}
-
-void StationsModel::setStationsListUrl(QUrl stationsListUrl)
-{
-    _stationsListUrl = stationsListUrl;
-}
-
-void StationsModel::setAllStationsDetailsUrl(QUrl allStationsDetailsUrl)
-{
-    _allStationsDetailsUrl = allStationsDetailsUrl;
-}
-
-void StationsModel::setStationDetailsUrlTemplate(QString stationDetailsUrlTemplate)
-{
-    _singleStationDetailsUrlTemplate = stationDetailsUrlTemplate;
-}
-
-void StationsModel::setProviderName(QString providerName)
-{
-    _providerName = providerName;
-    _stationsLoader.setProvider(_providerName);
-}
-
-void StationsModel::setCityName(QString cityName)
-{
-    _cityName = cityName;
-    _stationsLoader.setCity(_cityName);
+    _city = city;
+    _stationsLoader.setCity(city);
 }
 
 

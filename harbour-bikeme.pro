@@ -35,7 +35,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/stationsmodel.cpp \
     src/stationsmodelproxy.cpp \
     src/stationsfavouritesproxy.cpp \
-    src/parser/parsersregistry.cpp
+    src/parser/parsersregistry.cpp \
+    src/parser/germany/nextbikeparser.cpp
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \
@@ -85,7 +86,8 @@ HEADERS += \
     src/stationsmodel.h \
     src/stationsmodelproxy.h \
     src/stationsfavouritesproxy.h \
-    src/parser/parsersregistry.h
+    src/parser/parsersregistry.h \
+    src/parser/germany/nextbikeparser.h
 
 DISTFILES += \
     qml/pages/InteractiveMap2.qml \

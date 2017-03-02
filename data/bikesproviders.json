@@ -5,5 +5,10 @@
         "stationDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations/%3?contract=%2&apiKey=%1",
         "allStationsDetailsUrl": "https://api.jcdecaux.com/vls/v1/stations?contract=%2&apiKey=%1",
         "apiKey": ""
+    },
+    {
+        "name": "Nextbike",
+        "url": "https://api.nextbike.net/maps/nextbike-live.json?list_cities=!",
+        "allStationsDetailsUrl": "https://api.nextbike.net/maps/nextbike-live.json?city=%1"
     }
 ]

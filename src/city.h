@@ -14,6 +14,7 @@ struct ProviderInfo {
 };
 
 struct CityInfo {
+    int id;
     QString name;
     QString commercialName;
     QString providerName;

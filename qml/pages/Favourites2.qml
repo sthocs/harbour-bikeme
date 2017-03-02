@@ -198,9 +198,16 @@ Page {
                     return;
                 }
 
-                if (stations.exists(stationNumber) && favouritesModel.add(stationNumber)) {
-                    Db.addFavourite(city.identifier, stationNumber);
+                if (stations.exists(stationNumber)) {
+                    if (favouritesModel.add(stationNumber)) {
+                        Db.addFavourite(city.identifier, stationNumber);
+                    }
                 }
+                else {
+                    errorMsg.text = "Station " + text + " does not exist";
+                    errorMsg.visible = true;
+                }
+
                 text = "";
                 listView.focus = true;
             }

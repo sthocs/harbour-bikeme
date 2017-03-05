@@ -4,6 +4,11 @@ CitiesModel::CitiesModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<City*>())
 {
     connect(&citiesLoader, SIGNAL(citiesAdded(QList<City*>)), this, SLOT(addCities(QList<City*>)));
+    connect(&citiesLoader, SIGNAL(providersCountChanged(int)), this, SLOT(setProvidersCount(int)));
+    connect(&citiesLoader, SIGNAL(fetchedProvidersCountChanged(int, int)), this, SLOT(setFetchedProvidersCount(int, int)));
+    connect(&citiesLoader, SIGNAL(errorMsgChanged(QString)), this, SLOT(setErrorMsg(QString)));
+    connect(&citiesLoader, SIGNAL(finished()), this, SIGNAL(fetchFinished()));
+    // Load cities from cache
     citiesLoader.loadAll(true);
 }
 
@@ -50,6 +55,49 @@ City* CitiesModel::get(QString identifier)
         }
     }
     return NULL;
+}
+
+int CitiesModel::providersCount() const
+{
+    return _providersCount;
+}
+
+int CitiesModel::fetchedProvidersCount() const
+{
+    return _fetchedProvidersCount;
+}
+
+int CitiesModel::errorsCount() const
+{
+    return _errorsCount;
+}
+
+QString CitiesModel::errorMsg() const
+{
+    return _errorMsg;
+}
+
+// SLOTS
+void CitiesModel::setProvidersCount(int count)
+{
+    _providersCount = count;
+    emit providersCountChanged();
+}
+
+void CitiesModel::setFetchedProvidersCount(int count, int errorsCount)
+{
+    _fetchedProvidersCount = count;
+    emit fetchedProvidersCountChanged();
+    if (_errorsCount != errorsCount) {
+        _errorsCount = errorsCount;
+        emit errorsCountChanged();
+    }
+}
+
+void CitiesModel::setErrorMsg(QString errorMsg)
+{
+    _errorMsg = errorMsg;
+    emit errorMsgChanged();
 }
 
 // Virtual functions of QAbstractListModel

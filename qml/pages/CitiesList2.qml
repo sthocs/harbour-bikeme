@@ -3,13 +3,21 @@ import Sailfish.Silica 1.0
 
 import com.jolla.harbour.bikeme 1.0
 
+import "../util"
+
 Page {
     property CitiesModel citiesModel
 
     Label {
         id: errorMsg
-        visible: false
+        text: citiesModel.errorMsg
         font.pixelSize: Theme.fontSizeExtraSmall
+    }
+
+    Component.onCompleted: {
+        citiesModel.fetchFinished.connect(function() {
+            topMenu.busy = false;
+        });
     }
 
     CitiesModelProxy {
@@ -25,7 +33,7 @@ Page {
         currentIndex: -1
 
         header: Column {
-            width: parent.width
+            width: listView.width
 
             PageHeader { title: "Cities2" }
 
@@ -81,16 +89,9 @@ Page {
                 }
             }
             MenuItem {
-                text: qsTr("Display: List")
-                onClicked: {
-                    configManager.saveSetting("citiesDisplay", "browser");
-                    pageStack.replace(Qt.resolvedUrl("CitiesBrowser.qml"))
-                }
-            }
-            MenuItem {
                 text: "Refresh cities list"
                 onClicked: {
-                    //topMenu.busy = true
+                    topMenu.busy = true
                     citiesModel.loadAll()
                 }
             }
@@ -130,5 +131,18 @@ Page {
                                { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
             }
         }
+    }
+
+    ProgressInfoBar {
+        id: progressInfoBar
+        label: qsTr("Fetching providers...")
+        open: topMenu.busy && citiesModel.fetchedProvidersCount < citiesModel.providersCount
+        newCount: citiesModel.count
+        errorCount: citiesModel.errorsCount
+        minimumValue: 0
+        maximumValue: citiesModel.providersCount
+        value: citiesModel.fetchedProvidersCount
+
+        anchors.bottom: parent.bottom
     }
 }

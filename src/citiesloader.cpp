@@ -22,6 +22,7 @@ CitiesLoader::~CitiesLoader()
 
 void CitiesLoader::loadAll(bool fromCache)
 {
+    emit errorMsgChanged(QString());
     if (loadCitiesFromProviders(fromCache)) {
         loadCitiesFromFile();
     }
@@ -38,8 +39,12 @@ bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
     QByteArray json = providersFile.readAll();
     providersFile.close();
 
+    _pendingRequests = 0;
+    _fetchedProvidersCount = 0;
+    _errorsCount = 0;
     QJsonDocument doc = QJsonDocument::fromJson(json);
     QJsonArray providersArray = doc.array();
+    emit providersCountChanged(providersArray.size());
     for (int i = 0; i < providersArray.size(); ++i) {
         QJsonObject providerJson = providersArray[i].toObject();
         QString apiKey(providerJson["apiKey"].toString());
@@ -66,6 +71,7 @@ bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
             }
         }
         else {
+            ++_pendingRequests;
             QNetworkRequest request(provider.url);
             QNetworkReply *reply = _networkAccessManager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
@@ -111,7 +117,11 @@ void CitiesLoader::bikeProviderFetched()
 
     //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->errorString();
+        emit errorMsgChanged(reply->errorString());
+        fetchedProvidersCountChanged(_fetchedProvidersCount, ++_errorsCount);
+        if (--_pendingRequests == 0) {
+            emit finished();
+        }
         reply->deleteLater();
         return;
     }
@@ -135,6 +145,10 @@ void CitiesLoader::bikeProviderFetched()
     }
     citiesFile.write(citiesString.toUtf8());
     parse(citiesString, providerInfo);
+    fetchedProvidersCountChanged(++_fetchedProvidersCount, _errorsCount);
+    if (--_pendingRequests == 0) {
+        emit finished();
+    }
     reply->deleteLater();
 }
 

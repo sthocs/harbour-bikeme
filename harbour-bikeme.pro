@@ -93,4 +93,5 @@ DISTFILES += \
     qml/pages/InteractiveMap2.qml \
     qml/pages/SecondPage2.qml \
     qml/pages/Favourites2.qml \
-    data/cities.json
+    data/cities.json \
+    qml/util/ProgressInfoBar.qml

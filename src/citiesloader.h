@@ -20,6 +20,10 @@ public:
 signals:
     void cityAdded(City* city);
     void citiesAdded(QList<City*> cities);
+    void providersCountChanged(int);
+    void fetchedProvidersCountChanged(int, int);
+    void errorMsgChanged(QString);
+    void finished();
 
 private slots:
     void bikeProviderFetched();
@@ -32,6 +36,9 @@ private:
     QNetworkAccessManager* _networkAccessManager;
 
     QHash<QString, ProviderInfo> _providers;
+    int _fetchedProvidersCount;
+    int _pendingRequests;
+    int _errorsCount;
 
 };
 

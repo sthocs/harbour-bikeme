@@ -104,6 +104,7 @@ void CitiesLoader::loadCitiesFromFile()
         info.stationsInfoUrl = QUrl(cityJson["stationsListUrl"].toString());
         info.allStationsDetailsUrl = QUrl(cityJson["allStationsDetailsUrl"].toString());
         info.singleStationDetailsUrlTemplate = cityJson["stationDetailsUrl"].toString();
+        info.copyright = cityJson["copyright"].toString();
         City* city = new City();
         city->setInfo(info);
         citiesList.append(city);

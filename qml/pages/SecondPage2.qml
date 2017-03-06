@@ -63,6 +63,6 @@ Page {
 
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
-        text: dataProvider.getCopyright(city.name)
+        text: city.copyright
     }
 }

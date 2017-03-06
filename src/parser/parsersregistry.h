@@ -1,6 +1,7 @@
 #ifndef PARSERSREGISTRY_H
 #define PARSERSREGISTRY_H
 
+#include "canada/montrealparser.h"
 #include "france/jcdecauxparser.h"
 #include "france/parserlille.h"
 #include "france/parsersmoove.h"

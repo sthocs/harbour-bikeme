@@ -113,6 +113,13 @@
         "allStationsDetailsUrl": "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml"
     },
     {
+        "provider": "Bixi",
+        "name": "Montreal",
+        "commercial_name": "Bixi Montreal",
+        "country_code": "CA",
+        "allStationsDetailsUrl": "https://secure.bixi.com/data/stations.json"
+    },
+    {
         "provider": "Velobike",
         "name": "Moscow",
         "commercial_name": "Velobike",

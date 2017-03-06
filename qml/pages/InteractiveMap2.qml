@@ -150,8 +150,7 @@ Page {
             stationsProxy.applyFilter = count > maxItemsOnMap;
             if (!withDetails && displayAllStatus) {
                 if (interactiveMap.city.isAllStationModeSupported()) {
-                    refreshLabel.visible = true;
-                    stations.loadAllStationsDetails();
+                    refreshAll();
                 }
                 else {
                     displayAllStatus = false;
@@ -167,6 +166,11 @@ Page {
                 numberOfParking.text = ": " + station.available_bike_stands;
                 lastUpdatedTime.text = "Updated: " + Utils.makeLastUpdateDateHumanReadable2(station.last_update);
             }
+        }
+        onError: {
+            refreshLabel.text = errorMsg;
+            refreshLabel.visible = true;
+            stationNameLabel.text = "Error";
         }
     }
 
@@ -203,14 +207,17 @@ Page {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.identifier, number);
                     if (!displayAllStatus) {
+                        refreshLabel.visible = false;
                         if (!city.isSingleStationModeSupported()) {
                             alertMsg.text = "Only \"all status\" mode\navailable for this city."
                             alertPopup.visible = true;
-                            refreshLabel.visible = true;
                             displayAllStatus = true;
-                            stations.loadAllStationsDetails();
+                            refreshAll();
                         }
                         stationNameLabel.text = "Updating...";
+                        numberOfBikes.text = ":";
+                        numberOfParking.text = ":";
+                        lastUpdatedTime.text = "Updated:"
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
                     }
                 }
@@ -413,7 +420,6 @@ Page {
 
     Label {
         id: refreshLabel
-        text: "Refreshing..."
         color: "black"
         visible: false
         anchors.left: parent.left
@@ -459,9 +465,7 @@ Page {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    refreshLabel.text = qsTr("Refreshing...");
-                    refreshLabel.visible = true
-                    stations.loadAllStationsDetails();
+                    refreshAll();
                 }
             }
         }
@@ -471,6 +475,12 @@ Page {
     function updateFilter() {
         stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
                              map.toCoordinate(Qt.point(map.width, map.height)));
+    }
+
+    function refreshAll() {
+        refreshLabel.text = qsTr("Refreshing...");
+        refreshLabel.visible = true
+        stations.loadAllStationsDetails();
     }
 
     function calcDate(updated) {

@@ -65,7 +65,7 @@ void StationsLoader::stationsListFetched()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->errorString();
+        emit error(reply->errorString());
         reply->deleteLater();
         return;
     }
@@ -103,7 +103,7 @@ void StationsLoader::stationDetailsFetched()
 
     //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->errorString();
+        emit error(reply->errorString());
         reply->deleteLater();
         return;
     }

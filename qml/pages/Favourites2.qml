@@ -21,6 +21,10 @@ Page {
                 favouritesModel.refreshAll();
             }
         }
+        onError: {
+            errorMsgLabel.text = errorMsg;
+            errorMsgLabel.visible = true;
+        }
     }
 
     StationsFavouritesProxy {
@@ -29,7 +33,7 @@ Page {
     }
 
     Label {
-        id: errorMsg
+        id: errorMsgLabel
         visible: false
         font.pixelSize: Theme.fontSizeExtraSmall
     }
@@ -50,7 +54,7 @@ Page {
                 text: "Refresh all"
                 onClicked: {
                     //topMenu.busy =  favouritesModel.count > 0;
-                    errorMsg.visible = false;
+                    errorMsgLabel.visible = false;
                     favouritesModel.refreshAll();
                 }
             }
@@ -122,9 +126,10 @@ Page {
                     MenuItem {
                         text: "Refresh"
                         onClicked: {
+                            errorMsgLabel.visible = false;
                             if (!favouritesModel.refreshStationInfo(index)) {
-                                errorMsg.text = "Individual refresh not available for this city";
-                                errorMsg.visible = true;
+                                errorMsgLabel.text = "Individual refresh not available for this city";
+                                errorMsgLabel.visible = true;
                             }
                         }
                     }
@@ -198,14 +203,15 @@ Page {
                     return;
                 }
 
+                errorMsgLabel.visible = false;
                 if (stations.exists(stationNumber)) {
                     if (favouritesModel.add(stationNumber)) {
                         Db.addFavourite(city.identifier, stationNumber);
                     }
                 }
                 else {
-                    errorMsg.text = "Station " + text + " does not exist";
-                    errorMsg.visible = true;
+                    errorMsgLabel.text = "Station " + text + " does not exist";
+                    errorMsgLabel.visible = true;
                 }
 
                 text = "";

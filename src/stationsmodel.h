@@ -49,6 +49,7 @@ signals:
     void centerChanged();
     void stationUpdated(Station* station);
     void stationsLoaded(bool withDetails);
+    void error(QString errorMsg);
 
 private slots:
     void setStations(QList<Station*> stations, bool withDetails);

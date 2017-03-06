@@ -24,6 +24,7 @@ public:
 signals:
     void stationsFetched(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
+    void error(QString errorMsg);
 
 public slots:
     void stationsListFetched();

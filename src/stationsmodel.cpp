@@ -5,6 +5,7 @@ StationsModel::StationsModel(QObject *parent) : QAbstractListModel(parent),
 {
     connect(&_stationsLoader, SIGNAL(stationsFetched(QList<Station*>, bool)), this, SLOT(setStations(QList<Station*>, bool)));
     connect(&_stationsLoader, SIGNAL(stationDetailsFetched(Station*)), this, SLOT(stationDetailsFetched(Station*)));
+    connect(&_stationsLoader, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
 }
 
 StationsModel::~StationsModel()

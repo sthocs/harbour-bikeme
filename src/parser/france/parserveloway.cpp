@@ -13,6 +13,7 @@ QString ParserVeloway::parseCarto(QString carto)
 
 QString ParserVeloway::parseStationDetails(QString stationDetails, QString url)
 {
+    Q_UNUSED(url);
     return stationDetails;
 }
 

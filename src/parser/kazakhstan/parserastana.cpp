@@ -13,6 +13,7 @@ QString ParserAstana::parseCarto(QString carto)
 
 QString ParserAstana::parseStationDetails(QString stationDetails, QString url)
 {
+    Q_UNUSED(url);
     return stationDetails;
 }
 

@@ -22,8 +22,8 @@ public:
     QGeoCoordinate coordinates;
     bool opened;
     int bike_stands;
-    int available_bike_stands;
     int available_bikes;
+    int available_bike_stands;
     QDateTime last_update;
 
     int getNumber() const { return number; }

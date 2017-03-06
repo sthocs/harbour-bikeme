@@ -15,6 +15,7 @@ QString ParserLondon::parseCarto(QString xmlCarto) {
 }
 
 QString ParserLondon::parseStationDetails(QString xmlStationDetails, QString url) {
+    Q_UNUSED(url);
     return xmlStationDetails;
 }
 

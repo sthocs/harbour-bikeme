@@ -10,6 +10,7 @@ QString JCDecauxParser::parseCarto(QString carto) {
 }
 
 QString JCDecauxParser::parseStationDetails(QString stationDetails, QString url) {
+    Q_UNUSED(url);
     return stationDetails;
 }
 

@@ -14,6 +14,7 @@ QString ParserSmoove::parseCarto(QString xmlCarto) {
 }
 
 QString ParserSmoove::parseStationDetails(QString xmlStationDetails, QString url) {
+    Q_UNUSED(url);
     return xmlStationDetails;
 }
 

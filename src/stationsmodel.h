@@ -13,7 +13,7 @@ class StationsModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(QGeoCoordinate center READ getCenter NOTIFY centerChanged)
-    Q_PROPERTY(City* city WRITE setCity)
+    Q_PROPERTY(City* city MEMBER _city WRITE setCity)
 
 public:
     enum Roles {

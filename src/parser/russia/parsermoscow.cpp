@@ -13,6 +13,7 @@ QString ParserMoscow::parseCarto(QString carto)
 
 QString ParserMoscow::parseStationDetails(QString stationDetails, QString url)
 {
+    Q_UNUSED(url);
     return stationDetails;
 }
 

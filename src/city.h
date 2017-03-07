@@ -22,6 +22,7 @@ struct CityInfo {
     QUrl stationsInfoUrl;
     QUrl allStationsDetailsUrl;
     QString singleStationDetailsUrlTemplate;
+    int zoom;
     QString copyright;
 };
 
@@ -34,6 +35,7 @@ class City : public QObject
     Q_PROPERTY(QUrl stationsListUrl READ getStationsListUrl NOTIFY stationsListUrlChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
     Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate NOTIFY singleStationDetailsUrlTemplateChanged)
+    Q_PROPERTY(int zoom READ zoom)
     Q_PROPERTY(QString copyright READ copyright NOTIFY copyrightChanged)
 public:
     explicit City(QObject *parent = 0);
@@ -46,6 +48,7 @@ public:
     QUrl getStationsListUrl() const { return _info.stationsInfoUrl; }
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
     QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
+    int zoom() const { return _info.zoom; }
     QString copyright() const { return _info.copyright; }
 
     Q_INVOKABLE bool isSingleStationModeSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }

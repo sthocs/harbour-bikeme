@@ -26,6 +26,7 @@ QList<City*> NextbikeParser::parseCities(QString cities, ProviderInfo providerIn
             if (info.countryCode.compare("GB") == 0) {
                 info.countryCode = "UK";
             }
+            info.zoom = cityJson["zoom"].toInt();
             info.allStationsDetailsUrl = QUrl(providerInfo.allStationsDetailsUrl.arg(info.id));
             info.providerName = providerInfo.name;
             City* city = new City();

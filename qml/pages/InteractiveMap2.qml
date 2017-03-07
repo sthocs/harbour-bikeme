@@ -63,8 +63,8 @@ Page {
 
             Component.onCompleted: {
                 mapLoaded = true;
-                map.zoomLevel += 5;
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
+                map.zoomLevel = city.zoom ? city.zoom : 13;
                 updateFilter();
                 stationLoadingLabel.visible = true;
                 stations.city = city;
@@ -168,6 +168,7 @@ Page {
             }
         }
         onError: {
+            stationLoadingLabel.visible = false;
             refreshLabel.text = errorMsg;
             refreshLabel.visible = true;
             stationNameLabel.text = "Error";

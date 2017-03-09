@@ -35,6 +35,8 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlContext>
+#include <QtQml>
+
 #include <sailfishapp.h>
 #include "dataprovider.h"
 #include "configmanager.h"

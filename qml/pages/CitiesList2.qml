@@ -35,7 +35,7 @@ Page {
         header: Column {
             width: listView.width
 
-            PageHeader { title: "Cities2" }
+            PageHeader { title: "Cities" }
 
             SearchField {
                 id: searchField

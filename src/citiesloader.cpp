@@ -2,6 +2,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QStandardPaths>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -104,6 +105,7 @@ void CitiesLoader::loadCitiesFromFile()
         info.stationsInfoUrl = QUrl(cityJson["stationsListUrl"].toString());
         info.allStationsDetailsUrl = QUrl(cityJson["allStationsDetailsUrl"].toString());
         info.singleStationDetailsUrlTemplate = cityJson["stationDetailsUrl"].toString();
+        info.zoom = cityJson["zoom"].toInt();
         info.copyright = cityJson["copyright"].toString();
         City* city = new City();
         city->setInfo(info);

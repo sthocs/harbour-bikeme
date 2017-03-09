@@ -14,6 +14,7 @@ struct ProviderInfo {
 };
 
 struct CityInfo {
+    CityInfo() : id(0), zoom(0), copyright(QString()) {}
     int id;
     QString name;
     QString commercialName;

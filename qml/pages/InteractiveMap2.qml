@@ -15,7 +15,6 @@ Page {
     height: parent.height
     backNavigation: false;
 
-    property bool mapLoaded: false
     // Indicates if the user has requested to display his position
     property bool findMe: false
     property bool positionReceived: false
@@ -62,9 +61,8 @@ Page {
             zoomLevel: 9 /* does not work for now (Qt5.1), always starts at 9 whatever the value */
 
             Component.onCompleted: {
-                mapLoaded = true;
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
-                map.zoomLevel = city.zoom ? city.zoom : 13;
+                map.zoomLevel = city.zoom || 13;
                 updateFilter();
                 stationLoadingLabel.visible = true;
                 stations.city = city;
@@ -181,6 +179,7 @@ Page {
     }
 
     Repeater {
+        id: stationsRepeater
         onItemAdded: {
             if (map.mapItems.length < maxItemsOnMap)
                 map.addMapItem(item)
@@ -476,6 +475,12 @@ Page {
     function updateFilter() {
         stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
                              map.toCoordinate(Qt.point(map.width, map.height)));
+        if (map.mapItems.length < maxItemsOnMap && stationsRepeater.count > map.mapItems.length) {
+            map.clearMapItems();
+            for (var i = 0; i < stationsRepeater.count && i < maxItemsOnMap; ++i) {
+                map.addMapItem(stationsRepeater.itemAt(i))
+            }
+        }
     }
 
     function refreshAll() {

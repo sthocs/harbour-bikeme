@@ -5,7 +5,8 @@
         "commercial_name": "V'Lille",
         "country_code": "FR",
         "stationsListUrl": "http://vlille.fr/stations/xml-stations.aspx",
-        "stationDetailsUrl": "http://vlille.fr/stations/xml-station.aspx?borne=%1"
+        "stationDetailsUrl": "http://vlille.fr/stations/xml-station.aspx?borne=%1",
+        "zoom": 12
     },
     {
         "provider": "Veloway",

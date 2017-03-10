@@ -38,7 +38,7 @@
 #include <QtQml>
 
 #include <sailfishapp.h>
-#include "dataprovider.h"
+
 #include "configmanager.h"
 #include "citiesmodel.h"
 #include "citiesmodelproxy.h"
@@ -70,9 +70,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<StationsModelProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsModelProxy");
     qmlRegisterType<StationsFavouritesProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsFavouritesProxy");
 
-    DataProvider* dataProvider = new DataProvider();
     ConfigManager* configManager = new ConfigManager();
-    view->rootContext()->setContextProperty("dataProvider", dataProvider);
+
     view->rootContext()->setContextProperty("configManager", configManager);
     view->setSource(SailfishApp::pathTo("qml/harbour-bikeme.qml"));
     view->show();

@@ -77,7 +77,7 @@ Page {
         Button {
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Clear cache")
-            onClicked: remorse.execute("Clearing cache", function() { dataProvider.removeCacheFiles() } );
+            onClicked: remorse.execute("Clearing cache", function() { configManager.removeCacheFiles() } );
         }
         Text {
             font.pixelSize: Theme.fontSizeExtraSmall

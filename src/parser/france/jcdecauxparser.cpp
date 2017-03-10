@@ -5,18 +5,6 @@
 #include <QJsonArray>
 #include <QGeoCoordinate>
 
-QString JCDecauxParser::parseCarto(QString carto) {
-    return carto;
-}
-
-QString JCDecauxParser::parseStationDetails(QString stationDetails, QString url) {
-    Q_UNUSED(url);
-    return stationDetails;
-}
-
-QString JCDecauxParser::parseAllStationsDetails(QString allStationsDetails) {
-    return allStationsDetails;
-}
 
 QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo providerInfo) {
     QList<City*> citiesList;
@@ -70,7 +58,7 @@ QList<Station*> JCDecauxParser::parseAllStations(QString allStationsDetails, boo
     return stationsList;
 }
 
-void JCDecauxParser::parseStationDetails2(QString stationDetails, Station* station)
+void JCDecauxParser::parseStationDetails(QString stationDetails, Station* station)
 {
     QJsonDocument doc = QJsonDocument::fromJson(stationDetails.toUtf8());
     QJsonObject stationJson = doc.object();

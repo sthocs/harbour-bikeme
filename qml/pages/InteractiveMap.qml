@@ -2,9 +2,11 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
+import com.jolla.harbour.bikeme 1.0
+
 import "../items"
-import "cachemanager.js" as JSCacheManager
 import "./db.js" as Db
+import "./utils.js" as Utils
 
 
 Page {
@@ -13,12 +15,11 @@ Page {
     height: parent.height
     backNavigation: false;
 
-    property bool mapLoaded: false
     // Indicates if the user has requested to display his position
     property bool findMe: false
     property bool positionReceived: false
 
-    property string city: "Paris"
+    property City city
     property int selectedStationNumber: 0
     property bool isSelectedStationInFav: false
     property bool displayAllStatus: configManager.getSetting("displayAllStatus") !== "false"
@@ -26,7 +27,6 @@ Page {
 
     property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
-	property int nbStations
 
 
     //! Used to indicate if device is in portrait mode
@@ -35,11 +35,6 @@ Page {
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
 
-    onIsPortraitChanged: {
-        if (mapLoaded) {
-            printStations()
-        }
-    }
 
     //! Container for map element
     Rectangle {
@@ -55,20 +50,23 @@ Page {
                 name : mapPlugin;
 
                 parameters: [
-                    PluginParameter { name: "app_id"; value: "xVZRW0UNFmrrSNbaHNJq" },
-                    PluginParameter { name: "app_code"; value: "juUB8_LvQcf9EWQQegL4cw" }
+                    PluginParameter { name: "app_id"; value: "" },
+                    PluginParameter { name: "app_code"; value: "" }
                 ]
             }
             anchors.fill: parent
             // Paris, Hotel de Ville by default. Updated after stations loading.
-            center: QtPositioning.coordinate(48.856047, 2.353907)
+            center: QtPositioning.coordinate(48.85604723, 2.35390723)
 
             zoomLevel: 9 /* does not work for now (Qt5.1), always starts at 9 whatever the value */
 
             Component.onCompleted: {
-                mapLoaded = true;
-                map.zoomLevel += 5;
-                dataProvider.getStationsLocation(city);
+                center = QtPositioning.coordinate(43.5508823, 7.0168207);
+                map.zoomLevel = city.zoom || 13;
+                updateFilter();
+                stationLoadingLabel.visible = true;
+                stations.city = city;
+                stations.loadStationsList();
             }
 
             gesture.onFlickFinished: {
@@ -76,11 +74,11 @@ Page {
             }
             gesture.onPanFinished: {
                 console.log("Pan FINISHED");
-                printStations();
+                updateFilter();
             }
             gesture.onPinchFinished: {
                 console.log("Pinch FINISHED");
-                printStations();
+                updateFilter();
             }
 
             //! Icon to display the current position
@@ -101,7 +99,7 @@ Page {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
                     map.zoomLevel = (map.zoomLevel + 1) < map.maximumZoomLevel ? map.zoomLevel + 1 :
                                                                                  map.maximumZoomLevel;
-                    printStations();
+                    updateFilter();
                 }
             }
         }
@@ -137,84 +135,65 @@ Page {
         }
     }
 
-    Connections {
-        target: dataProvider
-        onCartoChanged: {
-            try {
-                nbStations = JSCacheManager.saveStations(dataProvider.cartoJson);
-                console.log("Number of stations: " + nbStations);
-                printStations(true);
-                stationLoadingLabel.visible = false;
-                if (displayAllStatus) {
-                    refreshLabel.visible = true;
-                    dataProvider.downloadAllStationsDetails(city);
+    StationsModel {
+        id: stations
+
+        onCenterChanged: {
+            map.center = center;
+            updateFilter();
+        }
+        onStationsLoaded: {
+            stationLoadingLabel.visible = false;
+            refreshLabel.visible = false;
+            stationsProxy.applyFilter = count > maxItemsOnMap;
+            if (!withDetails && displayAllStatus) {
+                if (interactiveMap.city.isAllStationModeSupported()) {
+                    refreshAll();
+                }
+                else {
+                    displayAllStatus = false;
+                    alertMsg.text = "Can't display all status\nfor this city.";
+                    alertPopup.visible = true;
                 }
             }
-            catch(e) {
-                stationLoadingLabel.text = e.message;
+        }
+        onStationUpdated: {
+            if (station.number === selectedStationNumber) {
+                stationNameLabel.text = station.name;
+                numberOfBikes.text = ": " + station.available_bikes;
+                numberOfParking.text = ": " + station.available_bike_stands;
+                lastUpdatedTime.text = "Updated: " + Utils.makeLastUpdateDateHumanReadable(station.last_update);
             }
         }
-        onNetworkStatusUpdated: {
-            stationLoadingLabel.text = connected ? "Loading stations..." : "Not connected";
-        }
-
-        onGotStationDetails: {
-            console.log("got station details: " + stationDetails);
-            var stationDetailsJSON = JSON.parse(stationDetails);
-            if (stationDetailsJSON.name) {
-                stationNameLabel.text = stationDetailsJSON.name.toLowerCase();
-            }
-            else if (stationDetailsJSON.address) {
-                stationNameLabel.text = stationDetailsJSON.address.toLowerCase();
-            }
-            numberOfBikes.text = ": " + stationDetailsJSON.available_bikes;
-            numberOfParking.text = ": " + stationDetailsJSON.available_bike_stands;
-            lastUpdatedTime.text = calcDate(stationDetailsJSON.last_update);
-        }
-        onGotAllStationsDetails: {
-            var res = allStationsDetails;
-            try {
-                nbStations = JSCacheManager.saveStationsWithDetails(res);
-                console.log("Got all stations details; Number of stations: " + nbStations);
-                printStations(false, true);
-                stationLoadingLabel.visible = false;
-                refreshLabel.visible = false;
-            }
-            catch(e) {
-                refreshLabel.text = res;
-            }
-        }
-        onModeNotSupported: {
-            if (displayAllStatus) {
-                alertMsg.text = "Can't display all status\nfor this city."
-                refreshLabel.visible = false;
-            }
-            else {
-                alertMsg.text = "Only \"all status\" mode\navailable for this city."
-                refreshLabel.visible = true;
-                dataProvider.downloadAllStationsDetails(city);
-            }
-            displayAllStatus = !displayAllStatus;
-            alertPopup.visible = true;
+        onError: {
+            stationLoadingLabel.visible = false;
+            refreshLabel.text = errorMsg;
+            refreshLabel.visible = true;
+            stationNameLabel.text = "Error";
         }
     }
 
-    ListModel {
-        id: stations
+    StationsModelProxy {
+        id: stationsProxy
+        sourceModel: stations
     }
 
     Repeater {
+        id: stationsRepeater
         onItemAdded: {
-            map.addMapItem(item)
+            if (map.mapItems.length < maxItemsOnMap)
+                map.addMapItem(item)
         }
         onItemRemoved: {
             map.removeMapItem(item)
         }
         parent: map
-        model: stations
+        model: stationsProxy
         delegate: MapQuickItem {
-            coordinate: QtPositioning.coordinate(model.position.lat, model.position.lng)
+            coordinate: model.coordinates
             sourceItem: StationMarker {
+                displayAllStatus: interactiveMap.displayAllStatus
+                opened: model.opened
                 available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
                 selected: number != 0 && number === selectedStationNumber
             }
@@ -226,72 +205,26 @@ Page {
                 anchors.fill: parent
                 onClicked: {
                     selectedStationNumber = number;
-                    isSelectedStationInFav = Db.isFavourite(city, number);
+                    isSelectedStationInFav = Db.isFavourite(city.identifier, number);
                     if (!displayAllStatus) {
+                        refreshLabel.visible = false;
+                        if (!city.isSingleStationModeSupported()) {
+                            alertMsg.text = "Only \"all status\" mode\navailable for this city."
+                            alertPopup.visible = true;
+                            displayAllStatus = true;
+                            refreshAll();
+                        }
                         stationNameLabel.text = "Updating...";
-                        dataProvider.getStationDetails(city, number);
+                        numberOfBikes.text = ":";
+                        numberOfParking.text = ":";
+                        lastUpdatedTime.text = "Updated:"
+                        stations.fetchStationInformation(stationsProxy.sourceRow(index));
                     }
                 }
             }
         }
     }
 
-    function printStations(centerMap, forceRefresh) {
-        if (!forceRefresh && stations.count > 0 && stations.count === nbStations) {
-            // all items are and will stay on map
-            return;
-        }
-        stations.clear();
-//        var start = new Date();
-
-        var stationsArray = JSCacheManager.getStations();
-        if (!stationsArray) {
-            return;
-        }
-        if (centerMap) {
-            var avgLat = 0;
-            var avgLng = 0;
-            var nbTestStations = 0;
-            stationsArray.forEach(function(station) {
-                avgLat += station.position.lat;
-                avgLng += station.position.lng;
-                if (station.position.lat === 0) {
-                    ++nbTestStations;
-                }
-            });
-            avgLat /= (stationsArray.length - nbTestStations);
-            avgLng /= (stationsArray.length - nbTestStations);
-            map.center = QtPositioning.coordinate(avgLat, avgLng);
-        }
-//        var now = new Date();
-//        console.log('Elapsed time: ' + (now.getTime() - start.getTime()));
-
-        if (stationsArray.length < maxItemsOnMap) {
-            stationsArray.forEach(function(station) {
-                stations.append(station);
-            });
-        }
-        else {
-            var nbItemsOnMap = 0;
-            var topLeft = map.toCoordinate(Qt.point(0, 0));
-            var bottomRight = map.toCoordinate(Qt.point(map.width, map.height));
-            console.log("TopLeft: " + topLeft.latitude + "/" + topLeft.longitude + " bottomRight: "+
-                        bottomRight.latitude + "/" + bottomRight.longitude);
-            for (var i = 0; i < stationsArray.length; ++i) {
-                if (stationsArray[i].position.lat < topLeft.latitude &&
-                    stationsArray[i].position.lat > bottomRight.latitude &&
-                    stationsArray[i].position.lng > topLeft.longitude &&
-                    stationsArray[i].position.lng < bottomRight.longitude) {
-                    stations.append(stationsArray[i]);
-                    if (++nbItemsOnMap > maxItemsOnMap) {
-                        break;
-                    }
-                }
-            };
-        }
-//        now = new Date();
-//        console.log('Elapsed time: ' + (now.getTime() - start.getTime()));
-    }
 
     //! Source for retrieving the positioning information
     PositionSource {
@@ -310,8 +243,8 @@ Page {
                 var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                    positionSource.position.coordinate.longitude);
                 map.center = pos;
-                printStations();
-            }          
+                updateFilter();
+            }
         }
     }
 
@@ -357,10 +290,10 @@ Page {
             onClicked: {
                 if (selectedStationNumber !== 0) {
                     if (isSelectedStationInFav) {
-                        Db.removeFavourite(city, selectedStationNumber);
+                        Db.removeFavourite(city.identifier, selectedStationNumber);
                     }
                     else {
-                        Db.addFavourite(city, selectedStationNumber);
+                        Db.addFavourite(city.identifier, selectedStationNumber);
                     }
                     isSelectedStationInFav = !isSelectedStationInFav;
                 }
@@ -413,7 +346,7 @@ Page {
                     var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                        positionSource.position.coordinate.longitude)
                     map.center = pos;
-                    printStations();
+                    updateFilter();
                 }
             }
         }
@@ -487,7 +420,6 @@ Page {
 
     Label {
         id: refreshLabel
-        text: "Refreshing..."
         color: "black"
         visible: false
         anchors.left: parent.left
@@ -533,14 +465,33 @@ Page {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    refreshLabel.text = qsTr("Refreshing...");
-                    refreshLabel.visible = true
-                    dataProvider.downloadAllStationsDetails(city);
+                    refreshAll();
                 }
             }
         }
     }
 
+
+    function updateFilter() {
+        stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
+                             map.toCoordinate(Qt.point(map.width, map.height)));
+        // This is a bit hacky: we limit the number of station on the maps, so some stations
+        // in the filter are not displayed. If the number of stations in the filter decrease
+        // (e.g. because of a zoom), we could now display them, but the onItemAdded signal is
+        // not triggered since those stations were already in the filter. So refreshing manually
+        if (map.mapItems.length < maxItemsOnMap && stationsRepeater.count > map.mapItems.length) {
+            map.clearMapItems();
+            for (var i = 0; i < stationsRepeater.count && i < maxItemsOnMap; ++i) {
+                map.addMapItem(stationsRepeater.itemAt(i))
+            }
+        }
+    }
+
+    function refreshAll() {
+        refreshLabel.text = qsTr("Refreshing...");
+        refreshLabel.visible = true
+        stations.loadAllStationsDetails();
+    }
 
     function calcDate(updated) {
         if (typeof updated === "string") {

@@ -6,14 +6,7 @@
 class ParserSmoove : public BikeDataParser
 {
 public:
-    QString parseCarto(QString carto);
-    QString parseStationDetails(QString stationDetails, QString url);
-    QString parseAllStationsDetails(QString allStationsDetails);
-
     QList<Station*> parseAllStations(QString allStations, bool withDetails);
-
-private:
-    QString parseXmlResult(QString xmlResult);
 };
 Q_DECLARE_METATYPE(ParserSmoove)
 

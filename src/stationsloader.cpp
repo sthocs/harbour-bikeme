@@ -112,7 +112,7 @@ void StationsLoader::stationDetailsFetched()
     int id = QMetaType::type(_city->getProviderName().toLatin1().data());
     if (id != -1) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        parser->parseStationDetails2(QString::fromUtf8(reply->readAll()), station);
+        parser->parseStationDetails(QString::fromUtf8(reply->readAll()), station);
         delete parser;
         emit stationDetailsFetched(station);
     }

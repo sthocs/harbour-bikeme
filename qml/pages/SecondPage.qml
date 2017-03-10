@@ -1,19 +1,15 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import com.jolla.harbour.bikeme 1.0
+
 /* Themes values on Jolla:
  * itemSizeExtraSmall=70; itemSizeSmall=80; itemSizeMedium=100
  * iconSizeSmall=32; iconSizeMedium=64; iconSizeLarge=96
  */
 
 Page {
-    id: secondPage
-
-    property string city: "Paris"
-
-    Component.onCompleted: {
-        configManager.saveSetting("city", city);
-    }
+    property City city
 
     SilicaListView {
         id: listView
@@ -34,7 +30,7 @@ Page {
 
             ListElement {
                 name: "Interactive Map"
-                fileName: "InteractiveMap2"
+                fileName: "InteractiveMap"
             }
             ListElement {
                 name: "Favourites"
@@ -43,7 +39,7 @@ Page {
         }
 
         header: PageHeader {
-            title: city
+            title: city.name
         }
         delegate: BackgroundItem {
             id: delegate
@@ -67,6 +63,6 @@ Page {
 
         font.pixelSize: Theme.fontSizeExtraSmall
         color: Theme.secondaryColor
-        text: dataProvider.getCopyright(city)
+        text: city.copyright
     }
 }

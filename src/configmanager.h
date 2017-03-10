@@ -16,6 +16,7 @@ public:
     Q_INVOKABLE void popPage();
     Q_INVOKABLE QList<QString> getPages();
     Q_INVOKABLE QVariant getSetting(QString);
+    Q_INVOKABLE bool removeCacheFiles();
 
 private:
     QSettings _settings;

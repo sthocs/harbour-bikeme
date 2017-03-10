@@ -44,10 +44,10 @@ ApplicationWindow
     }
 
     Component.onCompleted: {
-        var PAGES = ["default", "pages/InteractiveMap2.qml", "pages/Favourites2.qml"];
+        var PAGES = ["default", "pages/InteractiveMap.qml", "pages/Favourites.qml"];
 
         var firstPage = {
-            page: Qt.resolvedUrl("pages/CitiesList2.qml"),
+            page: Qt.resolvedUrl("pages/CitiesList.qml"),
             properties: { citiesModel: citiesModel }
         };
 
@@ -56,7 +56,7 @@ ApplicationWindow
             console.log("Restoring app state: " + city.name);
             var pagesToPush = [firstPage];
             pagesToPush.push({
-                page: Qt.resolvedUrl("pages/SecondPage2.qml"),
+                page: Qt.resolvedUrl("pages/SecondPage.qml"),
                 properties: { city: city }
             });
             var startPage = configManager.getSetting("startPage");

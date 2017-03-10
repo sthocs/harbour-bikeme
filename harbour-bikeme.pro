@@ -16,9 +16,6 @@ positioning
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
     src/citydata.cpp \
-    src/dataprovider.cpp \
-    src/staticdataprovider.cpp \
-    src/parser/bikedataparserfactory.cpp \
     src/parser/france/jcdecauxparser.cpp \
     src/parser/france/parserveloway.cpp \
     src/parser/france/parserlille.cpp \
@@ -48,7 +45,6 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/pages/CitiesBrowser.qml \
     qml/pages/CitiesDelegate.qml \
     qml/pages/CitiesList.qml \
-    qml/pages/CitiesList2.qml \
     qml/pages/SecondPage.qml \
     qml/pages/Favourites.qml \
     qml/pages/InteractiveMap.qml \
@@ -67,10 +63,7 @@ INSTALLS += \
 HEADERS += \
     src/configmanager.h \
     src/citydata.h \
-    src/dataprovider.h \
-    src/staticdataprovider.h \
     src/parser/bikedataparser.h \
-    src/parser/bikedataparserfactory.h \
     src/parser/france/jcdecauxparser.h \
     src/parser/france/parserveloway.h \
     src/parser/france/parserlille.h \
@@ -92,7 +85,4 @@ HEADERS += \
     src/parser/canada/montrealparser.h
 
 DISTFILES += \
-    qml/pages/InteractiveMap2.qml \
-    qml/pages/SecondPage2.qml \
-    qml/pages/Favourites2.qml \
     qml/util/ProgressInfoBar.qml

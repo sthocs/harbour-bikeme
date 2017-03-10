@@ -126,6 +126,7 @@ void CitiesLoader::bikeProviderFetched()
             emit finished();
         }
         reply->deleteLater();
+        //TODO load from cache
         return;
     }
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();

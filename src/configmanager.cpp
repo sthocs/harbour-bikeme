@@ -1,6 +1,8 @@
 #include "configmanager.h"
 
 #include <QSettings>
+#include <QDir>
+#include <QStandardPaths>
 
 ConfigManager::ConfigManager()
 {
@@ -53,4 +55,18 @@ QList<QString> ConfigManager::getPages()
     }
     _settings.endArray();
     return res;
+}
+
+bool ConfigManager::removeCacheFiles()
+{
+    bool result = true;
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+
+    if (dir.exists()) {
+        Q_FOREACH(QFileInfo info,
+                  dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files)) {
+            result &= QFile::remove(info.absoluteFilePath());
+        }
+    }
+    return result;
 }

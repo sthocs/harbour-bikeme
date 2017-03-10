@@ -1,84 +1,39 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "cachemanager.js" as JSCacheManager
+import com.jolla.harbour.bikeme 1.0
+
+import "../util"
 
 Page {
-    Component.onCompleted: {
-        dataProvider.getContracts(false);
-    }
-
-    Connections {
-        target: dataProvider
-        onContractsUpdated: {
-            var res = contracts;
-            try {
-                var cities = JSON.parse(res);
-                cities.forEach(function(city) {
-                    // Temporary fix after API change.
-                    if (city.countryCode) {
-                        city.country_code = city.countryCode;
-                    }
-                    if (city.commercialName) {
-                        city.commercial_name = city.commercialName;
-                    }
-                });
-                cities.sort(function(a, b) {
-                    if (a.country_code === b.country_code) {
-                        if (a.name < b.name) {
-                            return -1
-                        }
-                        if (a.name > b.name) {
-                            return 1
-                        }
-                        return 0;
-                    }
-                    else if (a.country_code < b.country_code) {
-                        return -1;
-                    }
-                    else {
-                        return 1;
-                    }
-                });
-                cityModel.clear();
-                for (var i = 0; i < cities.length; ++i) {
-                    cityModel.append(cities[i]);
-                }
-                JSCacheManager.cities = cities;
-                listView.headerItem.filter.text = "";
-                listView.headerItem.filter.focus = false
-                errorMsg.visible = false;
-            }
-            catch (e) {
-                errorMsg.text = e.message;
-                errorMsg.visible = true;
-            }
-
-            topMenu.busy = false;
-        }
-    }
+    property CitiesModel citiesModel
 
     Label {
         id: errorMsg
-        visible: false
+        text: citiesModel.errorMsg
         font.pixelSize: Theme.fontSizeExtraSmall
     }
 
-    ListModel {
-        id: cityModel
+    Component.onCompleted: {
+        citiesModel.fetchFinished.connect(function() {
+            topMenu.busy = false;
+        });
+    }
+
+    CitiesModelProxy {
+        id: citiesModelProxy
+        sourceModel: citiesModel
     }
 
     SilicaListView {
         id: listView
         anchors.fill: parent
 
-        model: cityModel
+        model: citiesModelProxy
         currentIndex: -1
 
         header: Column {
-            property alias filter: searchField
-
-            width: parent.width
+            width: listView.width
 
             PageHeader { title: "Cities" }
 
@@ -86,15 +41,10 @@ Page {
                 id: searchField
                 width: parent.width
                 placeholderText: "Filter"
+                visible: citiesModel.count > 0
 
-                onTextChanged: {
-                    cityModel.clear();
-                    JSCacheManager.cities.forEach(function(city) {
-                        if (text === "" || city.name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
-                            cityModel.append(city);
-                        }
-                    });
-                }
+                onTextChanged: citiesModelProxy.filter(text)
+
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
             }
@@ -125,7 +75,7 @@ Page {
 
         ViewPlaceholder {
             id: placeholder
-            enabled: listView.count == 0 && listView.headerItem.filter.text === ""
+            enabled: listView.count == 0
             text: "Welcome to BikeMe!"
             hintText: "Pull down to load cities list"
         }
@@ -139,17 +89,10 @@ Page {
                 }
             }
             MenuItem {
-                text: qsTr("Display: List")
-                onClicked: {
-                    configManager.saveSetting("citiesDisplay", "browser");
-                    pageStack.replace(Qt.resolvedUrl("CitiesBrowser.qml"))
-                }
-            }
-            MenuItem {
                 text: "Refresh cities list"
                 onClicked: {
                     topMenu.busy = true
-                    dataProvider.getContracts(true)
+                    citiesModel.loadAll()
                 }
             }
         }
@@ -182,7 +125,24 @@ Page {
                 }
             }
 
-            onClicked: pageStack.push(Qt.resolvedUrl("SecondPage.qml"), { city: name });
+            onClicked: {
+                configManager.saveSetting("city", identifier);
+                pageStack.push(Qt.resolvedUrl("SecondPage.qml"),
+                               { city: citiesModel.cityAt(citiesModelProxy.realIndex(index)) });
+            }
         }
+    }
+
+    ProgressInfoBar {
+        id: progressInfoBar
+        label: qsTr("Fetching providers...")
+        open: topMenu.busy && citiesModel.fetchedProvidersCount < citiesModel.providersCount
+        newCount: citiesModel.count
+        errorCount: citiesModel.errorsCount
+        minimumValue: 0
+        maximumValue: citiesModel.providersCount
+        value: citiesModel.fetchedProvidersCount
+
+        anchors.bottom: parent.bottom
     }
 }

@@ -1,21 +1,39 @@
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
+import com.jolla.harbour.bikeme 1.0
 import "./utils.js" as Utils
 import "./db.js" as Db
 
 Page {
     objectName: "favourites"
 
-    property string city: "Paris"
     property string coverLabel: "Favourites"
     property int nbRefreshingStations: 0
-    // passed by the InteractiveMap
-    property int favouriteToAdd: 0
 
+    property City city
+
+    StationsModel {
+        id: stations
+
+        onStationsLoaded: {
+            if (!withDetails) {
+                favouritesModel.refreshAll();
+            }
+        }
+        onError: {
+            errorMsgLabel.text = errorMsg;
+            errorMsgLabel.visible = true;
+        }
+    }
+
+    StationsFavouritesProxy {
+        id: favouritesModel
+        sourceModel: stations
+    }
 
     Label {
-        id: errorMsg
+        id: errorMsgLabel
         visible: false
         font.pixelSize: Theme.fontSizeExtraSmall
     }
@@ -27,7 +45,7 @@ Page {
 
         header: PageHeader {
             id: header
-            title: "Favourites - " + city
+            title: "Favourites - " + city.name
         }
 
         PullDownMenu {
@@ -35,15 +53,14 @@ Page {
             MenuItem {
                 text: "Refresh all"
                 onClicked: {
-                    topMenu.busy = favouritesModel.count > 0;
-                    refreshAll();
+                    //topMenu.busy =  favouritesModel.count > 0;
+                    errorMsgLabel.visible = false;
+                    favouritesModel.refreshAll();
                 }
             }
         }
 
-        model: ListModel {
-            id: favouritesModel
-        }
+        model: favouritesModel
 
         VerticalScrollDecorator {}
 
@@ -54,7 +71,7 @@ Page {
                 Label {
                     id: station_name
                     x: Theme.paddingLarge
-                    text: model.name.toLowerCase()
+                    text: decodeURIComponent(model.name.toLowerCase())
                     font.capitalization: Font.Capitalize
                 }
                 Row {
@@ -66,7 +83,8 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + model.available_bikes
+                        text: " : " + (opened && available_bikes != -1 ?
+                                           available_bikes : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true
@@ -83,7 +101,8 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     Label {
-                        text: " : " + model.available_bike_stands
+                        text: " : " + (opened && available_bike_stands != -1 ?
+                                           available_bike_stands : 0)
                         color: Theme.primaryColor
                         font.pixelSize: Theme.fontSizeMedium
                         font.bold: true
@@ -93,8 +112,8 @@ Page {
                         height: 1
                     }
                     Label {
-                        id: numberOfParking
-                        text: "Updated: " + Utils.makeLastUpdateDateHumanReadable(model.last_update)
+                        text: opened ? "Updated: " + Utils.makeLastUpdateDateHumanReadable(model.last_update) :
+                                       "Closed"
                         color: Theme.secondaryColor
                         font.pixelSize: Theme.fontSizeMedium
                     }
@@ -107,24 +126,32 @@ Page {
                     MenuItem {
                         text: "Refresh"
                         onClicked: {
-                            if (dataProvider.isGetSingleStationDataSupported(city)) {
-                                topMenu.busy = true;
-                                nbRefreshingStations++;
-                                dataProvider.getStationDetails(city, model.number);
-                            }
-                            else {
-                                errorMsg.text = "Individual refresh not available for this city";
-                                errorMsg.visible = true;
+                            errorMsgLabel.visible = false;
+                            if (!favouritesModel.refreshStationInfo(index)) {
+                                errorMsgLabel.text = "Individual refresh not available for this city";
+                                errorMsgLabel.visible = true;
                             }
                         }
                     }
                     MenuItem {
-                        text: "Move Down"
-                        onClicked: moveDown()
+                        text: "Move Up"
+                        onClicked: {
+                            if (index < 1) {
+                                return;
+                            }
+                            Db.moveUp(city.identifier, number);
+                            favouritesModel.move(index - 1, index, 1);
+                        }
                     }
                     MenuItem {
-                        text: "Move Up"
-                        onClicked: moveUp()
+                        text: "Move Down"
+                        onClicked: {
+                            if (index > favouritesModel.count - 2) {
+                                return;
+                            }
+                            Db.moveDown(city.identifier, number);
+                            favouritesModel.move(index, index + 1, 1);
+                        }
                     }
                     MenuItem {
                         text: "Delete"
@@ -135,34 +162,22 @@ Page {
 
             function remove() {
                 remorseAction("Deleting", function() {
-                    Db.removeFavourite(city, favouritesModel.get(index).number);
+                    Db.removeFavourite(city.identifier, number);
                     favouritesModel.remove(index);
-                })
-            }
-            function moveDown() {
-                if (index > favouritesModel.count - 2) {
-                    return;
-                }
-                var i = index;
-                favouritesModel.move(index, index + 1, 1);
-                Db.moveDown(city, favouritesModel.get(index).number);
-            }
-            function moveUp() {
-                if (index < 1) {
-                    return;
-                }
-                var i = index;
-                favouritesModel.move(index - 1, index, 1);
-                Db.moveUp(city, favouritesModel.get(index).number)
+                });
             }
         }
 
         Component.onCompleted: {
-            var favs = Db.getFavourites(city);
+            var favs = Db.getFavourites(city.identifier);
+            var numbers = [];
             favs.forEach(function(fav) {
-                favouritesModel.append(fav);
+                numbers.push(fav.number);
             });
-            refreshAll();
+            console.log('setting favs ' + JSON.stringify(numbers));
+            favouritesModel.setFavourites(numbers);
+            stations.city = city;
+            stations.loadStationsList();
         }
     }
 
@@ -180,7 +195,7 @@ Page {
             width: parent.width
             inputMethodHints: Qt.ImhFormattedNumbersOnly
             placeholderText: "Add a new favourite"
-            label: "Adding a favourite"         
+            label: "Adding a favourite"
             horizontalAlignment: Text.AlignLeft
             EnterKey.onClicked: {
                 var stationNumber = parseInt(text);
@@ -188,134 +203,25 @@ Page {
                     return;
                 }
 
-                favouritesModel.append({ number: stationNumber,
-                                         name: 'Station ' + stationNumber,
-                                         available_bikes: 0,
-                                         available_bike_stands: 0,
-                                         last_update: 0});
-                text = "";
-                listView.focus = true;
-                Db.addFavourite(city, stationNumber);
-            }
-
-            Component.onCompleted: {
-                if (favouriteToAdd !== 0) {
-                    text = favouriteToAdd;
-                    focus = true;
-                }  
-            }
-        }
-    }
-
-    Connections {
-        target: dataProvider
-        onGotStationDetails: {
-            var res = stationDetails;
-            console.log(res);
-            try {
-                var station_details = JSON.parse(res);
-                for (var i = 0; i < favouritesModel.count; ++i) {
-                    if (favouritesModel.get(i).number === station_details.number) {
-                        if (favouritesModel.get(i).name !== station_details.name) {
-                            updateStationNameInDB(station_details.number, station_details.name);
-                        }
-                        station_details.name = removeHTML(station_details.name);
-                        favouritesModel.remove(i);
-                        favouritesModel.insert(i, station_details);
+                errorMsgLabel.visible = false;
+                if (stations.exists(stationNumber)) {
+                    if (favouritesModel.add(stationNumber)) {
+                        Db.addFavourite(city.identifier, stationNumber);
                     }
                 }
-                errorMsg.visible = false;
-            }
-            catch (e) {
-                errorMsg.text = res;
-                errorMsg.visible = true;
-                topMenu.busy = false;
-            }
+                else {
+                    errorMsgLabel.text = "Station " + text + " does not exist";
+                    errorMsgLabel.visible = true;
+                }
 
-            nbRefreshingStations--;
-            if (nbRefreshingStations == 0) {
-                topMenu.busy = false;
-                updateCoverLabel();
+                text = "";
+                listView.focus = true;
             }
-        }
-
-        onGotAllStationsDetails: {
-            var res = allStationsDetails;
-            try {
-                var stationsDetails = JSON.parse(res);
-                stationsDetails.forEach(function(station) {
-                    for (var i = 0; i < favouritesModel.count; ++i) {
-                        if (favouritesModel.get(i).number === station.number) {
-                            if (favouritesModel.get(i).name !== station.name) {
-                                updateStationNameInDB(station.number, station.name);
-                            }
-                            station.name = removeHTML(station.name);
-                            favouritesModel.remove(i);
-                            favouritesModel.insert(i, station);
-                        }
-                    }
-                    errorMsg.visible = false;
-                });
-                topMenu.busy = false;
-                updateCoverLabel();
-            }
-            catch(e) {
-                errorMsg.text = e.message;
-                errorMsg.visible = true;
-                topMenu.busy = false;
-            }
-            nbRefreshingStations--;
-        }
-    }
-
-    function refreshAll() {
-        if (!dataProvider.isGetSingleStationDataSupported(city)) {
-            nbRefreshingStations++;
-            dataProvider.downloadAllStationsDetails(city);
-        }
-        else {
-            for (var i = 0; i < favouritesModel.count; ++i) {
-                nbRefreshingStations++;
-                dataProvider.getStationDetails(city, favouritesModel.get(i).number);
-            }
-        }
-    }
-
-    function updateCoverLabel() {
-        // Generating cover label: 5 first stations.
-        coverLabel = "";
-        for (var i = 0; i < 5 && i < favouritesModel.count; ++i) {
-            var name;
-            if (favouritesModel.get(i).name.indexOf(" - ") !== -1) {
-                name = favouritesModel.get(i).name.split(" - ");
-            }
-            else {
-                name = favouritesModel.get(i).name.split("-");
-            }
-
-            if (name.length > 1) {
-                name = name[1].substr(0, 7);
-            }
-            else {
-                name = name[0].substr(0, 7);
-            }
-            name = removeHTML(name);
-
-            coverLabel += "[" + name + "] B:" + favouritesModel.get(i).available_bikes +
-                    " P:" + favouritesModel.get(i).available_bike_stands + "\n";
         }
     }
 
     function updateStationNameInDB(stationNumber, stationName) {
         console.log("Updating name of station " + stationNumber);
         Db.updateStationName(city, stationNumber, stationName);
-    }
-
-    function removeHTML(name) {
-        // The data of those cities are encoded :/
-        if (city === "Nice" || city === "Calais" || city === "Vannes") {
-            return decodeURIComponent(name).replace(/\+/g, ' ');
-        }
-        return name;
     }
 }

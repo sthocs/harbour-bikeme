@@ -6,7 +6,7 @@
 class JCDecauxParser : public BikeDataParser
 {
 public:
-    QList<City*> parseCities(QString cities, ProviderInfo providerInfo);
+    QList<City*> parseCities(QString cities, ProviderInfo& providerInfo);
     QList<Station*> parseAllStations(QString allStations, bool withDetails);
     void parseStationDetails(QString stationDetails, Station* station);
 };

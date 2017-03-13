@@ -20,6 +20,7 @@ CitiesModel::~CitiesModel()
 
 void CitiesModel::loadAll()
 {
+    setFetchedProvidersCount(0, 0);
     beginResetModel();
     qDeleteAll(_list);
     _list.clear();

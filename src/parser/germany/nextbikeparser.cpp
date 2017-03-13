@@ -6,7 +6,7 @@
 #include <QGeoCoordinate>
 
 
-QList<City*> NextbikeParser::parseCities(QString cities, ProviderInfo providerInfo)
+QList<City*> NextbikeParser::parseCities(QString cities, ProviderInfo& providerInfo)
 {
     QList<City*> citiesList;
     QJsonDocument doc = QJsonDocument::fromJson(cities.toUtf8());
@@ -42,7 +42,7 @@ QList<Station*> NextbikeParser::parseAllStations(QString allStations, bool withD
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());
     QJsonObject country = doc.object()["countries"].toArray()[0].toObject();
-    bool showFreeRacks = country["show_free_racks"].toBool();
+    //bool showFreeRacks = country["show_free_racks"].toBool();
     QJsonObject city = country["cities"].toArray()[0].toObject();
     QJsonArray stationsArray = city["places"].toArray();
     for (int i = 0; i < stationsArray.size(); ++i) {
@@ -53,8 +53,8 @@ QList<Station*> NextbikeParser::parseAllStations(QString allStations, bool withD
         QGeoCoordinate coord(stationJson["lat"].toDouble(), stationJson["lng"].toDouble());
         station->coordinates = coord;
         if (withDetails) {
-            station->bike_stands = showFreeRacks ? stationJson["bike_racks"].toInt() : -1;
-            station->available_bike_stands = showFreeRacks ? stationJson["free_racks"].toInt() : -1;
+            station->bike_stands = stationJson["bike_racks"].toInt();
+            station->available_bike_stands = stationJson["free_racks"].toInt();
             station->available_bikes = stationJson["bikes"].toInt();
         }
         else {

@@ -55,7 +55,7 @@ Page {
                 ]
             }
             anchors.fill: parent
-            // Paris, Hotel de Ville by default. Updated after stations loading.
+            // Paris, Hotel de Ville. Doesn't actually work (for now?)
             center: QtPositioning.coordinate(48.85604723, 2.35390723)
 
             zoomLevel: 9 /* does not work for now (Qt5.1), always starts at 9 whatever the value */
@@ -83,6 +83,7 @@ Page {
 
             //! Icon to display the current position
             MapQuickItem {
+                id: meIcon
                 z: 2
                 coordinate: positionSource.position.coordinate
                 visible: positionReceived
@@ -234,7 +235,6 @@ Page {
         updateInterval: 10000
         active: false
 
-        //! When position changed, update the location strings
         onPositionChanged: {
             if (!positionReceived) { // First time we receive a position, go to it.
                 console.log("GPS position received");
@@ -481,8 +481,9 @@ Page {
         // not triggered since those stations were already in the filter. So refreshing manually
         if (map.mapItems.length < maxItemsOnMap && stationsRepeater.count > map.mapItems.length) {
             map.clearMapItems();
+            map.addMapItem(meIcon);
             for (var i = 0; i < stationsRepeater.count && i < maxItemsOnMap; ++i) {
-                map.addMapItem(stationsRepeater.itemAt(i))
+                map.addMapItem(stationsRepeater.itemAt(i));
             }
         }
     }
@@ -491,17 +492,6 @@ Page {
         refreshLabel.text = qsTr("Refreshing...");
         refreshLabel.visible = true
         stations.loadAllStationsDetails();
-    }
-
-    function calcDate(updated) {
-        if (typeof updated === "string") {
-            return "Updated: " + updated;
-        }
-        var now = new Date();
-        var elapsedSeconds = (now.getTime() - updated) / 1000;
-        var min = Math.floor(elapsedSeconds / 60);
-        var sec = Math.floor(elapsedSeconds % 60);
-        return "Updated: " + min + " min " + sec + " sec"
     }
 
     function getMapPlugin() {

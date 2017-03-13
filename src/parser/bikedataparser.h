@@ -11,7 +11,7 @@ class BikeDataParser
 public:
     virtual ~BikeDataParser() {}
 
-    virtual QList<City*> parseCities(QString /* cities */, ProviderInfo /* providerInfo */) { return QList<City*>(); }
+    virtual QList<City*> parseCities(QString /* cities */, ProviderInfo& /* providerInfo */) { return QList<City*>(); }
     virtual QList<Station*> parseAllStations(QString /* allStations */, bool /* withDetails */) { return QList<Station*>(); }
     virtual void parseStationDetails(QString /* stationDetails */, Station* /* station */) {}
 };

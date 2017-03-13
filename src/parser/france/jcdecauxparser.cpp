@@ -6,7 +6,7 @@
 #include <QGeoCoordinate>
 
 
-QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo providerInfo) {
+QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo& providerInfo) {
     QList<City*> citiesList;
     QJsonDocument doc = QJsonDocument::fromJson(cities.toUtf8());
     QJsonArray citiesArray = doc.array();

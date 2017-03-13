@@ -63,13 +63,7 @@ bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
         _providers[provider.url] = provider;
 
         if (fromCache) {
-            QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                           + QDir::separator() + provider.name);
-            if (citiesFile.open(QIODevice::ReadOnly)) {
-                QByteArray savedData = citiesFile.readAll();
-                parse(savedData, provider);
-                res = true;
-            }
+            res = loadProviderFromCache(provider);
         }
         else {
             ++_pendingRequests;
@@ -114,11 +108,23 @@ void CitiesLoader::loadCitiesFromFile()
     emit citiesAdded(citiesList);
 }
 
+bool CitiesLoader::loadProviderFromCache(ProviderInfo& provider)
+{
+    QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
+                   + QDir::separator() + provider.name);
+    if (citiesFile.open(QIODevice::ReadOnly)) {
+        QByteArray savedData = citiesFile.readAll();
+        parse(savedData, provider);
+        return true;
+    }
+    return false;
+}
+
 void CitiesLoader::bikeProviderFetched()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    ProviderInfo& providerInfo = _providers[reply->url().toString()];
 
-    //TODO handle redirections
     if (reply->error() != QNetworkReply::NoError) {
         emit errorMsgChanged(reply->errorString());
         fetchedProvidersCountChanged(_fetchedProvidersCount, ++_errorsCount);
@@ -126,13 +132,13 @@ void CitiesLoader::bikeProviderFetched()
             emit finished();
         }
         reply->deleteLater();
-        //TODO load from cache
+        loadProviderFromCache(providerInfo);
         return;
     }
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if(!redirectUrl.isEmpty())
     {
-        _providers[redirectUrl.toString()] = _providers[reply->url().toString()];
+        _providers[redirectUrl.toString()] = providerInfo;
         QNetworkRequest req(redirectUrl);
         QNetworkReply *rep = _networkAccessManager->get(req);
         connect(rep, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
@@ -140,7 +146,6 @@ void CitiesLoader::bikeProviderFetched()
         return;
     }
 
-    ProviderInfo providerInfo = _providers[reply->url().toString()];
     QString citiesString = QString::fromUtf8(reply->readAll());
     QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
                    + QDir::separator() + providerInfo.name);
@@ -156,7 +161,7 @@ void CitiesLoader::bikeProviderFetched()
     reply->deleteLater();
 }
 
-void CitiesLoader::parse(QString citiesString, ProviderInfo providerInfo)
+void CitiesLoader::parse(QString citiesString, ProviderInfo& providerInfo)
 {
     int id = QMetaType::type(providerInfo.name.toLatin1().data());
     if (id != -1) {

@@ -136,7 +136,7 @@ Page {
     ProgressInfoBar {
         id: progressInfoBar
         label: qsTr("Fetching providers...")
-        open: topMenu.busy && citiesModel.fetchedProvidersCount < citiesModel.providersCount
+        open: topMenu.busy
         newCount: citiesModel.count
         errorCount: citiesModel.errorsCount
         minimumValue: 0

@@ -63,12 +63,12 @@ int main(int argc, char *argv[])
     ParsersRegistry registry;
     registry.registerParsers();
 
-    qmlRegisterType<City>("com.jolla.harbour.bikeme", 1, 0, "City");
-    qmlRegisterType<CitiesModel>("com.jolla.harbour.bikeme", 1, 0, "CitiesModel");
-    qmlRegisterType<CitiesModelProxy>("com.jolla.harbour.bikeme", 1, 0, "CitiesModelProxy");
-    qmlRegisterType<StationsModel>("com.jolla.harbour.bikeme", 1, 0, "StationsModel");
-    qmlRegisterType<StationsModelProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsModelProxy");
-    qmlRegisterType<StationsFavouritesProxy>("com.jolla.harbour.bikeme", 1, 0, "StationsFavouritesProxy");
+    qmlRegisterType<City>("harbour.bikeme", 1, 0, "City");
+    qmlRegisterType<CitiesModel>("harbour.bikeme", 1, 0, "CitiesModel");
+    qmlRegisterType<CitiesModelProxy>("harbour.bikeme", 1, 0, "CitiesModelProxy");
+    qmlRegisterType<StationsModel>("harbour.bikeme", 1, 0, "StationsModel");
+    qmlRegisterType<StationsModelProxy>("harbour.bikeme", 1, 0, "StationsModelProxy");
+    qmlRegisterType<StationsFavouritesProxy>("harbour.bikeme", 1, 0, "StationsFavouritesProxy");
 
     ConfigManager* configManager = new ConfigManager();
 

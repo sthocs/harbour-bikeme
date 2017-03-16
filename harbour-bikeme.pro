@@ -10,8 +10,7 @@ TARGET = harbour-bikeme
 
 CONFIG += sailfishapp
 
-QT += xml \
-positioning
+QT += xml positioning
 
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
@@ -57,8 +56,7 @@ OTHER_FILES += harbour-bikeme.desktop \
 data.files = data
 data.path = /usr/share/$${TARGET}
 
-INSTALLS += \
-    data
+INSTALLS += data
 
 HEADERS += \
     src/configmanager.h \

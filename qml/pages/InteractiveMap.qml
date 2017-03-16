@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
-import com.jolla.harbour.bikeme 1.0
+import harbour.bikeme 1.0
 
 import "../items"
 import "./db.js" as Db

@@ -8,9 +8,9 @@ License: LICENSE
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |-
-  Find a bike or a free parking spot for for various self-service bicycle schemes around the world: JCDecaux, Smoove, ...
+  Find a bike or a free parking spot for for various self-service bicycle schemes around the world: JCDecaux, Nextbike, Smoove, ...
   This app provides an interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.
-  Regular users can also save their favourites stations and see their status directly on the cover.
+  Regular users can also save their favourites stations.
 Configure: none
 Builder: qtc5
 PkgConfigBR:

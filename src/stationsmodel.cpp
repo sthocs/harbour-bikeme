@@ -91,8 +91,11 @@ void StationsModel::updateCenter()
     }
     avgLat /= nbValidStations;
     avgLng /= nbValidStations;
-    _center = QGeoCoordinate(avgLat, avgLng);
-    emit centerChanged();
+    QGeoCoordinate newCenter(avgLat, avgLng);
+    if (newCenter != _center) {
+        _center = newCenter;
+        emit centerChanged();
+    }
 }
 
 QGeoCoordinate StationsModel::getCenter() const

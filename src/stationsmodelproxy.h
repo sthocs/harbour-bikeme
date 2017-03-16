@@ -19,7 +19,7 @@ public:
     bool applyFilter() { return _filter; }
     void setApplyFilter(bool applyFilter) { _filter = applyFilter; }
 
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 private:
     QGeoCoordinate _topLeftFilter;

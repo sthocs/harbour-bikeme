@@ -30,6 +30,9 @@ Page {
     StationsFavouritesProxy {
         id: favouritesModel
         sourceModel: stations
+        Component.onCompleted: {
+            window.cover.favouritesModel = favouritesModel
+        }
     }
 
     Label {

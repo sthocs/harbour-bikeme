@@ -7,6 +7,7 @@
 class StationsFavouritesProxy : public QSortFilterProxyModel
 {
     Q_OBJECT
+    Q_PROPERTY(int count READ rowCount)
 public:
     StationsFavouritesProxy();
 

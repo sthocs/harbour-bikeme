@@ -49,17 +49,6 @@
 
 int main(int argc, char *argv[])
 {
-    // SailfishApp::main() will display "qml/template.qml", if you need more
-    // control over initialization, you can use:
-    //
-    //   - SailfishApp::application(int, char *[]) to get the QGuiApplication *
-    //   - SailfishApp::createView() to get a new QQuickView * instance
-    //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
-    //
-    // To display the view, call "show()" (will show fullscreen on device).
-    QGuiApplication* app = SailfishApp::application(argc, argv);
-    QQuickView* view = SailfishApp::createView();
-
     ParsersRegistry registry;
     registry.registerParsers();
 
@@ -69,6 +58,18 @@ int main(int argc, char *argv[])
     qmlRegisterType<StationsModel>("harbour.bikeme", 1, 0, "StationsModel");
     qmlRegisterType<StationsModelProxy>("harbour.bikeme", 1, 0, "StationsModelProxy");
     qmlRegisterType<StationsFavouritesProxy>("harbour.bikeme", 1, 0, "StationsFavouritesProxy");
+
+    // SailfishApp::main() will display "qml/template.qml", if you need more
+    // control over initialization, you can use:
+    //
+    //   - SailfishApp::application(int, char *[]) to get the QGuiApplication *
+    //   - SailfishApp::createView() to get a new QQuickView * instance
+    //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
+    //
+    // To display the view, call "show()" (will show fullscreen on device).
+    QGuiApplication* app = SailfishApp::application(argc, argv);
+    app->setApplicationVersion(QString(APP_VERSION));
+    QQuickView* view = SailfishApp::createView();
 
     ConfigManager* configManager = new ConfigManager();
 

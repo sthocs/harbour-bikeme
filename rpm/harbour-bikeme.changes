@@ -1,0 +1,36 @@
+* Wed Jan 18 2017 Sthocs <sthocs@hotmail.com> 0.5.1-1
+- Fixed Valencia (es)
+
+* Thu Dec 1 2016 Sthocs <sthocs@hotmail.com> 0.5-2
+- Updated for Sailfish 2.0.5: nokia replaced by here
+
+* Sat Aug 20 2016 Sthocs <sthocs@hotmail.com> 0.5-1
+- Improved way to add favourites from the map
+- New option to select the start page
+- Misc: Auto refresh favourites when opening the page + slight fix for velobike.ru
+
+* Tue Oct 20 2015 Sthocs <sthocs@hotmail.com> 0.4.2-1
+- Will now follow redirections in case of URL change
+
+* Thu Jun 11 2015 Sthocs <sthocs@hotmail.com> 0.4.1-1
+- Fixed London URL
+
+* Thu Apr 9 2015 Sthocs <sthocs@hotmail.com> 0.4-1
+- New cities: London, Moscow, Astana, Batumi
+- New providers: Veloway, Smoove
+- CitiesBrowser component
+
+*  Thu Nov 27 2014 Sthocs <sthocs@hotmail.com> 0.3-1
+- Added a dataprovider class with parsers functions in order to start
+  adding more cities in the app. First city: Lille
+
+* Mon Oct 27 2014 Sthocs <sthocs@hotmail.com> 0.2.1-1
+- Fixed crash with SailfishOS Uitukka when no Internet connection
+
+* Tue Oct 21 2014 Sthocs <sthocs@hotmail.com> 0.2-1
+- option to display all stations status on the map
+- usage of Sailfish native icons
+- made QStandardPaths harbour compliant
+
+* Thu Apr 10 2014 Sthocs <sthocs@hotmail.com> 0.1-1
+- First release

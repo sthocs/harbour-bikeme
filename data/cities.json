@@ -110,7 +110,7 @@
         "provider": "TfL",
         "name": "London",
         "commercial_name": "Barclays Cycle Hire",
-        "country_code": "UK",
+        "country_code": "GB",
         "allStationsDetailsUrl": "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
         "copyright": "Powered by TfL Open Data"
     },

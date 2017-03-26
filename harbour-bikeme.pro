@@ -12,6 +12,8 @@ CONFIG += sailfishapp
 
 QT += xml positioning
 
+DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
+
 SOURCES += src/harbour-bikeme.cpp \
     src/configmanager.cpp \
     src/citydata.cpp \
@@ -34,29 +36,6 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/parsersregistry.cpp \
     src/parser/germany/nextbikeparser.cpp \
     src/parser/canada/montrealparser.cpp
-
-OTHER_FILES += harbour-bikeme.desktop \
-    rpm/harbour-bikeme.spec \
-    rpm/harbour-bikeme.yaml \
-    qml/harbour-bikeme.qml \
-    qml/cover/CoverPage.qml \
-    qml/items/StationMarker.qml \
-    qml/pages/CitiesBrowser.qml \
-    qml/pages/CitiesDelegate.qml \
-    qml/pages/CitiesList.qml \
-    qml/pages/SecondPage.qml \
-    qml/pages/Favourites.qml \
-    qml/pages/InteractiveMap.qml \
-    qml/pages/About.qml \
-    qml/pages/Settings.qml \
-    qml/pages/cachemanager.js \
-    qml/pages/utils.js \
-    qml/pages/db.js
-
-data.files = data
-data.path = /usr/share/$${TARGET}
-
-INSTALLS += data
 
 HEADERS += \
     src/configmanager.h \
@@ -82,5 +61,34 @@ HEADERS += \
     src/parser/germany/nextbikeparser.h \
     src/parser/canada/montrealparser.h
 
+OTHER_FILES += harbour-bikeme.desktop \
+    rpm/harbour-bikeme.spec \
+    rpm/harbour-bikeme.yaml \
+    qml/harbour-bikeme.qml \
+    qml/cover/CoverPage.qml \
+    qml/items/StationMarker.qml \
+    qml/pages/CitiesBrowser.qml \
+    qml/pages/CitiesDelegate.qml \
+    qml/pages/CitiesList.qml \
+    qml/pages/SecondPage.qml \
+    qml/pages/Favourites.qml \
+    qml/pages/InteractiveMap.qml \
+    qml/pages/About.qml \
+    qml/pages/Settings.qml \
+    qml/pages/cachemanager.js \
+    qml/pages/utils.js \
+    qml/pages/db.js
+
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
+
+data.files = data
+data.path = /usr/share/$${TARGET}
+
+images.files = images
+images.path = /usr/share/$${TARGET}
+
+INSTALLS += data images
+
 DISTFILES += \
-    qml/util/ProgressInfoBar.qml
+    qml/util/ProgressInfoBar.qml \
+    rpm/harbour-bikeme.changes

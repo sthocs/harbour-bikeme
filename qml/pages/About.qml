@@ -20,9 +20,13 @@ Page {
                 Label {
                     font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.highlightColor
-                    text: "About "
+                    text: qsTr("About")
                 }
-                Text { text: " B"; color: "#FEBA02"; font.pixelSize: Theme.fontSizeExtraLarge; font.bold: true }
+                Item {
+                    width: Theme.paddingSmall
+                    height: parent.height
+                }
+                Text { text: "B"; color: "#FEBA02"; font.pixelSize: Theme.fontSizeExtraLarge; font.bold: true }
                 Text { text: "i"; color: "#028CBB"; font.pixelSize: Theme.fontSizeExtraLarge; font.bold: true }
                 Text { text: "k"; color: "#ea2c81"; font.pixelSize: Theme.fontSizeExtraLarge; font.bold: true }
                 Text { text: "e"; color: "#c0bc01"; font.pixelSize: Theme.fontSizeExtraLarge; font.bold: true }
@@ -58,7 +62,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Theme.fontSizeMedium
                 color: Theme.primaryColor
-                text: "Find a bike in your city!"
+                text: qsTr("Find a bike in your city!")
             }
             Item {
                 width: parent.width
@@ -70,16 +74,16 @@ Page {
                 width: parent.width
                 wrapMode: Text.WordWrap
                 linkColor: Theme.highlightColor
-                text: 'This app helps you to find a bike or a free parking spot for various self-service bicycle ' +
-                      'schemes arround the world:' +
-                      '<ul><li>JCDecaux</li><li>Nextbike</li><li>Smoove</li><li>And more!</li></ul>' +
-                      'It provides a simple interactive map displaying all stations by city, their number of ' +
-                      'available bikes and free parking spots, and the geolocation.<br />' +
-                      ' Click on <img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' +
-                      Theme.iconSizeSmall + '"/> to activate the geolocation and on ' +
-                      '<img src="image://theme/icon-cover-location" width="' + Theme.iconSizeSmall + '" height="' +
-                      Theme.iconSizeSmall + '"/> to center the map on your position.<br/>' +
-                      'Regular users: Save your favourites stations and see their status directly on the cover!'
+                text: qsTr("This app helps you to find a bike or a free parking \
+spot for various self-service bicycle schemes arround the world:\
+<ul><li>JCDecaux</li><li>Nextbike</li><li>Smoove</li><li>And more!</li></ul>\
+BikeMe provides a simple interactive map displaying all stations by city, their number of \
+available bikes and free parking spots, and the geolocation.<br />\
+Click on %1 to activate the geolocation and on %2 \
+to center the map on your position.<br/>\
+Regular users: Save your favourites stations and see their status directly on the cover!")
+.arg('<img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
+.arg('<img src="image://theme/icon-cover-location" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
             }
 
             Item {
@@ -92,7 +96,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryColor
-                text: "Version %1".arg(Qt.application.version)
+                text: qsTr("Version %1").arg(Qt.application.version)
             }
 
             Label {

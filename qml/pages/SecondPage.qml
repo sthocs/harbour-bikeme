@@ -29,11 +29,11 @@ Page {
             id: favouritesModel
 
             ListElement {
-                name: "Interactive Map"
+                name: qsTr("Stations Map")
                 fileName: "InteractiveMap"
             }
             ListElement {
-                name: "Favourites"
+                name: qsTr("Favourites")
                 fileName: "Favourites"
             }
         }

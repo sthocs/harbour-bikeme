@@ -28,10 +28,6 @@ Page {
     property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
 
-
-    //! Used to indicate if device is in portrait mode
-    property bool isPortrait: (screen.currentOrientation === Screen.Landscape) ? false : true
-
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
 
@@ -69,15 +65,11 @@ Page {
                 stations.loadStationsList();
             }
 
-            gesture.onFlickFinished: {
-                console.log("Flick FINISHED");
-            }
             gesture.onPanFinished: {
                 console.log("Pan FINISHED");
                 updateFilter();
             }
             gesture.onPinchFinished: {
-                console.log("Pinch FINISHED");
                 updateFilter();
             }
 
@@ -111,19 +103,26 @@ Page {
         visible: false
         anchors.top: parent.top
         anchors.right: parent.right
-        height: Theme.itemSizeSmall
+        height: Theme.itemSizeMedium
         width: parent.width * 2 / 3
         color: "gray"
         opacity: 0.8
         radius: 7
 
-        Label {
+        Text {
             id: alertMsg
             text: "Mode not available"
             color: "black"
+            font.pixelSize: Theme.fontSizeSmall
+            wrapMode: Text.Wrap
+            anchors.fill: parent
+            anchors.leftMargin: Theme.paddingSmall
+            anchors.rightMargin: closeAlertButton.width
+            verticalAlignment: Text.AlignVCenter
         }
 
         Image {
+            id: closeAlertButton
             source: "image://theme/icon-m-close"
             anchors.right: parent.right
 
@@ -153,7 +152,7 @@ Page {
                 }
                 else {
                     displayAllStatus = false;
-                    alertMsg.text = "Can't display all status\nfor this city.";
+                    alertMsg.text = qsTr("Can't display all status for this city.");
                     alertPopup.visible = true;
                 }
             }
@@ -163,7 +162,7 @@ Page {
                 stationNameLabel.text = station.name;
                 numberOfBikes.text = ": " + station.available_bikes;
                 numberOfParking.text = ": " + station.available_bike_stands;
-                lastUpdatedTime.text = "Updated: " + Utils.makeLastUpdateDateHumanReadable(station.last_update);
+                lastUpdatedTime.text = qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(station.last_update));
             }
         }
         onError: {
@@ -210,15 +209,15 @@ Page {
                     if (!displayAllStatus) {
                         refreshLabel.visible = false;
                         if (!city.isSingleStationModeSupported()) {
-                            alertMsg.text = "Only \"all status\" mode\navailable for this city."
+                            alertMsg.text = qsTr("Only \"all status\" mode available for this city.")
                             alertPopup.visible = true;
                             displayAllStatus = true;
                             refreshAll();
                         }
-                        stationNameLabel.text = "Updating...";
+                        stationNameLabel.text = qsTr("Updating...");
                         numberOfBikes.text = ":";
                         numberOfParking.text = ":";
-                        lastUpdatedTime.text = "Updated:"
+                        lastUpdatedTime.text = qsTr("Updated:")
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
                     }
                 }
@@ -355,7 +354,7 @@ Page {
     Label {
         id: stationLoadingLabel
         visible: true
-        text: "Loading stations..."
+        text: qsTr("Loading stations...")
         color: "black"
         anchors.bottom: mapview.bottom
     }
@@ -375,7 +374,6 @@ Page {
             text: "-"
             color: Theme.primaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
-            font.capitalization: Font.Capitalize
         }
         Row {
             Image {
@@ -412,7 +410,7 @@ Page {
         }
         Label {
             id: lastUpdatedTime
-            text: "Updated:"
+            text: qsTr("Updated:")
             color: Theme.primaryColor
             font.pixelSize: Theme.fontSizeExtraSmall
         }

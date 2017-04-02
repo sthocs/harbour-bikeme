@@ -48,13 +48,13 @@ Page {
 
         header: PageHeader {
             id: header
-            title: "Favourites - " + city.name
+            title: qsTr("Favourites - %1").arg(city.name)
         }
 
         PullDownMenu {
             id: topMenu
             MenuItem {
-                text: "Refresh all"
+                text: qsTr("Update all")
                 onClicked: {
                     //topMenu.busy =  favouritesModel.count > 0;
                     errorMsgLabel.visible = false;
@@ -115,8 +115,8 @@ Page {
                         height: 1
                     }
                     Label {
-                        text: opened ? "Updated: " + Utils.makeLastUpdateDateHumanReadable(model.last_update) :
-                                       "Closed"
+                        text: opened ? qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(model.last_update)) :
+                                       qsTr("Closed")
                         color: Theme.secondaryColor
                         font.pixelSize: Theme.fontSizeMedium
                     }
@@ -127,17 +127,17 @@ Page {
                 id: contextMenuComponent
                 ContextMenu {
                     MenuItem {
-                        text: "Refresh"
+                        text: qsTr("Update")
                         onClicked: {
                             errorMsgLabel.visible = false;
                             if (!favouritesModel.refreshStationInfo(index)) {
-                                errorMsgLabel.text = "Individual refresh not available for this city";
+                                errorMsgLabel.text = qsTr("Individual update not available for this city");
                                 errorMsgLabel.visible = true;
                             }
                         }
                     }
                     MenuItem {
-                        text: "Move Up"
+                        text: qsTr("Move Up")
                         onClicked: {
                             if (index < 1) {
                                 return;
@@ -147,7 +147,7 @@ Page {
                         }
                     }
                     MenuItem {
-                        text: "Move Down"
+                        text: qsTr("Move Down")
                         onClicked: {
                             if (index > favouritesModel.count - 2) {
                                 return;
@@ -157,14 +157,14 @@ Page {
                         }
                     }
                     MenuItem {
-                        text: "Delete"
+                        text: qsTr("Delete")
                         onClicked: remove()
                     }
                 }
             }
 
             function remove() {
-                remorseAction("Deleting", function() {
+                remorseAction(qsTr("Deleting"), function() {
                     Db.removeFavourite(city.identifier, number);
                     favouritesModel.remove(index);
                 });
@@ -197,8 +197,8 @@ Page {
         TextField {
             width: parent.width
             inputMethodHints: Qt.ImhFormattedNumbersOnly
-            placeholderText: "Add a new favourite"
-            label: "Adding a favourite"
+            placeholderText: qsTr("Add a new favourite")
+            label: qsTr("Adding a favourite")
             horizontalAlignment: Text.AlignLeft
             EnterKey.onClicked: {
                 var stationNumber = parseInt(text);
@@ -213,7 +213,7 @@ Page {
                     }
                 }
                 else {
-                    errorMsgLabel.text = "Station " + text + " does not exist";
+                    errorMsgLabel.text = qsTr("Station %1 does not exist").arg(text);
                     errorMsgLabel.visible = true;
                 }
 
@@ -221,10 +221,5 @@ Page {
                 listView.focus = true;
             }
         }
-    }
-
-    function updateStationNameInDB(stationNumber, stationName) {
-        console.log("Updating name of station " + stationNumber);
-        Db.updateStationName(city, stationNumber, stationName);
     }
 }

@@ -35,15 +35,15 @@ Page {
 
             menu: ContextMenu {
                 MenuItem {
-                    text: "Default"
+                    text: qsTr("Default")
                     onClicked: configManager.saveSetting("startPage", 0);
                 }
                 MenuItem {
-                    text: "Map"
+                    text: qsTr("Map")
                     onClicked: configManager.saveSetting("startPage", 1);
                 }
                 MenuItem {
-                    text: "Favourites"
+                    text: qsTr("Favourites")
                     onClicked: configManager.saveSetting("startPage", 2);
                 }
             }
@@ -55,8 +55,8 @@ Page {
 
         TextSwitch {
             id: activationSwitch
-            text: "Display all stations status"
-            description: "All station status will be downloaded and displayed on the map. Consume more data."
+            text: qsTr("Display all stations status")
+            description: qsTr("All station status will be downloaded and displayed on the map. Consume more data.")
             onCheckedChanged: {
                 configManager.saveSetting("displayAllStatus", checked)
             }
@@ -77,14 +77,14 @@ Page {
         Button {
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Clear cache")
-            onClicked: remorse.execute("Clearing cache", function() { configManager.removeCacheFiles() } );
+            onClicked: remorse.execute(qsTr("Clearing cache"), function() { configManager.removeCacheFiles() } );
         }
         Text {
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
             width: parent.width
             wrapMode: Text.WordWrap
-            text: qsTr("BikeMe keeps in cache stations location to save mobile data." +
+            text: qsTr("BikeMe keeps in cache stations location to save mobile data. " +
                        "If stations don't display, you can try to clear the cache to remove potentially corrupted files.")
         }
     }

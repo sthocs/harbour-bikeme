@@ -35,12 +35,12 @@ Page {
         header: Column {
             width: listView.width
 
-            PageHeader { title: "Cities" }
+            PageHeader { title: qsTr("Cities") }
 
             SearchField {
                 id: searchField
                 width: parent.width
-                placeholderText: "Filter"
+                placeholderText: qsTr("Filter")
                 visible: citiesModel.count > 0
 
                 onTextChanged: citiesModelProxy.filter(text)
@@ -76,20 +76,20 @@ Page {
         ViewPlaceholder {
             id: placeholder
             enabled: listView.count == 0
-            text: "Welcome to BikeMe!"
-            hintText: "Pull down to load cities list"
+            text: qsTr("Welcome to BikeMe!")
+            hintText: qsTr("Pull down to load cities list")
         }
 
         PullDownMenu {
             id: topMenu
             MenuItem {
-                text: "About BikeMe"
+                text: qsTr("About BikeMe")
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("About.qml"))
                 }
             }
             MenuItem {
-                text: "Refresh cities list"
+                text: qsTr("Update cities list")
                 onClicked: {
                     topMenu.busy = true
                     citiesModel.loadAll()
@@ -135,7 +135,7 @@ Page {
 
     ProgressInfoBar {
         id: progressInfoBar
-        label: qsTr("Fetching providers...")
+        label: qsTr("Fetching operators...")
         open: topMenu.busy
         newCount: citiesModel.count
         errorCount: citiesModel.errorsCount

@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
 import QtPositioning 5.1
+import QtGraphicalEffects 1.0
 import harbour.bikeme 1.0
 
 import "../items"
@@ -59,6 +60,9 @@ Page {
             Component.onCompleted: {
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
                 map.zoomLevel = city.zoom || 13;
+                if (mapPlugin === "osm") {
+                    map.zoomLevel += 1;
+                }
                 updateFilter();
                 stationLoadingLabel.visible = true;
                 stations.city = city;
@@ -258,10 +262,10 @@ Page {
     }
 
     Image {
-        source: "../icons/icon-m-back.png"
+        source: "image://theme/icon-m-back?black"
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: Theme.paddingMedium
+        anchors.leftMargin: Theme.paddingSmall
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -377,7 +381,7 @@ Page {
         }
         Row {
             Image {
-                source: "../icons/bikeme.png"
+                source: "../icons/icon-bikeme.svg"
                 sourceSize.height: Theme.fontSizeSmall
                 sourceSize.width: Theme.fontSizeSmall
                 anchors.verticalCenter: parent.verticalCenter
@@ -394,7 +398,7 @@ Page {
                 height: 1
             }
             Image {
-                source: "../icons/parking.png"
+                source: "../icons/parking.svg"
                 sourceSize.height: Theme.fontSizeSmall
                 sourceSize.width: Theme.fontSizeSmall
                 anchors.leftMargin: Theme.paddingSmall
@@ -434,26 +438,55 @@ Page {
         anchors.bottomMargin: Theme.paddingMedium
         spacing: Theme.paddingSmall
 
-        Image {
-            source: displayAvailableParking ? "../icons/bikeme_bw.png" : "../icons/bikeme.png"
-            sourceSize.height: Theme.itemSizeSmall
-            sourceSize.width: Theme.itemSizeSmall
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    displayAvailableParking = false;
+        Item {
+            width: Theme.itemSizeSmall
+            height: Theme.itemSizeSmall
+
+            Image {
+                id: displayAvailableBikesBtn
+                source: "../icons/icon-bikeme.svg"
+                sourceSize.height: Theme.itemSizeSmall
+                sourceSize.width: Theme.itemSizeSmall
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        displayAvailableParking = false;
+                    }
                 }
+
+            }
+            Colorize {
+                visible: displayAvailableParking
+                anchors.fill: displayAvailableBikesBtn
+                source: displayAvailableBikesBtn
+                hue: 0
+                saturation: 0
+                lightness: 0
             }
         }
-        Image {
-            source: displayAvailableParking ? "../icons/parking.png" : "../icons/parking_bw.png"
-            sourceSize.height: Theme.itemSizeSmall
-            sourceSize.width: Theme.itemSizeSmall
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    displayAvailableParking = true;
+        Item {
+            width: Theme.itemSizeSmall
+            height: Theme.itemSizeSmall
+
+            Image {
+                id: displayAvailablePlacesBtn
+                source: "../icons/parking.svg"
+                sourceSize.height: Theme.itemSizeSmall
+                sourceSize.width: Theme.itemSizeSmall
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        displayAvailableParking = true;
+                    }
                 }
+            }
+            Colorize {
+                visible: !displayAvailableParking
+                anchors.fill: displayAvailablePlacesBtn
+                source: displayAvailablePlacesBtn
+                hue: 0
+                saturation: 0
+                lightness: 0
             }
         }
         Image {

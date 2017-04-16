@@ -11,6 +11,13 @@ import harbour.bikeme 1.0
 Page {
     property City city
 
+    Component.onCompleted: {
+        window.cover.countryCode = city.countryCode
+    }
+    Component.onDestruction: {
+        window.cover.countryCode = ""
+    }
+
     SilicaListView {
         id: listView
         anchors.fill: parent

@@ -75,7 +75,7 @@ Page {
 
         ViewPlaceholder {
             id: placeholder
-            enabled: listView.count == 0
+            enabled: listView.count == 0 && citiesModel.count == 0
             text: qsTr("Welcome to BikeMe!")
             hintText: qsTr("Pull down to load cities list")
         }

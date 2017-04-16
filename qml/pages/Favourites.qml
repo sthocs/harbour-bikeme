@@ -80,7 +80,7 @@ Page {
                 Row {
                     x: Theme.paddingLarge
                     Image {
-                        source: "../icons/bikeme.png"
+                        source: "../icons/icon-bikeme.svg"
                         sourceSize.height: Theme.fontSizeSmall
                         sourceSize.width: Theme.fontSizeSmall
                         anchors.verticalCenter: parent.verticalCenter
@@ -97,7 +97,7 @@ Page {
                         height: 1
                     }
                     Image {
-                        source: "../icons/parking.png"
+                        source: "../icons/parking.svg"
                         sourceSize.height: Theme.fontSizeSmall
                         sourceSize.width: Theme.fontSizeSmall
                         anchors.leftMargin: Theme.paddingSmall

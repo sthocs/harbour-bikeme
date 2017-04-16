@@ -32,6 +32,7 @@ class City : public QObject
     Q_OBJECT
     Q_PROPERTY(QString identifier READ identifier)
     Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
+    Q_PROPERTY(QString countryCode READ getCountryCode NOTIFY countryCodeChanged)
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
     Q_PROPERTY(QUrl stationsListUrl READ getStationsListUrl NOTIFY stationsListUrlChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
@@ -61,6 +62,7 @@ public:
 
 signals:
     void nameChanged();
+    void countryCodeChanged();
     void providerNameChanged();
     void stationsListUrlChanged();
     void allStationsDetailsUrlChanged();

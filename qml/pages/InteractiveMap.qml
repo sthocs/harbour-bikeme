@@ -261,11 +261,19 @@ Page {
         positionSource.stop();
     }
 
-    Image {
-        source: "image://theme/icon-m-back?black"
+    Item {
+        width: Theme.iconSizeSmallPlus
+        height: Theme.iconSizeMedium
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: Theme.paddingSmall
+        Image {
+            source: "image://theme/icon-cover-next?DodgerBlue"
+            mirror: true
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: Theme.paddingSmall
+            anchors.topMargin: Theme.paddingMedium
+        }
         MouseArea {
             anchors.fill: parent
             onClicked: {

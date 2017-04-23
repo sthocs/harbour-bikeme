@@ -1,10 +1,13 @@
 #include "stationsmodel.h"
 
+#include "parser/bikedataparser.h"
+
 StationsModel::StationsModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<Station*>())
 {
     connect(&_stationsLoader, SIGNAL(stationsFetched(QList<Station*>, bool)), this, SLOT(setStations(QList<Station*>, bool)));
     connect(&_stationsLoader, SIGNAL(stationDetailsFetched(Station*)), this, SLOT(stationDetailsFetched(Station*)));
+    connect(&_stationsLoader, SIGNAL(stationsRealTimeDataFetched(QString)), this, SLOT(stationsRealTimeDataFetched(QString)));
     connect(&_stationsLoader, SIGNAL(error(QString)), this, SIGNAL(error(QString)));
 }
 
@@ -74,6 +77,22 @@ void StationsModel::stationDetailsFetched(Station* station)
             emit dataChanged(index(row), index(row));
             emit stationUpdated(station);
         }
+    }
+}
+
+void StationsModel::stationsRealTimeDataFetched(QString stationsRealTimeData)
+{
+    int id = QMetaType::type(_city->getProviderName().toLatin1().data());
+    if (id > 0) {
+        beginResetModel();
+        BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
+        parser->parseStationsRealTimeData(stationsRealTimeData, _list);
+        delete parser;
+        endResetModel();
+        emit stationsLoaded(true);
+    }
+    else {
+        emit error("Real-time data: Parser not found");
     }
 }
 

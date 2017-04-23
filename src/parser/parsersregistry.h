@@ -8,6 +8,7 @@
 #include "france/parserveloway.h"
 #include "germany/nextbikeparser.h"
 #include "kazakhstan/parserastana.h"
+#include "north_america/nabsaparser.h"
 #include "russia/parsermoscow.h"
 #include "uk/parserlondon.h"
 

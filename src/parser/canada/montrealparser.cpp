@@ -14,7 +14,7 @@ QList<Station*> MontrealParser::parseAllStations(QString allStations, bool withD
     for (int i = 0; i < stationsArray.size(); ++i) {
         QJsonObject stationJson = stationsArray[i].toObject();
         Station* station = new Station();
-        station->number = stationJson["id"].toString().toInt();
+        station->number = stationJson["id"].toInt();
         station->name = stationJson["s"].toString();
         QGeoCoordinate coord(stationJson["la"].toDouble(), stationJson["lo"].toDouble());
         station->coordinates = coord;

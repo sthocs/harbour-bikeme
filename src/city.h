@@ -8,23 +8,32 @@
 
 struct ProviderInfo {
     QString name;
+    QString autoDiscoveryUrl;
     QString url;
     QString allStationsDetailsUrl;
     QString singleStationDetailsUrlTemplate;
 };
 
+enum StationsDataMode {
+    StationsListAndData = 0,
+    StationsListOnly
+};
+
 struct CityInfo {
-    CityInfo() : id(0), zoom(0), copyright(QString()) {}
+    CityInfo() : id(0), zoom(0), copyright(QString()), stationsDataMode(StationsListAndData) {}
     int id;
     QString name;
     QString commercialName;
     QString providerName;
     QString countryCode;
+    QUrl autoDiscoveryUrl;
     QUrl stationsInfoUrl;
     QUrl allStationsDetailsUrl;
+    QUrl stationsStatusUrl;
     QString singleStationDetailsUrlTemplate;
     int zoom;
     QString copyright;
+    StationsDataMode stationsDataMode;
 };
 
 class City : public QObject
@@ -47,17 +56,22 @@ public:
     QString getName() const { return _info.name; }
     QString getCommercialName() const { return _info.commercialName; }
     QString getCountryCode() const { return _info.countryCode; }
+    QUrl getAutoDiscoveryUrl() const { return _info.autoDiscoveryUrl; }
     QUrl getStationsListUrl() const { return _info.stationsInfoUrl; }
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
+    QUrl getStationsStatusUrl() const { return _info.stationsStatusUrl; }
     QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
     int zoom() const { return _info.zoom; }
     QString copyright() const { return _info.copyright; }
+    StationsDataMode stationDataMode() const { return _info.stationsDataMode; }
 
     Q_INVOKABLE bool isSingleStationModeSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }
-    Q_INVOKABLE bool isAllStationModeSupported() const { return !_info.allStationsDetailsUrl.isEmpty(); }
+    Q_INVOKABLE bool isAllStationModeSupported() const { return !_info.allStationsDetailsUrl.isEmpty() || !_info.stationsStatusUrl.isEmpty(); }
 
     void setInfo(const CityInfo info) { _info = info; }
+    void setAutoDiscoveryUrl(QUrl url) { _info.autoDiscoveryUrl = url; }
     void setStationsListUrl(QUrl url) { _info.stationsInfoUrl = url; }
+    void setStationsStatusUrl(QUrl url) { _info.stationsStatusUrl = url; }
     void setAllStationsDetailsUrl(QUrl url) { _info.allStationsDetailsUrl = url; }
 
 signals:

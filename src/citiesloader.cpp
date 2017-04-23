@@ -31,7 +31,7 @@ void CitiesLoader::loadAll(bool fromCache)
 
 bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
 {
-    bool res = false;
+    bool res = true;
     QFile providersFile(SailfishApp::pathTo("data/bikesproviders.json").toLocalFile());
 
     if (!providersFile.open(QIODevice::ReadOnly))
@@ -55,22 +55,25 @@ bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
         provider.url = providerJson["url"].toString();
         provider.singleStationDetailsUrlTemplate = providerJson["stationDetailsUrl"].toString();
         provider.allStationsDetailsUrl = providerJson["allStationsDetailsUrl"].toString();
+        provider.autoDiscoveryUrl = providerJson["autoDiscoveryUrl"].toString();
         if (!apiKey.isEmpty()) {
             provider.url = provider.url.arg(apiKey);
             provider.singleStationDetailsUrlTemplate = provider.singleStationDetailsUrlTemplate.arg(apiKey);
             provider.allStationsDetailsUrl = provider.allStationsDetailsUrl.arg(apiKey);
         }
-        _providers[provider.url] = provider;
 
         if (fromCache) {
-            res = loadProviderFromCache(provider);
+            res &= loadProviderFromCache(provider);
         }
         else {
             ++_pendingRequests;
-            QNetworkRequest request(provider.url);
+            QString url = !provider.autoDiscoveryUrl.isEmpty() ?
+                        provider.autoDiscoveryUrl : provider.url;
+            _providers[url] = provider;
+            QNetworkRequest request(url);
             QNetworkReply *reply = _networkAccessManager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(bikeProviderFetched()));
-            res = true;
+            res &= true;
         }
     }
     return res;
@@ -136,7 +139,7 @@ void CitiesLoader::bikeProviderFetched()
         return;
     }
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if(!redirectUrl.isEmpty())
+    if (!redirectUrl.isEmpty())
     {
         _providers[redirectUrl.toString()] = providerInfo;
         QNetworkRequest req(redirectUrl);
@@ -164,7 +167,7 @@ void CitiesLoader::bikeProviderFetched()
 void CitiesLoader::parse(QString citiesString, ProviderInfo& providerInfo)
 {
     int id = QMetaType::type(providerInfo.name.toLatin1().data());
-    if (id != -1) {
+    if (id > 0) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
         QList<City*> cities = parser->parseCities(citiesString, providerInfo);
         delete parser;

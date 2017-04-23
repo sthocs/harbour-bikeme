@@ -24,15 +24,21 @@ public:
 signals:
     void stationsFetched(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
+    void stationsRealTimeDataFetched(QString stationsRealTimeData);
     void error(QString errorMsg);
 
 public slots:
+    void cityUrlsFetched();
     void stationsListFetched();
     void stationDetailsFetched();
+    void stationsRealTimeDataFetched();
 
 private:
+    void parseCityUrls(QString urls);
     void parseStationsList(QString stations, bool withDetails);
+    void cacheOnDisk(QString data, QString filename);
     QString cacheFileName() const;
+    QString stationsUrlsFileName() const;
 
     QNetworkAccessManager* _networkAccessManager;
 

@@ -54,6 +54,7 @@ signals:
 private slots:
     void setStations(QList<Station*> stations, bool withDetails);
     void stationDetailsFetched(Station* station);
+    void stationsRealTimeDataFetched(QString stationsRealTimeData);
 
 private:
     QList<Station*> _list;

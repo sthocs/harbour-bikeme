@@ -7,9 +7,8 @@ class NabsaParser : public BikeDataParser
 {
 public:
     virtual QList<City*> parseCities(QString cities, ProviderInfo& providerInfo);
-    virtual QList<Station*> parseAllStations(QString allStations, bool withDetails);
     virtual void parseCityUrls(QString cityUrls, City* city);
-    virtual QList<Station*> parseStationsList(QString stationsList);
+    virtual QList<Station*> parseStationsList(QString allStations, bool withDetails);
     virtual void parseStationsRealTimeData(QString realTimeData , QList<Station*> stations);
 
 private:

@@ -6,7 +6,7 @@
 class ParserLille : public BikeDataParser
 {
 public:
-    QList<Station*> parseAllStations(QString allStations, bool withDetails);
+    QList<Station*> parseStationsList(QString allStations, bool withDetails);
     void parseStationDetails(QString stationDetails, Station* station);
 };
 Q_DECLARE_METATYPE(ParserLille)

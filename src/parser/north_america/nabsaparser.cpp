@@ -27,6 +27,7 @@ QList<City*> NabsaParser::parseCities(QString systemsList, ProviderInfo& provide
         }
         QStringList csvCity = line.split(CSV_DELIMITER);
         CityInfo info;
+        info.stationsDataModes = StationsListOnly | RealTimeDataOnly;
         info.providerName = providerInfo.name;
         info.name = csvCity.at(locationIndex);
         info.commercialName = csvCity.at(nameIndex);
@@ -54,33 +55,9 @@ void NabsaParser::parseCityUrls(QString cityUrls, City* city)
     }
 }
 
-QList<Station*> NabsaParser::parseStationsList(QString stationsString)
+QList<Station*> NabsaParser::parseStationsList(QString allStations, bool withDetails)
 {
-    QList<Station*> stationsList;
-    QRegExp stationIdRegex(".*(\\d+).*");
-    QJsonDocument doc = QJsonDocument::fromJson(stationsString.toUtf8());
-    QJsonArray stationsArray = doc.object()["data"].toObject()["stations"].toArray();
-    for (int i = 0; i < stationsArray.size(); ++i) {
-        QJsonObject stationJson = stationsArray[i].toObject();
-        Station* station = new Station();
-        if (stationJson["station_id"].isString()) {
-            stationIdRegex.indexIn(stationJson["station_id"].toString());
-            station->number = stationIdRegex.cap(1).toInt();
-        }
-        else {
-            station->number = stationJson["station_id"].toInt();
-        }
-        station->name = stationJson["name"].toString();
-        station->address = stationJson["address"].toString();
-        QGeoCoordinate coord(stationJson["lat"].toDouble(), stationJson["lon"].toDouble());
-        station->coordinates = coord;
-        stationsList.append(station);
-    }
-    return stationsList;
-}
-
-QList<Station*> NabsaParser::parseAllStations(QString allStations, bool withDetails)
-{
+    Q_UNUSED(withDetails)
     QList<Station*> stationsList;
     QRegExp stationIdRegex(".*(\\d+).*");
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

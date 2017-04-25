@@ -5,7 +5,7 @@
 #include "parsersmoove.h"
 
 
-QList<Station*> ParserSmoove::parseAllStations(QString allStationsDetails, bool withDetails)
+QList<Station*> ParserSmoove::parseStationsList(QString allStationsDetails, bool withDetails)
 {
     QList<Station*> stationsList;
     QDomDocument xmlDetails;

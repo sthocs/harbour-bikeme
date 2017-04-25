@@ -7,7 +7,7 @@
 #include "parserastana.h"
 
 
-QList<Station*> ParserAstana::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> ParserAstana::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

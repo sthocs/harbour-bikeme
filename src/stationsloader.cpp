@@ -33,6 +33,7 @@ QString StationsLoader::stationsUrlsFileName() const
 
 void StationsLoader::fetchAllStationsList()
 {
+    // For systems providing an auto-discovery url, we first need to fetch the various urls
     if (!_city->getAutoDiscoveryUrl().isEmpty() && _city->getStationsListUrl().isEmpty()) {
         QFile urlsFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                        QDir::separator() + stationsUrlsFileName());
@@ -55,7 +56,7 @@ void StationsLoader::fetchAllStationsList()
         parseStationsList(savedData, false);
     }
     else {
-        QNetworkRequest request(_city->getStationsListUrl().isEmpty() ?
+        QNetworkRequest request(_city->stationDataModes().testFlag(StationsListAndData) ?
                                     _city->getAllStationsDetailsUrl() :
                                     _city->getStationsListUrl());
         QNetworkReply *reply = _networkAccessManager->get(request);
@@ -65,12 +66,12 @@ void StationsLoader::fetchAllStationsList()
 
 void StationsLoader::fetchAllStationsDetails()
 {
-    if (!_city->getAllStationsDetailsUrl().isEmpty()) {
+    if (_city->stationDataModes().testFlag(StationsListAndData)) {
         QNetworkRequest request(_city->getAllStationsDetailsUrl());
         QNetworkReply *reply = _networkAccessManager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
     }
-    else if (!_city->getStationsStatusUrl().isEmpty()) {
+    else if (_city->stationDataModes().testFlag(RealTimeDataOnly)) {
         QNetworkRequest request(_city->getStationsStatusUrl());
         QNetworkReply *reply = _networkAccessManager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(stationsRealTimeDataFetched()));
@@ -123,7 +124,7 @@ void StationsLoader::stationsListFetched()
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if(!redirectUrl.isEmpty())
     {
-        if (_city->getStationsListUrl().isEmpty()) {
+        if (_city->stationDataModes().testFlag(StationsListAndData)) {
             _city->setAllStationsDetailsUrl(redirectUrl);
         }
         else {
@@ -144,7 +145,7 @@ void StationsLoader::stationsListFetched()
         stationsFile.write(stationsString.toUtf8());
     }
 
-    parseStationsList(stationsString, _city->getStationsListUrl().isEmpty());
+    parseStationsList(stationsString, _city->stationDataModes().testFlag(StationsListAndData));
     reply->deleteLater();
 }
 
@@ -208,7 +209,7 @@ void StationsLoader::parseStationsList(QString stationsString, bool withDetails)
     int id = QMetaType::type(_city->getProviderName().toLatin1().data());
     if (id > 0) {
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        QList<Station*> stations = parser->parseAllStations(stationsString, withDetails);
+        QList<Station*> stations = parser->parseStationsList(stationsString, withDetails);
         delete parser;
         emit stationsFetched(stations, withDetails);
     }

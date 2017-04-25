@@ -102,6 +102,9 @@ void CitiesLoader::loadCitiesFromFile()
         info.stationsInfoUrl = QUrl(cityJson["stationsListUrl"].toString());
         info.allStationsDetailsUrl = QUrl(cityJson["allStationsDetailsUrl"].toString());
         info.singleStationDetailsUrlTemplate = cityJson["stationDetailsUrl"].toString();
+        info.stationsDataModes |= !info.stationsInfoUrl.isEmpty() ? StationsListOnly : NoMode;
+        info.stationsDataModes |= !info.allStationsDetailsUrl.isEmpty() ? StationsListAndData : NoMode;
+        info.stationsDataModes |= !info.singleStationDetailsUrlTemplate.isEmpty() ? SingleStationData : NoMode;
         info.zoom = cityJson["zoom"].toInt();
         info.copyright = cityJson["copyright"].toString();
         City* city = new City();

@@ -6,21 +6,27 @@
 #include <QtNetwork/QNetworkReply>
 #include <QUrl>
 
+enum StationsDataMode {
+    NoMode = 0,
+    StationsListOnly = 1,
+    RealTimeDataOnly = 2,
+    StationsListAndData = 4,
+    SingleStationData = 8
+};
+Q_DECLARE_FLAGS(StationsDataModes, StationsDataMode)
+Q_DECLARE_OPERATORS_FOR_FLAGS(StationsDataModes)
+
 struct ProviderInfo {
     QString name;
     QString autoDiscoveryUrl;
     QString url;
     QString allStationsDetailsUrl;
     QString singleStationDetailsUrlTemplate;
-};
-
-enum StationsDataMode {
-    StationsListAndData = 0,
-    StationsListOnly
+    StationsDataModes stationsDataModes;
 };
 
 struct CityInfo {
-    CityInfo() : id(0), zoom(0), copyright(QString()), stationsDataMode(StationsListAndData) {}
+    CityInfo() : id(0), zoom(0), copyright(QString()), stationsDataModes(NoMode) {}
     int id;
     QString name;
     QString commercialName;
@@ -33,7 +39,7 @@ struct CityInfo {
     QString singleStationDetailsUrlTemplate;
     int zoom;
     QString copyright;
-    StationsDataMode stationsDataMode;
+    StationsDataModes stationsDataModes;
 };
 
 class City : public QObject
@@ -63,10 +69,10 @@ public:
     QString getSingleStationDetailsUrlTemplate() const { return _info.singleStationDetailsUrlTemplate; }
     int zoom() const { return _info.zoom; }
     QString copyright() const { return _info.copyright; }
-    StationsDataMode stationDataMode() const { return _info.stationsDataMode; }
+    StationsDataModes stationDataModes() const { return _info.stationsDataModes; }
 
-    Q_INVOKABLE bool isSingleStationModeSupported() const { return !_info.singleStationDetailsUrlTemplate.isEmpty(); }
-    Q_INVOKABLE bool isAllStationModeSupported() const { return !_info.allStationsDetailsUrl.isEmpty() || !_info.stationsStatusUrl.isEmpty(); }
+    Q_INVOKABLE bool isSingleStationModeSupported() const { return _info.stationsDataModes.testFlag(SingleStationData); }
+    Q_INVOKABLE bool isAllStationModeSupported() const { return _info.stationsDataModes.testFlag(StationsListAndData) || _info.stationsDataModes.testFlag(RealTimeDataOnly); }
 
     void setInfo(const CityInfo info) { _info = info; }
     void setAutoDiscoveryUrl(QUrl url) { _info.autoDiscoveryUrl = url; }

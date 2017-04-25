@@ -16,6 +16,11 @@ class ParsersRegistry
 {
 public:
     ParsersRegistry();
+
+    /**
+     * @brief Register the parsers using QMetaType mechanism to be able to
+     * instantiate them dynamically from their name.
+     */
     void registerParsers();
 };
 

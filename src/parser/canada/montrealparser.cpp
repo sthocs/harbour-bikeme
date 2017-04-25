@@ -6,7 +6,7 @@
 #include "montrealparser.h"
 
 // See http://donnees.ville.montreal.qc.ca/dataset/bixi-etat-des-stations/resource/b1ddc812-f5c8-48e8-94c5-57efb12ddd6a
-QList<Station*> MontrealParser::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> MontrealParser::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

@@ -29,7 +29,7 @@ void StationsModel::loadAllStationsDetails()
 
 bool StationsModel::fetchStationInformation(int index)
 {
-    if (_city->getSingleStationDetailsUrlTemplate().isEmpty()) {
+    if (!_city->stationDataModes().testFlag(SingleStationData)) {
         return false;
     }
     _stationsLoader.fetchStationDetails(_list.at(index));
@@ -38,7 +38,7 @@ bool StationsModel::fetchStationInformation(int index)
 
 void StationsModel::fetchStationsInformation(QList<QModelIndex> indexes)
 {
-    if (_city->getSingleStationDetailsUrlTemplate().isEmpty()) {
+    if (!_city->stationDataModes().testFlag(SingleStationData)) {
         loadAllStationsDetails();
     }
     else {

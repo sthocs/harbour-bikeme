@@ -38,10 +38,16 @@ QList<Station*> NextbikeParser::parseAllStations(QString allStations, bool withD
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());
-    //TODO sometimes the API returns more than 1 country
-    QJsonObject country = doc.object()["countries"].toArray()[0].toObject();
-    //bool showFreeRacks = country["show_free_racks"].toBool();
-    QJsonObject city = country["cities"].toArray()[0].toObject();
+    // The API can return more than 1 country, need to look manually for the city
+    QJsonObject city;
+    QJsonArray countriesArray = doc.object()["countries"].toArray();
+    for (int i = 0; i < countriesArray.size(); ++i) {
+        //bool showFreeRacks = countriesArray[i].toObject()["show_free_racks"].toBool();
+        QJsonArray citiesArray = countriesArray[i].toObject()["cities"].toArray();
+        if (citiesArray.size() > 0) {
+            city = citiesArray[0].toObject();
+        }
+    }
     QJsonArray stationsArray = city["places"].toArray();
     for (int i = 0; i < stationsArray.size(); ++i) {
         QJsonObject stationJson = stationsArray[i].toObject();

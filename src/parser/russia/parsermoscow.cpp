@@ -25,7 +25,7 @@ QList<Station*> ParserMoscow::parseAllStations(QString allStations, bool withDet
             station->opened = !stationJson["IsLocked"].toBool();
             station->bike_stands = stationJson["TotalPlaces"].toInt();
             station->available_bike_stands = stationJson["FreePlaces"].toInt();
-            station->available_bikes = station->available_bike_stands - station->available_bike_stands;
+            station->available_bikes = station->bike_stands - station->available_bike_stands;
         }
         stationsList.append(station);
     }

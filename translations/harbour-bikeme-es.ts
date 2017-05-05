@@ -16,35 +16,12 @@
         <translation>Versión %1</translation>
     </message>
     <message>
-        <source>This app helps you to find a bike or a free parking spot for various self-service bicycle schemes arround the world:&lt;ul&gt;&lt;li&gt;JCDecaux&lt;/li&gt;&lt;li&gt;Nextbike&lt;/li&gt;&lt;li&gt;Smoove&lt;/li&gt;&lt;li&gt;And more!&lt;/li&gt;&lt;/ul&gt;BikeMe provides a simple interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.&lt;br /&gt;Click on %1 to activate the geolocation and on %2 to center the map on your position.&lt;br/&gt;Regular users: Save your favourites stations and see their status directly on the cover!</source>
-        <translation>Esta aplicación te permite encontrar una bicicleta ó un lugar libre para estacionarla a través de varios sistemas de bicicleta de libre servicio que existen en el mundo:&lt;ul&gt;&lt;li&gt;JCDecaux&lt;/li&gt;&lt;li&gt;Nextbike&lt;/li&gt;&lt;li&gt;Smoove&lt;/li&gt;&lt;li&gt;Y varios otros más!&lt;/li&gt;&lt;/ul&gt;BikeMe te proporciona un mapa que muestra las diferentes estaciones para cada ciudad, así como el número de bicicletas y de lugares disponibles para estacionarlas. De igual forma, te permite geolocalizarte.&lt;br /&gt;Dá click en %1 para activar la geolocalización y en %2 para centrar el mapa sobre tu posición.&lt;br/&gt;Usuarios frecuentes: registra tus estaciones favoritas y visualiza sus estatus directamente en la applicacíon minimizada.</translation>
-    </message>
-</context>
-<context>
-    <name>CitiesBrowser</name>
-    <message>
-        <source>About BikeMe</source>
-        <translation type="unfinished">A propos de BikeMe</translation>
+        <source>Many thanks for the translations: %1</source>
+        <translation>Muchas gracias por las traducciones: %1</translation>
     </message>
     <message>
-        <source>Display: Cities browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh cities list</source>
-        <translation type="unfinished">Rafraîchir la liste des villes</translation>
-    </message>
-    <message>
-        <source>Welcome to BikeMe!</source>
-        <translation type="unfinished">Bienvenue sur BikeMe !</translation>
-    </message>
-    <message>
-        <source>Pull down to load cities list</source>
-        <translation type="unfinished">Faites glisser vers le bas pour charger la liste des villes</translation>
-    </message>
-    <message>
-        <source>Cities</source>
-        <translation type="unfinished">Villes</translation>
+        <source>This app helps you to find a bike or a free parking spot for various self-service bicycle schemes arround the world:&lt;ul&gt;%1&lt;li&gt;And more!&lt;/li&gt;&lt;/ul&gt;BikeMe provides a simple interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.&lt;br /&gt;Click on %2 to activate the geolocation and on %3 to center the map on your position.&lt;br/&gt;Regular users: Save your favourites stations and see their status directly on the cover!</source>
+        <translation>Esta aplicación te permite encontrar una bicicleta ó un lugar libre para estacionarla a través de varios sistemas de bicicleta de libre servicio que existen en el mundo:&lt;ul&gt;%1&lt;li&gt;Y varios otros más!&lt;/li&gt;&lt;/ul&gt;BikeMe te proporciona un mapa que muestra las diferentes estaciones para cada ciudad, así como el número de bicicletas y de lugares disponibles para estacionarlas. De igual forma, te permite geolocalizarte.&lt;br /&gt;Dá click en %2 para activar la geolocalización y en %3 para centrar el mapa sobre tu posición.&lt;br/&gt;Usuarios frecuentes: registra tus estaciones favoritas y visualiza sus estatus directamente en la applicacíon minimizada.</translation>
     </message>
 </context>
 <context>
@@ -132,6 +109,14 @@
         <source>Update all</source>
         <translation>Actualizar todo</translation>
     </message>
+    <message>
+        <source>No favourites yet</source>
+        <translation>Aún sin favoritos</translation>
+    </message>
+    <message>
+        <source>You can add your favourites from the map or using the field below if you know the station number.</source>
+        <translation>Puedes añadir tus favoritos desde el mapa o utilizar el área de texto si conoces el número de la estación.</translation>
+    </message>
 </context>
 <context>
     <name>InteractiveMap</name>
@@ -150,10 +135,6 @@
     <message>
         <source>Loading stations...</source>
         <translation>Descargando las estaciones...</translation>
-    </message>
-    <message>
-        <source>Refreshing...</source>
-        <translation>Actualizando...</translation>
     </message>
     <message>
         <source>Can&apos;t display all status for this city.</source>

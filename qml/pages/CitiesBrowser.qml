@@ -17,20 +17,20 @@ Page {
         PullDownMenu {
             id: topMenu
             MenuItem {
-                text: qsTr("About BikeMe")
+                text: "About BikeMe"
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("About.qml"))
                 }
             }
             MenuItem {
-                text: qsTr("Display: Cities browser")
+                text: "Display: Cities browser"
                 onClicked: {
                     configManager.saveSetting("citiesDisplay", "list");
                     pageStack.replace(Qt.resolvedUrl("CitiesList.qml"))
                 }
             }
             MenuItem {
-                text: qsTr("Refresh cities list")
+                text: "Refresh cities list"
                 onClicked: {
                     errorMsg.visible = false;
                     topMenu.busy = true
@@ -42,15 +42,15 @@ Page {
         ViewPlaceholder {
             id: placeholder
             enabled: citiesBrowser.model.count == 0
-            text: qsTr("Welcome to BikeMe!")
-            hintText: qsTr("Pull down to load cities list")
+            text: "Welcome to BikeMe!"
+            hintText: "Pull down to load cities list"
         }
 
         Column {
             id: content
             width: parent.width
 
-            PageHeader { id: header; title: qsTr("Cities") }
+            PageHeader { id: header; title: "Cities" }
 
             Flow {
                 id: citiesBrowser

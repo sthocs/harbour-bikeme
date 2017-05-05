@@ -51,6 +51,13 @@ Page {
             title: qsTr("Favourites - %1").arg(city.name)
         }
 
+        ViewPlaceholder {
+            id: placeholder
+            enabled: listView.count == 0
+            text: qsTr("No favourites yet")
+            hintText: qsTr("You can add your favourites from the map or using the field below if you know the station number.")
+        }
+
         PullDownMenu {
             id: topMenu
             MenuItem {

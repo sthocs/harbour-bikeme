@@ -76,12 +76,13 @@ Page {
                 linkColor: Theme.highlightColor
                 text: qsTr("This app helps you to find a bike or a free parking \
 spot for various self-service bicycle schemes arround the world:\
-<ul><li>JCDecaux</li><li>Nextbike</li><li>Smoove</li><li>And more!</li></ul>\
+<ul>%1<li>And more!</li></ul>\
 BikeMe provides a simple interactive map displaying all stations by city, their number of \
 available bikes and free parking spots, and the geolocation.<br />\
-Click on %1 to activate the geolocation and on %2 \
+Click on %2 to activate the geolocation and on %3 \
 to center the map on your position.<br/>\
 Regular users: Save your favourites stations and see their status directly on the cover!")
+.arg("<li>JCDecaux</li><li>Nextbike</li><li>Smoove</li>")
 .arg('<img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
 .arg('<img src="image://theme/icon-cover-location" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
             }
@@ -105,6 +106,18 @@ Regular users: Save your favourites stations and see their status directly on th
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryColor
                 text: "2014 - 2017 Sthocs"
+            }
+
+            Item {
+                width: parent.width
+                height: 2 * Theme.paddingLarge
+            }
+
+            Text {
+                width: parent.width
+                color: Theme.primaryColor
+                font.pixelSize: Theme.fontSizeExtraSmall
+                text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski");
             }
         }
     }

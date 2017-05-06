@@ -50,6 +50,7 @@ signals:
     void fetchFinished();
 
 private slots:
+    void addCity(City* city);
     void addCities(QList<City*> cities);
     void setProvidersCount(int count);
     void setFetchedProvidersCount(int count, int errorsCount);

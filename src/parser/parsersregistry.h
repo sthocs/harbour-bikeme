@@ -8,6 +8,7 @@
 #include "france/parserveloway.h"
 #include "germany/nextbikeparser.h"
 #include "kazakhstan/parserastana.h"
+#include "north_america/nabsaparser.h"
 #include "russia/parsermoscow.h"
 #include "uk/parserlondon.h"
 
@@ -15,6 +16,11 @@ class ParsersRegistry
 {
 public:
     ParsersRegistry();
+
+    /**
+     * @brief Register the parsers using QMetaType mechanism to be able to
+     * instantiate them dynamically from their name.
+     */
     void registerParsers();
 };
 

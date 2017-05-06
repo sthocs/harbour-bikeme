@@ -7,7 +7,7 @@
 #include "parserveloway.h"
 
 
-QList<Station*> ParserVeloway::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> ParserVeloway::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

@@ -3,6 +3,7 @@
 CitiesModel::CitiesModel(QObject *parent) : QAbstractListModel(parent),
     _list(QList<City*>())
 {
+    connect(&citiesLoader, SIGNAL(cityAdded(City*)), this, SLOT(addCity(City*)));
     connect(&citiesLoader, SIGNAL(citiesAdded(QList<City*>)), this, SLOT(addCities(QList<City*>)));
     connect(&citiesLoader, SIGNAL(providersCountChanged(int)), this, SLOT(setProvidersCount(int)));
     connect(&citiesLoader, SIGNAL(fetchedProvidersCountChanged(int, int)), this, SLOT(setFetchedProvidersCount(int, int)));
@@ -26,6 +27,15 @@ void CitiesModel::loadAll()
     _list.clear();
     endResetModel();
     citiesLoader.loadAll();
+}
+
+void CitiesModel::addCity(City* city)
+{
+    city->setParent(this); // Don't let QML destroy it
+    beginInsertRows(QModelIndex(), _list.size(), _list.size());
+    _list.append(city);
+    endInsertRows();
+    emit countChanged();
 }
 
 void CitiesModel::addCities(QList<City*> cities)

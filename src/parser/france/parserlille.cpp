@@ -6,7 +6,7 @@
 #include "parserlille.h"
 
 
-QList<Station*> ParserLille::parseAllStations(QString allStationsDetails, bool withDetails)
+QList<Station*> ParserLille::parseStationsList(QString allStationsDetails, bool withDetails)
 {
     Q_UNUSED(withDetails);
     QList<Station*> stationsList;

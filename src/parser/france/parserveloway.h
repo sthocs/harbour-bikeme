@@ -6,7 +6,7 @@
 class ParserVeloway : public BikeDataParser
 {
 public:
-    QList<Station*> parseAllStations(QString allStations, bool withDetails);
+    QList<Station*> parseStationsList(QString allStations, bool withDetails);
 };
 Q_DECLARE_METATYPE(ParserVeloway)
 

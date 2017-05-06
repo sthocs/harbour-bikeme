@@ -15,4 +15,5 @@ void ParsersRegistry::registerParsers()
     qRegisterMetaType<MontrealParser>("Bixi");
     qRegisterMetaType<ParserMoscow>("Velobike");
     qRegisterMetaType<ParserAstana>("VelobikeKz");
+    qRegisterMetaType<NabsaParser>("NABSA");
 }

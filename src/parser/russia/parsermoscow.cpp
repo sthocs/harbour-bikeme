@@ -7,7 +7,7 @@
 #include "parsermoscow.h"
 
 
-QList<Station*> ParserMoscow::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> ParserMoscow::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

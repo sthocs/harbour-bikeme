@@ -10,5 +10,9 @@
         "name": "Nextbike",
         "url": "https://api.nextbike.net/maps/nextbike-live.json?list_cities=!",
         "allStationsDetailsUrl": "https://api.nextbike.net/maps/nextbike-live.json?city=%1"
+    },
+    {
+        "name": "NABSA",
+        "autoDiscoveryUrl": "https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv"
     }
 ]

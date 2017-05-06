@@ -19,6 +19,7 @@ QList<City*> NextbikeParser::parseCities(QString cities, ProviderInfo& providerI
         for (int j = 0; j < citiesArray.size(); ++j) {
             QJsonObject cityJson = citiesArray[j].toObject();
             CityInfo info;
+            info.stationsDataModes = StationsListAndData;
             info.id = cityJson["uid"].toInt();
             info.name = cityJson["name"].toString();
             info.commercialName = countriesArray[i].toObject()["name"].toString();
@@ -34,7 +35,7 @@ QList<City*> NextbikeParser::parseCities(QString cities, ProviderInfo& providerI
     return citiesList;
 }
 
-QList<Station*> NextbikeParser::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> NextbikeParser::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());

@@ -6,7 +6,7 @@
 #include "montrealparser.h"
 
 // See http://donnees.ville.montreal.qc.ca/dataset/bixi-etat-des-stations/resource/b1ddc812-f5c8-48e8-94c5-57efb12ddd6a
-QList<Station*> MontrealParser::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> MontrealParser::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());
@@ -14,7 +14,7 @@ QList<Station*> MontrealParser::parseAllStations(QString allStations, bool withD
     for (int i = 0; i < stationsArray.size(); ++i) {
         QJsonObject stationJson = stationsArray[i].toObject();
         Station* station = new Station();
-        station->number = stationJson["id"].toString().toInt();
+        station->number = stationJson["id"].toInt();
         station->name = stationJson["s"].toString();
         QGeoCoordinate coord(stationJson["la"].toDouble(), stationJson["lo"].toDouble());
         station->coordinates = coord;

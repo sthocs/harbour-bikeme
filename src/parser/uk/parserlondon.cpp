@@ -6,7 +6,7 @@
 #include "parserlondon.h"
 
 
-QList<Station*> ParserLondon::parseAllStations(QString allStations, bool withDetails)
+QList<Station*> ParserLondon::parseStationsList(QString allStations, bool withDetails)
 {
     QList<Station*> stationsList;
     QDomDocument xmlDetails;

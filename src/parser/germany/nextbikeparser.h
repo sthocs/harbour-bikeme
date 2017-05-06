@@ -7,7 +7,7 @@ class NextbikeParser : public BikeDataParser
 {
 public:
     virtual QList<City*> parseCities(QString cities, ProviderInfo& providerInfo);
-    virtual QList<Station*> parseAllStations(QString allStations, bool withDetails);
+    virtual QList<Station*> parseStationsList(QString allStations, bool withDetails);
 };
 Q_DECLARE_METATYPE(NextbikeParser)
 

@@ -13,6 +13,7 @@ QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo& providerI
     for (int i = 0; i < citiesArray.size(); ++i) {
         QJsonObject cityJson = citiesArray[i].toObject();
         CityInfo info;
+        info.stationsDataModes = StationsListAndData | SingleStationData;
         info.name = cityJson["name"].toString();
         info.commercialName = cityJson["commercial_name"].toString();
         info.countryCode = cityJson["country_code"].toString();
@@ -26,7 +27,7 @@ QList<City*> JCDecauxParser::parseCities(QString cities, ProviderInfo& providerI
     return citiesList;
 }
 
-QList<Station*> JCDecauxParser::parseAllStations(QString allStationsDetails, bool withDetails)
+QList<Station*> JCDecauxParser::parseStationsList(QString allStationsDetails, bool withDetails)
 {
     QList<Station*> stationsList;
     QJsonDocument doc = QJsonDocument::fromJson(allStationsDetails.toUtf8());

@@ -35,7 +35,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/stationsfavouritesproxy.cpp \
     src/parser/parsersregistry.cpp \
     src/parser/germany/nextbikeparser.cpp \
-    src/parser/canada/montrealparser.cpp
+    src/parser/canada/montrealparser.cpp \
+    src/parser/north_america/nabsaparser.cpp
 
 HEADERS += \
     src/configmanager.h \
@@ -59,7 +60,8 @@ HEADERS += \
     src/stationsfavouritesproxy.h \
     src/parser/parsersregistry.h \
     src/parser/germany/nextbikeparser.h \
-    src/parser/canada/montrealparser.h
+    src/parser/canada/montrealparser.h \
+    src/parser/north_america/nabsaparser.h
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \

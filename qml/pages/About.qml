@@ -82,7 +82,7 @@ available bikes and free parking spots, and the geolocation.<br />\
 Click on %2 to activate the geolocation and on %3 \
 to center the map on your position.<br/>\
 Regular users: Save your favourites stations and see their status directly on the cover!")
-.arg("<li>JCDecaux</li><li>Nextbike</li><li>Smoove</li>")
+.arg("<li>JCDecaux</li><li>Nextbike</li><li>Smoove</li><li>NABSA</li>")
 .arg('<img src="image://theme/icon-m-gps" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
 .arg('<img src="image://theme/icon-cover-location" width="' + Theme.iconSizeSmall + '" height="' + Theme.iconSizeSmall + '"/>')
             }
@@ -117,6 +117,7 @@ Regular users: Save your favourites stations and see their status directly on th
                 width: parent.width
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
+                wrapMode: Text.WordWrap
                 text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski");
             }
         }

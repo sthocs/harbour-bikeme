@@ -12,7 +12,6 @@ QList<City*> NabsaParser::parseCities(QString systemsList, ProviderInfo& provide
 {
     QList<City*> citiesList;
     updateCsvDelimiters(systemsList);
-    qDebug() << systemsList;
     QList<QString> lines = systemsList.split('\n');
     QList<QString> format = lines.first().split(CSV_DELIMITER);
     int countryIndex = format.indexOf("Country Code");

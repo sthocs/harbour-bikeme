@@ -1,6 +1,6 @@
 Name: harbour-bikeme
-Summary: Find a bike with your Jolla!
-Version: 0.6
+Summary: Find a bike with your Sailfish OS device!
+Version: 0.7
 Release: 1
 Group: Qt/Qt
 URL: https://openrepos.net/users/sthocs
@@ -8,7 +8,7 @@ License: LICENSE
 Sources:
 - '%{name}-%{version}.tar.bz2'
 Description: |-
-  Find a bike or a free parking spot for for various self-service bicycle schemes around the world: JCDecaux, Nextbike, Smoove, ...
+  Find a bike or a free parking spot for for various self-service bicycle schemes around the world: JCDecaux, Nextbike, Smoove, NABSA ...
   This app provides an interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.
   Regular users can also save their favourites stations.
 Configure: none

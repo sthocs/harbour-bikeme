@@ -99,7 +99,22 @@ Page {
                     updateFilter();
                 }
             }
+
+            onCenterChanged: {
+                // Workaround for onPanFinished not triggered (http://bugreports.qt-project.org/browse/QTBUG-32638)
+                //TODO remove when (if) Sailfish OS finally ships QtLocation >= 5.3
+                if (stationsProxy.applyFilter && !refreshDisplayedStationsTimer.running) {
+                    refreshDisplayedStationsTimer.start()
+                }
+            }
         }
+    }
+
+    Timer {
+        id: refreshDisplayedStationsTimer
+        interval: 1000
+        repeat: false
+        onTriggered: updateFilter()
     }
 
     Rectangle {
@@ -512,6 +527,10 @@ Page {
 
 
     function updateFilter() {
+        if (refreshDisplayedStationsTimer.running) {
+            refreshDisplayedStationsTimer.stop();
+        }
+
         stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
                              map.toCoordinate(Qt.point(map.width, map.height)));
         // This is a bit hacky: we limit the number of station on the maps, so some stations

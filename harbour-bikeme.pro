@@ -86,10 +86,13 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
 CONFIG += sailfishapp_i18n
 
-TRANSLATIONS += translations/harbour-bikeme-fr.ts \
+TRANSLATIONS += translations/harbour-bikeme-en.ts \
+    translations/harbour-bikeme-fr.ts \
     translations/harbour-bikeme-es.ts \
     translations/harbour-bikeme-sv.ts \
-    translations/harbour-bikeme-pl.ts
+    translations/harbour-bikeme-pl.ts \
+    translations/harbour-bikeme-sl_SI.ts \
+    translations/harbour-bikeme-ru.ts
 
 data.files = data
 data.path = /usr/share/$${TARGET}

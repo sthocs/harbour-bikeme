@@ -223,5 +223,13 @@
         <source>Clearing cache</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

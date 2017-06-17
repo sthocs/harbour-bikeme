@@ -223,5 +223,13 @@
         <source>Clearing cache</source>
         <translation>Effacement du cache</translation>
     </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation>Quand vous ouvrez la carte, le GPS sera déjà activé et la carte sera centrée sur votre position.</translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation>Ouvrir la carte sur ma position</translation>
+    </message>
 </context>
 </TS>

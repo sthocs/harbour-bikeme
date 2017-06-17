@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtLocation 5.0
-import QtPositioning 5.2
+import QtPositioning 5.3
 import QtGraphicalEffects 1.0
 import harbour.bikeme 1.0
 
@@ -19,6 +19,7 @@ Page {
     // Indicates if the user has requested to display his position
     property bool findMe: false
     property bool positionReceived: false
+    property bool autoEnableGPS: configManager.getSetting("autoEnableGPS") !== "false"
 
     property City city
     property int selectedStationNumber: 0
@@ -67,6 +68,9 @@ Page {
                 stationLoadingLabel.visible = true;
                 stations.city = city;
                 stations.loadStationsList();
+                if (autoEnableGPS) {
+                    startGeolocation();
+                }
             }
 
             gesture.onPanFinished: {
@@ -94,9 +98,29 @@ Page {
                 anchors.fill: parent
                 onDoubleClicked: {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
+                    zoomAnimation.enabled = true
                     map.zoomLevel = (map.zoomLevel + 1) < map.maximumZoomLevel ? map.zoomLevel + 1 :
                                                                                  map.maximumZoomLevel;
+                    zoomAnimation.enabled = false
                     updateFilter();
+                }
+            }
+
+            Behavior on center {
+                id: centerAnimation
+                enabled: false
+                CoordinateAnimation {
+                    duration: 600
+                    easing.type: Easing.InOutQuad
+                }
+            }
+
+            Behavior on zoomLevel {
+                id: zoomAnimation
+                enabled: false
+                NumberAnimation {
+                    duration: 600
+                    easing.type: Easing.InOutQuad
                 }
             }
 
@@ -160,6 +184,7 @@ Page {
         onCenterChanged: {
             map.center = center;
             updateFilter();
+            centerAnimation.enabled = true
         }
         onStationsLoaded: {
             stationLoadingLabel.visible = false;
@@ -250,12 +275,11 @@ Page {
         id: positionSource
 
         //! Desired interval between updates in milliseconds
-        updateInterval: 10000
+        updateInterval: 5000
         active: false
 
         onPositionChanged: {
-            if (!positionReceived) { // First time we receive a position, go to it.
-                console.log("GPS position received");
+            if (!positionReceived && active && position.horizontalAccuracyValid) { // First time we receive a valid position, go to it.
                 positionReceived = true;
                 // Keep coordinates in a different object to avoid map auto-centering.
                 var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,

@@ -2,8 +2,20 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 Page {
-    Column {
+    SilicaFlickable {
         anchors.fill: parent
+        anchors.bottomMargin: Theme.paddingMedium
+        contentHeight: mainColumn.height
+
+    Column {
+        id: mainColumn
+        anchors {
+            left: parent.left
+            right: parent.right
+            leftMargin: Theme.paddingMedium
+            rightMargin: Theme.paddingMedium
+            bottomMargin: Theme.paddingMedium
+        }
 
         PageHeader {
             title: qsTr("Settings")
@@ -65,15 +77,21 @@ Page {
                 checked = configManager.getSetting("displayAllStatus") !== "false";
             }
         }
-    }
-    Column {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.leftMargin: Theme.paddingMedium
-        anchors.rightMargin: Theme.paddingMedium
-        anchors.bottomMargin: Theme.paddingMedium
+        TextSwitch {
+            text: qsTr("Open map on my position")
+            description: qsTr("When opening the map, the GPS will be already enabled and the map will center on your position.")
+            onCheckedChanged: {
+                configManager.saveSetting("autoEnableGPS", checked)
+            }
 
+            Component.onCompleted: {
+                checked = configManager.getSetting("autoEnableGPS") !== "false";
+            }
+        }
+        Item {
+            width: parent.width
+            height: Theme.paddingLarge * 5
+        }
         Button {
             anchors.horizontalCenter: parent.horizontalCenter
             text: qsTr("Clear cache")
@@ -87,6 +105,8 @@ Page {
             text: qsTr("BikeMe keeps in cache stations location to save mobile data. " +
                        "If stations don't display, you can try to clear the cache to remove potentially corrupted files.")
         }
+    }
+    VerticalScrollDecorator {}
     }
     RemorsePopup { id: remorse }
 }

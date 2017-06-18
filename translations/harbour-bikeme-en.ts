@@ -54,6 +54,10 @@
         <source>Update cities list</source>
         <translation>Update cities list</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Select data source</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -175,6 +179,25 @@
     <message>
         <source>Favourites</source>
         <translation>Favourites</translation>
+    </message>
+</context>
+<context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Data source</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Official data</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</translation>
     </message>
 </context>
 <context>

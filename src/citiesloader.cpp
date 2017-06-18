@@ -10,6 +10,7 @@
 
 #include "sailfishapp.h"
 #include "parser/bikedataparser.h"
+#include "configmanager.h"
 
 CitiesLoader::CitiesLoader(QObject *parent) : QObject(parent)
 {
@@ -24,15 +25,18 @@ CitiesLoader::~CitiesLoader()
 void CitiesLoader::loadAll(bool fromCache)
 {
     emit errorMsgChanged(QString());
-    if (loadCitiesFromProviders(fromCache)) {
+    ConfigManager config;
+    int dataSource = config.getSetting("dataSource").toInt();
+    QString filePath = dataSource == 0 ? "data/bikesproviders.json" : "data/citybikes.json";
+    if (loadCitiesFromProviders(filePath, fromCache) && dataSource == 0) {
         loadCitiesFromFile();
     }
 }
 
-bool CitiesLoader::loadCitiesFromProviders(bool fromCache)
+bool CitiesLoader::loadCitiesFromProviders(QString filePath, bool fromCache)
 {
     bool res = true;
-    QFile providersFile(SailfishApp::pathTo("data/bikesproviders.json").toLocalFile());
+    QFile providersFile(SailfishApp::pathTo(filePath).toLocalFile());
 
     if (!providersFile.open(QIODevice::ReadOnly))
         return false;

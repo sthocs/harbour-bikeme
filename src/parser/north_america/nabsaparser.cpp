@@ -87,8 +87,14 @@ void NabsaParser::parseStationsRealTimeData(QString realTimeData, QList<Station 
     QJsonArray stationsArray = doc.object()["data"].toObject()["stations"].toArray();
     for (int i = 0; i < stationsArray.size() && i < stations.length(); ++i) {
         QJsonObject stationJson = stationsArray[i].toObject();
-        stationIdRegex.indexIn(stationJson["station_id"].toString());
-        int stationNumber = stationIdRegex.cap(1).toInt();
+        int stationNumber;
+        if (stationJson["station_id"].isString()) {
+            stationIdRegex.indexIn(stationJson["station_id"].toString());
+            stationNumber = stationIdRegex.cap(1).toInt();
+        }
+        else {
+            stationNumber = stationJson["station_id"].toInt();
+        }
         Station* station = stations.at(i); // normally, stations info and data are in the same order
         if (station->number != stationNumber) { // if it's not the case, search it
             foreach (Station* s, stations) {

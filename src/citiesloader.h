@@ -30,7 +30,7 @@ private slots:
 
 private:
     void loadCitiesFromFile();
-    bool loadCitiesFromProviders(bool fromCache);
+    bool loadCitiesFromProviders(QString filePath, bool fromCache);
     bool loadProviderFromCache(ProviderInfo& provider);
     void parse(QString cities, ProviderInfo& providerInfo);
 

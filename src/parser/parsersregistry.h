@@ -11,6 +11,7 @@
 #include "north_america/nabsaparser.h"
 #include "russia/parsermoscow.h"
 #include "uk/parserlondon.h"
+#include "various/citybikesparser.h"
 
 class ParsersRegistry
 {

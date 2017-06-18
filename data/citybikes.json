@@ -1,0 +1,7 @@
+[
+    {
+        "name": "CityBikes",
+        "url": "https://api.citybik.es/v2/networks",
+        "allStationsDetailsUrl": "https://api.citybik.es/v2/networks/%1"
+    }
+]

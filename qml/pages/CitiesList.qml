@@ -89,6 +89,12 @@ Page {
                 }
             }
             MenuItem {
+                text: qsTr("Select data source")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SelectDataSource.qml"))
+                }
+            }
+            MenuItem {
                 text: qsTr("Update cities list")
                 onClicked: {
                     topMenu.busy = true

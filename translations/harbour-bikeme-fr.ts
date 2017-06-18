@@ -54,6 +54,10 @@
         <source>Update cities list</source>
         <translation>Mettre à jour la liste des villes</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Sélectionner la source de données</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -175,6 +179,25 @@
     <message>
         <source>Favourites</source>
         <translation>Favoris</translation>
+    </message>
+</context>
+<context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Source de données</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation>La liste des villes doit être mise à jour après avoir changé la source de données</translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Données officielles</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe utilise les données des fournisseurs de vélo autant que possible, mais beaucoup ne donnent pas accès à ces données, inclure ces villes est donc fastidieux.&lt;br&gt;Un projet fait ce travail très bien : &lt;a href=&quot;citibik.es&quot;&gt;CityBikes&lt;/a&gt;. Donc si votre ville n&apos;est pas disponible dans les &quot;Données officielles&quot;, regardez si CityBikes la propose !</translation>
     </message>
 </context>
 <context>

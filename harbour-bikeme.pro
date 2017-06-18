@@ -36,7 +36,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/parsersregistry.cpp \
     src/parser/germany/nextbikeparser.cpp \
     src/parser/canada/montrealparser.cpp \
-    src/parser/north_america/nabsaparser.cpp
+    src/parser/north_america/nabsaparser.cpp \
+    src/parser/various/citybikesparser.cpp
 
 HEADERS += \
     src/configmanager.h \
@@ -61,7 +62,8 @@ HEADERS += \
     src/parser/parsersregistry.h \
     src/parser/germany/nextbikeparser.h \
     src/parser/canada/montrealparser.h \
-    src/parser/north_america/nabsaparser.h
+    src/parser/north_america/nabsaparser.h \
+    src/parser/various/citybikesparser.h
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \
@@ -76,6 +78,7 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/pages/Favourites.qml \
     qml/pages/InteractiveMap.qml \
     qml/pages/About.qml \
+    qml/pages/SelectDataSource.qml \
     qml/pages/Settings.qml \
     qml/pages/cachemanager.js \
     qml/pages/utils.js \

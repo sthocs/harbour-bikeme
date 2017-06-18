@@ -28,6 +28,7 @@ struct ProviderInfo {
 struct CityInfo {
     CityInfo() : id(0), zoom(0), copyright(QString()), stationsDataModes(NoMode) {}
     int id;
+    QString id_str;
     QString name;
     QString commercialName;
     QString providerName;

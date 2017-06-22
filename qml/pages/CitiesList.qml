@@ -60,7 +60,7 @@ Page {
                 anchors.rightMargin: Theme.paddingLarge
 
                 Image {
-                    source: "../icons/" + section + ".png"
+                    source: "../../images/flags/" + section.toLowerCase() + ".png"
                     sourceSize.height: Theme.iconSizeMedium * 2 / 3
                     sourceSize.width: Theme.iconSizeMedium
                 }

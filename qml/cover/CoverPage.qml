@@ -24,7 +24,7 @@ CoverBackground {
         anchors.top: coverLabel.bottom
         anchors.topMargin: Theme.paddingLarge
         anchors.horizontalCenter: parent.horizontalCenter
-        source: countryCode ? "../icons/" + countryCode + ".png" : "../icons/velib.svg"
+        source: countryCode ? "../../images/flags/" + countryCode.toLowerCase() + ".png" : "../icons/velib.svg"
         sourceSize.width: countryCode ? Theme.iconSizeLarge : parent.width - Theme.paddingLarge
         opacity: countryCode ? 1 : 0.5
         visible: pageStack.currentPage.objectName !== "favourites"

@@ -52,6 +52,10 @@
         <source>Update cities list</source>
         <translation>Uppdatera stadslistan</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Välj datakälla</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -170,6 +174,25 @@
     </message>
 </context>
 <context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Datakälla</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation>Stadslistan måste uppdateras efter byte av datakälla</translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Officiell data</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe använder data direkt från cykelleverantörer så mycket som möjligt, men en del av dem exponerar inte sin data,  så det är ett ganska tråkigt jobb att stödja dessa städer.&lt;br&gt;Ett projekt gör det jobbet ganska bra: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. Så om din stad inte finns tillgänglig i &quot;Officiell data&quot;, kan du kolla om den finns i data från CityBikes!</translation>
+    </message>
+</context>
+<context>
     <name>Settings</name>
     <message>
         <source>Settings</source>
@@ -214,6 +237,14 @@
     <message>
         <source>Clearing cache</source>
         <translation>Rensar cache</translation>
+    </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation>När kartan öppnas, är GPS:en redan aktiverad och kartan centrerar på din position.</translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation>Öppna kartan på min position</translation>
     </message>
 </context>
 </TS>

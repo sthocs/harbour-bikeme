@@ -52,6 +52,10 @@
         <source>Update cities list</source>
         <translation>Обновить список городов</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Выберите источник данных</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -147,11 +151,11 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n город</numerusform><numerusform>%n городов</numerusform><numerusform>%n городов</numerusform><numerusform>%n городов</numerusform></translation>
+        <translation><numerusform>город</numerusform><numerusform>города</numerusform><numerusform>городов</numerusform><numerusform>города</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n ошибка</numerusform><numerusform>%n ошибки</numerusform><numerusform>%n ошибок </numerusform><numerusform>%n ошибки ( )</numerusform></translation>
+        <translation><numerusform>ошибка</numerusform><numerusform>ошибки</numerusform><numerusform>ошибок</numerusform><numerusform>ошибки</numerusform></translation>
     </message>
 </context>
 <context>
@@ -167,6 +171,25 @@
     <message>
         <source>Favourites</source>
         <translation>Закладки</translation>
+    </message>
+</context>
+<context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Источник данных</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation>Обновите список городов после выбора источника данных</translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Официальные данные</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe по возможности использует данные напрямую от служб проката велосипедов, но некоторые из них не отдают данные напрямую. Поэтому поддержка таких прокатов трудоемка. &lt;br&gt; Но один проект неплохо справляется с этим: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes &lt;/a&gt;. Если ваш город недоступен в разделе &quot;Официальные данные&quot;, поищите его в CityBikes!</translation>
     </message>
 </context>
 <context>
@@ -214,6 +237,14 @@
     <message>
         <source>Clearing cache</source>
         <translation>Очищаем кэш</translation>
+    </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation>При открытии карты GPS будет уже включен, и карта покажет ваше местоположение.</translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation>Показать мое местоположение на карте</translation>
     </message>
 </context>
 </TS>

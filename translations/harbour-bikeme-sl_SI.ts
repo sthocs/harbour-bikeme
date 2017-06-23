@@ -52,6 +52,10 @@
         <source>Update cities list</source>
         <translation>Posodobi seznam mest</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Izberi vir podatkov</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -147,7 +151,7 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>% mesto</numerusform><numerusform>% mesti</numerusform><numerusform>% mesta</numerusform><numerusform>% mest</numerusform></translation>
+        <translation><numerusform>%n mesto</numerusform><numerusform>%n mesti</numerusform><numerusform>%n mesta</numerusform><numerusform>%n mest</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
@@ -167,6 +171,25 @@
     <message>
         <source>Favourites</source>
         <translation>Priljubljene</translation>
+    </message>
+</context>
+<context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Vir podatkov</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation>Po zamenjavi vira podatkov je potrebno osvežiti seznam mest</translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Uradni podatki</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe uporablja podatke, katere neposredno zagotavljajo ponudniki storitve, žal pa je pridobivanje teh podatkov včasih oteženo in podatki morda niso aktualni.&lt;br&gt;V takem primeru zamenjajte vir podatkov in namesto &quot;Uradni podatki&quot; nastavite &quot;CityBikes&quot;. Več informacij o projektu &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -214,6 +237,14 @@
     <message>
         <source>Clearing cache</source>
         <translation>Čiščenje predpomnilnika</translation>
+    </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation>Ko prikažete zemljevid bo GPS že vključen in vaš položaj prikazan na sredini zemljevida.</translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation>Prikaži zemljevid in označi moj položaj</translation>
     </message>
 </context>
 </TS>

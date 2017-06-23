@@ -52,6 +52,10 @@
         <source>Update cities list</source>
         <translation>Aktualizuj listę miast</translation>
     </message>
+    <message>
+        <source>Select data source</source>
+        <translation>Wybierz źródło danych</translation>
+    </message>
 </context>
 <context>
     <name>Favourites</name>
@@ -147,11 +151,11 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n Miasto</numerusform><numerusform>%n Miasta</numerusform><numerusform>%n Miast</numerusform><numerusform>Miasta</numerusform></translation>
+        <translation><numerusform>%n Miasto</numerusform><numerusform>%n Miasta</numerusform><numerusform>%n Miast</numerusform><numerusform>%n Miast</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n błąd</numerusform><numerusform>%n błędy</numerusform><numerusform>%n błędów</numerusform><numerusform>%n </numerusform></translation>
+        <translation><numerusform>%n Błąd</numerusform><numerusform>%n Błędy</numerusform><numerusform>%n Błędów</numerusform><numerusform>%n Błędów</numerusform></translation>
     </message>
 </context>
 <context>
@@ -167,6 +171,25 @@
     <message>
         <source>Favourites</source>
         <translation>Ulubione</translation>
+    </message>
+</context>
+<context>
+    <name>SelectDataSource</name>
+    <message>
+        <source>Data source</source>
+        <translation>Źródło danych</translation>
+    </message>
+    <message>
+        <source>Cities list must be updated after changing data source</source>
+        <translation>Lista miast musi być uaktualniona po zmianie źródła danych</translation>
+    </message>
+    <message>
+        <source>Official data</source>
+        <translation>Oficjalne dane</translation>
+    </message>
+    <message>
+        <source>BikeMe uses data directly from bikes providers as much as possible, but a lot of them don&apos;t expose their data, so it&apos;s a tedious work to support those cities.&lt;br&gt;A project is doing that work very well: &lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. So if your city is not available in the &quot;Official data&quot;, check out if it is in the data from CityBikes!</source>
+        <translation>BikeMe używa danych bezpośrednio od dostawców rowerów, o ile to możliwe. Wielu z nich nie dostarcza danych, wtedy to wymaga żmudnej pracy aby wpierać te miasta.&lt;br&gt;Projekt wykonuje ta pracę bardzo dobrze:&lt;a href=&quot;https://citybik.es&quot;&gt;CityBikes&lt;/a&gt;. Więc jeśli twoje miasto nie znajduje się w &quot;Oficjalne dane&quot;, sprawdź czy jest ona w danych z CityBikes!</translation>
     </message>
 </context>
 <context>
@@ -214,6 +237,14 @@
     <message>
         <source>Clearing cache</source>
         <translation>Czyszczenie pamięci podręcznej</translation>
+    </message>
+    <message>
+        <source>When opening the map, the GPS will be already enabled and the map will center on your position.</source>
+        <translation>W czasie otwierania mapy GPS będzie włączony i mapa wycentrowana w twojej lokalizacji.</translation>
+    </message>
+    <message>
+        <source>Open map on my position</source>
+        <translation>Otwórz mapę w mojej lokalizacji</translation>
     </message>
 </context>
 </TS>

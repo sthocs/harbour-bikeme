@@ -10,3 +10,7 @@ function makeLastUpdateDateHumanReadable(update_date) {
     var sec = Math.floor(elapsedSeconds % 60);
     return min + " min " + sec
 }
+
+function isValidDate(date) {
+    return !isNaN(date);
+}

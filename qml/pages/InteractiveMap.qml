@@ -60,7 +60,7 @@ Page {
 
             Component.onCompleted: {
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
-                map.zoomLevel = city.zoom || 13;
+                map.zoomLevel = autoEnableGPS ? 14 : city.zoom || 13;
                 if (mapPlugin === "osm") {
                     map.zoomLevel += 1;
                 }

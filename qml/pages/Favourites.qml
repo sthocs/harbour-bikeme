@@ -122,6 +122,7 @@ Page {
                         height: 1
                     }
                     Label {
+                        visible: Utils.isValidDate(last_update)
                         text: opened ? qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(model.last_update)) :
                                        qsTr("Closed")
                         color: Theme.secondaryColor

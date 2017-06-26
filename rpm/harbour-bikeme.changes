@@ -1,3 +1,14 @@
+* Tue Jun 27 2017 Sthocs <sthocs@hotmail.com> 0.8-1
+- Added option to use CityBikes as data source
+- Workaround for the onPanFinished bug
+- Option to enable GPS automatically + added map animations
+- New translations: Slovenian and Russian
+
+* Sun May 5 2017 Sthocs <sthocs@hotmail.com> 0.7-1
+- Added NABSA cities (North American Bike Share Association)
+- New translations: Swedish and Polish
+- Fixed Moscow and some Nextbike cities
+
 * Mon Apr 17 2017 Sthocs <sthocs@hotmail.com> 0.6-1
 - Re-added favorites on cover
 - Added translations: french and spanish

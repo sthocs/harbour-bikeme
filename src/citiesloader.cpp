@@ -125,6 +125,7 @@ bool CitiesLoader::loadProviderFromCache(ProviderInfo& provider)
     if (citiesFile.open(QIODevice::ReadOnly)) {
         QByteArray savedData = citiesFile.readAll();
         parse(savedData, provider);
+        citiesFile.close();
         return true;
     }
     return false;
@@ -163,6 +164,7 @@ void CitiesLoader::bikeProviderFetched()
         qWarning() << "Couldn't open" << providerInfo.name;
     }
     citiesFile.write(citiesString.toUtf8());
+    citiesFile.close();
     parse(citiesString, providerInfo);
     fetchedProvidersCountChanged(++_fetchedProvidersCount, _errorsCount);
     if (--_pendingRequests == 0) {

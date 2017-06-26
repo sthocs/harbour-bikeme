@@ -40,12 +40,18 @@ void StationsLoader::fetchAllStationsList()
         if (urlsFile.open(QIODevice::ReadOnly)) {
             QByteArray savedData = urlsFile.readAll();
             parseCityUrls(savedData);
+            urlsFile.close();
         }
-        else {
+        _refreshUrlsInBackground = mustRefreshCache(urlsFile.fileName());
+        if (!urlsFile.exists() || _refreshUrlsInBackground) {
             QNetworkRequest request(_city->getAutoDiscoveryUrl());
             QNetworkReply *reply = _networkAccessManager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(cityUrlsFetched()));
-            return;
+            if (!_refreshUrlsInBackground) {
+                return;
+            }
+            // Otherwise, let the file refresh in background and continue refreshing the cities list
+            qDebug() << "Will refresh urls in background for " << _city->getName();
         }
     }
 
@@ -54,14 +60,21 @@ void StationsLoader::fetchAllStationsList()
     if (stationsFile.open(QIODevice::ReadOnly)) {
         QByteArray savedData = stationsFile.readAll();
         parseStationsList(savedData, false);
+        stationsFile.close();
+
+        if (!mustRefreshCache(stationsFile.fileName()) || _city->stationDataModes().testFlag(StationsListAndData)) {
+            return;
+        }
+        else {
+            qDebug() << "Will refresh stations list in background for " << _city->getName();
+            _refreshStationsInBackground = true;
+        }
     }
-    else {
-        QNetworkRequest request(_city->stationDataModes().testFlag(StationsListAndData) ?
-                                    _city->getAllStationsDetailsUrl() :
-                                    _city->getStationsListUrl());
-        QNetworkReply *reply = _networkAccessManager->get(request);
-        connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
-    }
+    QNetworkRequest request(_city->stationDataModes().testFlag(StationsListAndData) ?
+                                _city->getAllStationsDetailsUrl() :
+                                _city->getStationsListUrl());
+    QNetworkReply *reply = _networkAccessManager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
 }
 
 void StationsLoader::fetchAllStationsDetails()
@@ -107,9 +120,11 @@ void StationsLoader::cityUrlsFetched()
 
     QString cityUrls = QString::fromUtf8(reply->readAll());
     cacheOnDisk(cityUrls, stationsUrlsFileName());
-    parseCityUrls(cityUrls);
+    if (!_refreshUrlsInBackground) {
+        parseCityUrls(cityUrls);
+        fetchAllStationsList();
+    }
     reply->deleteLater();
-    fetchAllStationsList();
 }
 
 void StationsLoader::stationsListFetched()
@@ -143,9 +158,12 @@ void StationsLoader::stationsListFetched()
             qWarning() << "Couldn't open" << cacheFileName();
         }
         stationsFile.write(stationsString.toUtf8());
+        stationsFile.close();
     }
 
-    parseStationsList(stationsString, _city->stationDataModes().testFlag(StationsListAndData));
+    if (!_refreshStationsInBackground) {
+        parseStationsList(stationsString, _city->stationDataModes().testFlag(StationsListAndData));
+    }
     reply->deleteLater();
 }
 
@@ -225,6 +243,18 @@ void StationsLoader::cacheOnDisk(QString data, QString filename)
         }
         else {
             file.write(data.toUtf8());
+            file.close();
         }
     }
+}
+
+// Returns true if the file passed in parameters is older than 30 days
+bool StationsLoader::mustRefreshCache(QString filepath)
+{
+    QFileInfo fileInfo(filepath);
+    qint64 fileAge = fileInfo.created().toMSecsSinceEpoch();
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+    qint64 dayInMillis = 1000 * 60 * 60 * 24;
+
+    return fileInfo.exists() && ((now - fileAge) / dayInMillis) > 30;
 }

@@ -37,6 +37,7 @@ private:
     void parseCityUrls(QString urls);
     void parseStationsList(QString stations, bool withDetails);
     void cacheOnDisk(QString data, QString filename);
+    bool mustRefreshCache(QString filepath);
     QString cacheFileName() const;
     QString stationsUrlsFileName() const;
 
@@ -44,6 +45,9 @@ private:
 
     City* _city;
     QHash<QString, Station*> _stations;
+
+    bool _refreshUrlsInBackground;
+    bool _refreshStationsInBackground;
 };
 
 #endif // STATIONSLOADER_H

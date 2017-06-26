@@ -2,6 +2,7 @@
 #define PARSERSREGISTRY_H
 
 #include "canada/montrealparser.h"
+#include "finland/hslparser.h"
 #include "france/jcdecauxparser.h"
 #include "france/parserlille.h"
 #include "france/parsersmoove.h"
@@ -9,6 +10,7 @@
 #include "germany/nextbikeparser.h"
 #include "kazakhstan/parserastana.h"
 #include "north_america/nabsaparser.h"
+#include "north_america/ecobiciparser.h"
 #include "russia/parsermoscow.h"
 #include "uk/parserlondon.h"
 #include "various/citybikesparser.h"

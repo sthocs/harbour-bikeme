@@ -134,5 +134,19 @@
         "commercial_name": "Astana Bike",
         "country_code": "KZ",
         "allStationsDetailsUrl": "http://velobike.kz/rest/app.php/stations"
+    },
+    {
+        "provider": "EcoBici",
+        "name": "Ciudad de México",
+        "commercial_name": "EcoBici",
+        "country_code": "MX",
+        "allStationsDetailsUrl": "https://www.ecobici.cdmx.gob.mx/availability_map/getJsonObject"
+    },
+    {
+        "provider": "HSL",
+        "name": "Helsinki",
+        "commercial_name": "Helsinki City bikes",
+        "country_code": "FI",
+        "allStationsDetailsUrl": "https://dev-api.digitransit.fi/routing/v1/routers/hsl/bike_rental"
     }
 ]

@@ -4,9 +4,15 @@
         "name": "Lille",
         "commercial_name": "V'Lille",
         "country_code": "FR",
-        "stationsListUrl": "http://vlille.fr/stations/xml-stations.aspx",
-        "stationDetailsUrl": "http://vlille.fr/stations/xml-station.aspx?borne=%1",
+        "allStationsDetailsUrl": "https://opendata.lillemetropole.fr/api/records/1.0/search/?dataset=vlille-realtime&rows=300",
         "zoom": 12
+    },
+    {
+        "provider": "RennesMetropole",
+        "name": "Rennes",
+        "commercial_name": "LE vélo STAR",
+        "country_code": "FR",
+        "allStationsDetailsUrl": "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&rows=300"
     },
     {
         "provider": "Veloway",
@@ -21,13 +27,6 @@
         "commercial_name": "Vel'In",
         "country_code": "FR",
         "allStationsDetailsUrl": "https://www.vel-in.fr/cartoV2/libProxyCarto.asp"
-    },
-    {
-        "provider": "Veloway",
-        "name": "Vannes",
-        "commercial_name": "Vélocéa",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "https://www.velocea.fr/cartoV2/libProxyCarto.asp"
     },
     {
         "provider": "Smoove",
@@ -45,24 +44,10 @@
     },
     {
         "provider": "Smoove",
-        "name": "Grand Chalon",
-        "commercial_name": "Réflex",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://cli-velo-chalon.gir.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
         "name": "Avignon",
         "commercial_name": "Vélopop",
         "country_code": "FR",
         "allStationsDetailsUrl": "http://www.velopop.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Saint-Etienne",
-        "commercial_name": "VéliVert",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://www.velivert.fr/tvcstations.xml"
     },
     {
         "provider": "Smoove",
@@ -94,13 +79,6 @@
     },
     {
         "provider": "Smoove",
-        "name": "Grenoble",
-        "commercial_name": "Métrovélo",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://vms.metrovelo.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
         "name": "Batumi",
         "commercial_name": "Batumi Velo",
         "country_code": "GE",
@@ -126,14 +104,7 @@
         "name": "Moscow",
         "commercial_name": "Velobike",
         "country_code": "RU",
-        "allStationsDetailsUrl": "http://velobike.ru/proxy/parkings/"
-    },
-    {
-        "provider": "VelobikeKz",
-        "name": "Astana",
-        "commercial_name": "Astana Bike",
-        "country_code": "KZ",
-        "allStationsDetailsUrl": "http://velobike.kz/rest/app.php/stations"
+        "allStationsDetailsUrl": "https://velobike.ru/proxy/parkings/"
     },
     {
         "provider": "EcoBici",

@@ -10,6 +10,7 @@ void ParsersRegistry::registerParsers()
     qRegisterMetaType<NextbikeParser>("Nextbike");
     qRegisterMetaType<ParserVeloway>("Veloway");
     qRegisterMetaType<ParserLille>("Transpole");
+    qRegisterMetaType<RennesParser>("RennesMetropole");
     qRegisterMetaType<ParserSmoove>("Smoove");
     qRegisterMetaType<ParserLondon>("TfL");
     qRegisterMetaType<MontrealParser>("Bixi");

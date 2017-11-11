@@ -39,7 +39,8 @@ SOURCES += src/harbour-bikeme.cpp \
     src/parser/north_america/nabsaparser.cpp \
     src/parser/various/citybikesparser.cpp \
     src/parser/north_america/ecobiciparser.cpp \
-    src/parser/finland/hslparser.cpp
+    src/parser/finland/hslparser.cpp \
+    src/parser/france/rennesparser.cpp
 
 HEADERS += \
     src/configmanager.h \
@@ -67,7 +68,8 @@ HEADERS += \
     src/parser/north_america/nabsaparser.h \
     src/parser/various/citybikesparser.h \
     src/parser/north_america/ecobiciparser.h \
-    src/parser/finland/hslparser.h
+    src/parser/finland/hslparser.h \
+    src/parser/france/rennesparser.h
 
 OTHER_FILES += harbour-bikeme.desktop \
     rpm/harbour-bikeme.spec \

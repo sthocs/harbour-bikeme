@@ -5,6 +5,7 @@
 #include "finland/hslparser.h"
 #include "france/jcdecauxparser.h"
 #include "france/parserlille.h"
+#include "france/rennesparser.h"
 #include "france/parsersmoove.h"
 #include "france/parserveloway.h"
 #include "germany/nextbikeparser.h"

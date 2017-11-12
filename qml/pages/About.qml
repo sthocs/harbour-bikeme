@@ -118,7 +118,7 @@ Regular users: Save your favourites stations and see their status directly on th
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
                 wrapMode: Text.WordWrap
-                text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski, sponka, subedito.ru");
+                text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski, sponka, subedito.ru, carmenfdezb");
             }
         }
     }

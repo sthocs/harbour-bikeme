@@ -60,10 +60,11 @@ Page {
 
             Component.onCompleted: {
                 center = QtPositioning.coordinate(43.5508823, 7.0168207);
-                map.zoomLevel = autoEnableGPS ? 14 : city.zoom || 13;
-                if (mapPlugin === "osm") {
-                    map.zoomLevel += 1;
-                }
+                var zoomSetting = !isNaN(configManager.getSetting("zoomLevel")) ?
+                            parseInt(configManager.getSetting("zoomLevel")) : 15
+                zoomLevel = zoomSetting >= minimumZoomLevel && zoomSetting <= maximumZoomLevel ?
+                            zoomSetting : 15
+
                 updateFilter();
                 stationLoadingLabel.visible = true;
                 stations.city = city;
@@ -74,7 +75,6 @@ Page {
             }
 
             gesture.onPanFinished: {
-                console.log("Pan FINISHED");
                 updateFilter();
             }
             gesture.onPinchFinished: {
@@ -88,10 +88,11 @@ Page {
                 coordinate: positionSource.position.coordinate
                 visible: positionReceived
                 sourceItem: Image {
-                    source: "../icons/me.png"
+                    id: dot
+                    source: "image://theme/icon-m-dot?DodgerBlue"
                 }
-                anchorPoint.x: 24
-                anchorPoint.y: 24
+                anchorPoint.x: dot.width / 2
+                anchorPoint.y: dot.height / 2
             }
 
             MapMouseArea {
@@ -279,7 +280,8 @@ Page {
         active: false
 
         onPositionChanged: {
-            if (!positionReceived && active && position.horizontalAccuracyValid) { // First time we receive a valid position, go to it.
+            if (!positionReceived && active && position.horizontalAccuracyValid &&
+                    position.horizontalAccuracy < 500) { // First time we receive a valid position, go to it.
                 positionReceived = true;
                 // Keep coordinates in a different object to avoid map auto-centering.
                 var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
@@ -377,7 +379,8 @@ Page {
 
     Image {
         id: centerPosIcon
-        source: positionReceived ? "image://theme/icon-cover-location" : "image://theme/icon-cover-location?gray"
+        source: positionSource.active && positionSource.position.horizontalAccuracyValid &&
+                positionSource.position.horizontalAccuracy < 500 ? "image://theme/icon-cover-location" : "image://theme/icon-cover-location?gray"
         anchors {
             right: gpsIcon.left
             rightMargin: Theme.paddingMedium
@@ -391,7 +394,8 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if (positionReceived) {
+                if (positionSource.active && positionSource.position.horizontalAccuracyValid &&
+                        positionSource.position.horizontalAccuracy < 500) {
                     map.center = map.toCoordinate(Qt.point(map.width / 2, map.height / 2));
                     var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                        positionSource.position.coordinate.longitude)

@@ -9,7 +9,7 @@ You can also save your favourites stations and see their status on the cover.
 
 500+ cities availables in 50+ countries. Check if yours is there!
 
-Get it on [OpenRepos](https://openrepos.net/content/sthocs/bikeme). 
+Get it on [OpenRepos](https://openrepos.net/content/sthocs/bikeme).  
 Translations on [Transifex](https://www.transifex.com/sthocs/harbour-bikeme).
 
 ![BikeMe banner](images/banner.png)

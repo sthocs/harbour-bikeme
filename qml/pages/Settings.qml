@@ -88,6 +88,19 @@ Page {
                 checked = configManager.getSetting("autoEnableGPS") !== "false";
             }
         }
+        Slider {
+            label: qsTr("Map initial zoom level")
+            width: parent.width
+            minimumValue: 12
+            maximumValue: 18
+            value: !isNaN(configManager.getSetting("zoomLevel")) ?
+                       parseInt(configManager.getSetting("zoomLevel")) : 15
+            valueText: value
+            stepSize: 1
+            onValueChanged: {
+                configManager.saveSetting("zoomLevel", value);
+            }
+         }
         Item {
             width: parent.width
             height: Theme.paddingLarge * 5

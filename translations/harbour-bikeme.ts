@@ -252,5 +252,9 @@
         <source>Open map on my position</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

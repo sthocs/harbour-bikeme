@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Many thanks for the translations: %1</source>
-        <translation>Many thanks for the translations: %</translation>
+        <translation>Many thanks for the translations: %1</translation>
     </message>
     <message>
         <source>This app helps you to find a bike or a free parking spot for various self-service bicycle schemes arround the world:&lt;ul&gt;%1&lt;li&gt;And more!&lt;/li&gt;&lt;/ul&gt;BikeMe provides a simple interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.&lt;br /&gt;Click on %2 to activate the geolocation and on %3 to center the map on your position.&lt;br/&gt;Regular users: Save your favourites stations and see their status directly on the cover!</source>
@@ -253,6 +253,10 @@
     <message>
         <source>Open map on my position</source>
         <translation>Open map on my position</translation>
+    </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation>Map initial zoom level</translation>
     </message>
 </context>
 </TS>

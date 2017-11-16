@@ -246,5 +246,9 @@
         <source>Open map on my position</source>
         <translation>Otwórz mapę w mojej lokalizacji</translation>
     </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation>Początkowy poziom powiększenia mapy</translation>
+    </message>
 </context>
 </TS>

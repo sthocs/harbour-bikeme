@@ -254,5 +254,9 @@
         <source>Open map on my position</source>
         <translation>Ouvrir la carte sur ma position</translation>
     </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation>Zoom initial de la carte</translation>
+    </message>
 </context>
 </TS>

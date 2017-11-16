@@ -1,3 +1,8 @@
+* Mon Nov 13 2017 Sthocs <sthocs@hotmail.com> 0.8.1-1
+- Use native icon to show position
+- Map initial zoom level setting
+- Removed dead systems, added tests, added Rennes (fr)
+
 * Tue Jun 27 2017 Sthocs <sthocs@hotmail.com> 0.8-1
 - Added option to use CityBikes as data source
 - Workaround for the onPanFinished bug

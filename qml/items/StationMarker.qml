@@ -12,7 +12,7 @@ Item {
     property string _COLOR_AVAILABLE : "#77A834"
     property string _COLOR_ALMOST_EMPTY : "orange"
     property string _COLOR_EMPTY : "red"
-    property string _COLOR_SELECTED1 : "steelblue" // blue when data is available
+    property string _COLOR_SELECTED1 : "DodgerBlue" // blue when data is available
     property string _COLOR_SELECTED2 : "#D60080" // pink when no data is available
 
     Rectangle {
@@ -20,7 +20,7 @@ Item {
         width: Theme.iconSizeSmall; height: Theme.iconSizeSmall
         radius: 10
         color: {
-            if (!opened) {
+            if (!opened && !selected) {
                 return "grey";
             }
             if (!displayAllStatus || available < 0) {
@@ -60,7 +60,7 @@ Item {
         x: Theme.iconSizeSmall / 4; y: Theme.iconSizeSmall / 4 * 2.5
         width: Theme.iconSizeSmall / 2; height: Theme.iconSizeSmall / 2 // c²=512 -> c=22.63 -> c/2=11.31
         color: {
-            if (!opened) {
+            if (!opened && !selected) {
                 return "grey";
             }
             if (selected) {

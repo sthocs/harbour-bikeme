@@ -246,5 +246,9 @@
         <source>Open map on my position</source>
         <translation>Показать мое местоположение на карте</translation>
     </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation>Масштаб карты при запуске приложения</translation>
+    </message>
 </context>
 </TS>

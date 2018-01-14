@@ -12,6 +12,7 @@ void StationsFavouritesProxy::setFavourites(QList<int> favourites)
 {
     _favourites = favourites;
     invalidateFilter();
+    emit countChanged();
 }
 
 bool StationsFavouritesProxy::add(int stationNumber)
@@ -21,13 +22,27 @@ bool StationsFavouritesProxy::add(int stationNumber)
     }
     _favourites.append(stationNumber);
     invalidateFilter();
+    emit countChanged();
     return true;
 }
 
-void StationsFavouritesProxy::remove(int index)
+void StationsFavouritesProxy::removeAt(int index)
 {
     _favourites.removeAt(index);
     invalidateFilter();
+    emit countChanged();
+}
+
+void StationsFavouritesProxy::remove(int stationNumber)
+{
+    for (int i = 0; i < _favourites.count(); ++i) {
+        if (_favourites.at(i) == stationNumber) {
+            _favourites.removeAt(i);
+            invalidateFilter();
+            emit countChanged();
+            return;
+        }
+    }
 }
 
 void StationsFavouritesProxy::move(int from, int to)

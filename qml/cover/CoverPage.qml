@@ -8,7 +8,7 @@ CoverBackground {
 
     Label {
         id: coverLabel
-        visible: !favouritesModel
+        visible: !favouritesModel || favouritesModel.count == 0
         anchors.top: parent.top
         anchors.topMargin: Theme.paddingLarge
         horizontalAlignment: Text.AlignHCenter
@@ -27,11 +27,11 @@ CoverBackground {
         source: countryCode ? "../../images/flags/" + countryCode.toLowerCase() + ".png" : "../icons/velib.svg"
         sourceSize.width: countryCode ? Theme.iconSizeLarge : parent.width - Theme.paddingLarge
         opacity: countryCode ? 1 : 0.5
-        visible: pageStack.currentPage.objectName !== "favourites"
+        visible: !favouritesModel || favouritesModel.count == 0
     }
     ListView {
         id: favourites
-        visible: pageStack.currentPage.objectName === "favourites"
+        visible: favouritesModel && favouritesModel.count > 0
         anchors.fill: parent
         anchors.bottomMargin: Theme.itemSizeMedium
 
@@ -92,12 +92,12 @@ CoverBackground {
         anchors.horizontalCenter: parent.horizontalCenter
         sourceSize.width: parent.width - Theme.paddingLarge
         opacity: 0.3
-        visible: countryCode && pageStack.currentPage.objectName !== "favourites"
+        visible: countryCode && (!favouritesModel || favouritesModel.count == 0)
     }
 
     CoverActionList {
         id: coverAction
-        enabled: pageStack.currentPage.objectName === "favourites"
+        enabled: favouritesModel && favouritesModel.count > 0
 
         CoverAction {
             iconSource: "image://theme/icon-cover-refresh"
@@ -109,5 +109,3 @@ CoverBackground {
         }
     }
 }
-
-

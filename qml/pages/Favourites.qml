@@ -174,7 +174,7 @@ Page {
             function remove() {
                 remorseAction(qsTr("Deleting"), function() {
                     Db.removeFavourite(city.identifier, number);
-                    favouritesModel.remove(index);
+                    favouritesModel.removeAt(index);
                 });
             }
         }

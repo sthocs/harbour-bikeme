@@ -33,6 +33,8 @@ Page {
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
 
+    Component.onCompleted: loadFavourites()
+
 
     //! Container for map element
     Rectangle {
@@ -97,6 +99,7 @@ Page {
 
             MapMouseArea {
                 anchors.fill: parent
+
                 onDoubleClicked: {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
                     zoomAnimation.enabled = true
@@ -215,6 +218,14 @@ Page {
             refreshLabel.text = errorMsg;
             refreshLabel.visible = true;
             stationNameLabel.text = "Error";
+        }
+    }
+
+    StationsFavouritesProxy {
+        id: favouritesModel
+        sourceModel: stations
+        Component.onCompleted: {
+            window.cover.favouritesModel = favouritesModel
         }
     }
 
@@ -342,9 +353,11 @@ Page {
             onClicked: {
                 if (selectedStationNumber !== 0) {
                     if (isSelectedStationInFav) {
+                        favouritesModel.remove(selectedStationNumber);
                         Db.removeFavourite(city.identifier, selectedStationNumber);
                     }
                     else {
+                        favouritesModel.add(selectedStationNumber);
                         Db.addFavourite(city.identifier, selectedStationNumber);
                     }
                     isSelectedStationInFav = !isSelectedStationInFav;
@@ -587,5 +600,15 @@ Page {
             return savedProvider;
         }
         return supportedProviders[0];
+    }
+
+    function loadFavourites() {
+        var favs = Db.getFavourites(city.identifier);
+        var numbers = [];
+        favs.forEach(function(fav) {
+            numbers.push(fav.number);
+        });
+        console.log('setting favs ' + JSON.stringify(numbers));
+        favouritesModel.setFavourites(numbers);
     }
 }

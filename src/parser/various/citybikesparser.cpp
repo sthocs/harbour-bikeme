@@ -57,8 +57,8 @@ QList<Station*> CityBikesParser::parseStationsList(QString allStations, bool wit
             if (stationJson["extra"].toObject().contains("status")) {
                 station->opened = stationJson["extra"].toObject()["status"].toString() == "OPEN";
             }
-            if (stationJson["extra"].toObject().contains("last_updated")) {
-                station->last_update = QDateTime::fromTime_t(stationJson["extra"].toObject()["last_updated"].toInt());
+            if (stationJson["extra"].toObject().contains("last_update")) {
+                station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["extra"].toObject()["last_update"].toDouble());
             }
         }
         else {

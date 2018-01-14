@@ -1,0 +1,125 @@
+import QtQuick 2.0
+import Sailfish.Silica 1.0
+
+Item {
+    id: tooltip
+    width: Theme.itemSizeHuge * 1.5
+    height: body.height + arrow.height / 2
+
+    property bool opened: false
+    property int bikes: -1
+    property int parkings: -1
+    property string last_update: "N/A"
+    property string name: ""
+    property string address: ""
+
+    Rectangle {
+        id: body
+        z: 2
+        height: column.height + Theme.paddingMedium * 2
+        width: parent.width
+        color: "white"
+        radius: 10
+
+        Column {
+            id: column
+            anchors {
+                left : parent.left
+                right: parent.right
+                top: parent.top
+                margins: Theme.paddingMedium
+            }
+            spacing: Theme.paddingSmall
+            Row {
+                width: parent.width
+                anchors.margins: Theme.paddingSmall
+                Text {
+                    width: parent.width
+                    text: name
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                    wrapMode: Text.WordWrap
+                }
+            }
+            Rectangle {
+                height: Theme.paddingSmall
+                width: parent.width
+            }
+            Row {
+                Image {
+                    source: "../icons/icon-bikeme.svg"
+                    sourceSize.height: Theme.fontSizeSmall
+                    sourceSize.width: Theme.fontSizeSmall
+                }
+                Label {
+                    visible: opened
+                    text: bikes < 0 ? qsTr("Updating...") :
+                                      " : " + qsTr("%n bike(s) available(s)", "", bikes)
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                }
+            }
+            Row {
+                anchors.margins: Theme.paddingSmall
+                visible: parkings > -1
+                Image {
+                    source: "../icons/parking.svg"
+                    sourceSize.height: Theme.fontSizeSmall
+                    sourceSize.width: Theme.fontSizeSmall
+                    height: Theme.fontSizeSmall
+                    width: Theme.fontSizeSmall
+                }
+                Label {
+                    visible: opened
+                    text: parkings < 0 ? qsTr("Updating...") :
+                                         " : " + qsTr("%n parking(s) available(s)", "", parkings)
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                }
+            }
+            Row {
+                width: parent.width
+                anchors.margins: Theme.paddingSmall
+                Image {
+                    height: Theme.fontSizeSmall
+                    width: Theme.fontSizeSmall
+                    source: "image://theme/icon-s-time?black"
+                    fillMode: Image.PreserveAspectCrop
+                }
+                Text {
+                    width: parent.width
+                    text: " : " + last_update
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                    wrapMode: Text.WordWrap
+                }
+            }
+            Row {
+                width: parent.width
+                anchors.margins: Theme.paddingSmall
+                visible: address !== ""
+                Image {
+                    height: Theme.fontSizeSmall
+                    width: Theme.fontSizeSmall
+                    source: "image://theme/icon-m-location?black"
+                    fillMode: Image.PreserveAspectCrop
+                }
+                Text {
+                    width: parent.width - Theme.fontSizeSmall
+                    text: " : " + address
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                    wrapMode: Text.WordWrap
+                }
+            }
+        }
+    }
+    Rectangle {
+        id: arrow
+        x: body.width / 2 - width / 2
+        y: body.height - (height * Math.sqrt(2) / 2) // move up by half diagonal -> actual height will be height / 2
+        width: Theme.iconSizeMedium; height: Theme.iconSizeMedium
+        color: "white"
+        rotation: 45
+    }
+}

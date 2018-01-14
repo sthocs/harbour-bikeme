@@ -19,6 +19,7 @@ public:
     enum Roles {
         NumberRole = Qt::UserRole + 1,
         NameRole,
+        AddressRole,
         OpenedRole,
         CoordinatesRole,
         BikesNbRole,

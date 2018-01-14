@@ -259,4 +259,25 @@
         <translation>Zoom initial de la carte</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation>
+            <numerusform>%n vélo disponible</numerusform>
+            <numerusform>%n vélos disponibles</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation>
+            <numerusform>%n place disponible</numerusform>
+            <numerusform>%n places disponibles</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Mise à jour...</translation>
+    </message>
+</context>
 </TS>

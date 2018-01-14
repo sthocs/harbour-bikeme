@@ -259,4 +259,25 @@
         <translation>Map initial zoom level</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation>
+            <numerusform>%n bike available</numerusform>
+            <numerusform>%n bikes available</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation>
+            <numerusform>%n parking available</numerusform>
+            <numerusform>%n parkings availables</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Updating...</translation>
+    </message>
+</context>
 </TS>

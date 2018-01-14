@@ -140,6 +140,7 @@ QHash<int, QByteArray> StationsModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[NumberRole] = "number";
     roles[NameRole] = "name";
+    roles[AddressRole] = "address";
     roles[OpenedRole] = "opened";
     roles[CoordinatesRole] = "coordinates";
     roles[BikesNbRole] = "available_bikes";
@@ -158,6 +159,8 @@ QVariant StationsModel::data(const QModelIndex &index, int role) const
         return _list.at(index.row())->number;
     case NameRole:
         return _list.at(index.row())->name;
+    case AddressRole:
+        return _list.at(index.row())->address;
     case OpenedRole:
         return _list.at(index.row())->opened;
     case CoordinatesRole:

@@ -97,8 +97,22 @@ Page {
                 anchorPoint.y: dot.height / 2
             }
 
+            MapQuickItem {
+                id: stationTooltip
+                z: 3
+                visible: false
+                sourceItem: StationTooltip {
+                    id: tooltip
+                }
+                anchorPoint.x: tooltip.width / 2
+                anchorPoint.y: tooltip.height + Theme.iconSizeSmall / 4 * 5
+            }
+
             MapMouseArea {
                 anchors.fill: parent
+                onClicked: {
+                    stationTooltip.visible = false
+                }
 
                 onDoubleClicked: {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
@@ -275,6 +289,16 @@ Page {
                         numberOfParking.text = ":";
                         lastUpdatedTime.text = qsTr("Updated:")
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
+                    }
+                    else {
+                        stationTooltip.visible = true
+                        stationTooltip.coordinate = parent.coordinate
+                        tooltip.opened = opened;
+                        tooltip.bikes = available_bikes
+                        tooltip.parkings = available_bike_stands
+                        tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(last_update)
+                        tooltip.name = name
+                        tooltip.address = address
                     }
                 }
             }
@@ -581,6 +605,7 @@ Page {
         if (map.mapItems.length < maxItemsOnMap && stationsRepeater.count > map.mapItems.length) {
             map.clearMapItems();
             map.addMapItem(meIcon);
+            map.addMapItem(stationTooltip)
             for (var i = 0; i < stationsRepeater.count && i < maxItemsOnMap; ++i) {
                 map.addMapItem(stationsRepeater.itemAt(i));
             }
@@ -608,7 +633,6 @@ Page {
         favs.forEach(function(fav) {
             numbers.push(fav.number);
         });
-        console.log('setting favs ' + JSON.stringify(numbers));
         favouritesModel.setFavourites(numbers);
     }
 }

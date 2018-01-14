@@ -77,6 +77,7 @@ OTHER_FILES += harbour-bikeme.desktop \
     qml/harbour-bikeme.qml \
     qml/cover/CoverPage.qml \
     qml/items/StationMarker.qml \
+    qml/items/StationTooltip.qml \
     qml/pages/CitiesBrowser.qml \
     qml/pages/CitiesDelegate.qml \
     qml/pages/CitiesList.qml \

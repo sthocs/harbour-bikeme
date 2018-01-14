@@ -91,8 +91,8 @@ CoverBackground {
         anchors.bottomMargin: Theme.paddingLarge
         anchors.horizontalCenter: parent.horizontalCenter
         sourceSize.width: parent.width - Theme.paddingLarge
-        opacity: 0.3
-        visible: countryCode && (!favouritesModel || favouritesModel.count == 0)
+        opacity: (!favouritesModel || favouritesModel.count == 0) ? 0.3 : 0.1
+        visible: countryCode
     }
 
     CoverActionList {

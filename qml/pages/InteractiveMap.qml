@@ -225,6 +225,10 @@ Page {
                 numberOfBikes.text = ": " + station.available_bikes;
                 numberOfParking.text = ": " + station.available_bike_stands;
                 lastUpdatedTime.text = qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(station.last_update));
+                tooltip.opened = station.opened;
+                tooltip.bikes = station.available_bikes;
+                tooltip.parkings = station.available_bike_stands;
+                tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(station.last_update);
             }
         }
         onError: {
@@ -276,6 +280,10 @@ Page {
                 onClicked: {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.identifier, number);
+                    stationTooltip.visible = true;
+                    stationTooltip.coordinate = parent.coordinate;
+                    tooltip.name = name;
+                    tooltip.address = address;
                     if (!displayAllStatus) {
                         refreshLabel.visible = false;
                         if (!city.isSingleStationModeSupported()) {
@@ -287,18 +295,17 @@ Page {
                         stationNameLabel.text = qsTr("Updating...");
                         numberOfBikes.text = ":";
                         numberOfParking.text = ":";
-                        lastUpdatedTime.text = qsTr("Updated:")
+                        lastUpdatedTime.text = qsTr("Updated:");
+                        tooltip.bikes = -1;
+                        tooltip.parkings = -1;
+                        tooltip.last_update = "N/A";
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
                     }
                     else {
-                        stationTooltip.visible = true
-                        stationTooltip.coordinate = parent.coordinate
                         tooltip.opened = opened;
-                        tooltip.bikes = available_bikes
-                        tooltip.parkings = available_bike_stands
-                        tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(last_update)
-                        tooltip.name = name
-                        tooltip.address = address
+                        tooltip.bikes = available_bikes;
+                        tooltip.parkings = available_bike_stands;
+                        tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(last_update);
                     }
                 }
             }
@@ -584,6 +591,8 @@ Page {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
+                    stationTooltip.visible = false;
+                    selectedStationNumber = 0;
                     refreshAll();
                 }
             }

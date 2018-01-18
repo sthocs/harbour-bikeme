@@ -53,15 +53,14 @@ Item {
                 }
                 Label {
                     visible: opened
-                    text: bikes < 0 ? qsTr("Updating...") :
-                                      " : " + qsTr("%n bike(s) available(s)", "", bikes)
+                    text: " : " + (bikes < 0 ? qsTr("Updating...") :
+                                               qsTr("%n bike(s) available(s)", "", bikes))
                     color: "black"
                     font.pixelSize: Theme.fontSizeTiny
                 }
             }
             Row {
                 anchors.margins: Theme.paddingSmall
-                visible: parkings > -1
                 Image {
                     source: "../icons/parking.svg"
                     sourceSize.height: Theme.fontSizeSmall
@@ -71,8 +70,8 @@ Item {
                 }
                 Label {
                     visible: opened
-                    text: parkings < 0 ? qsTr("Updating...") :
-                                         " : " + qsTr("%n parking(s) available(s)", "", parkings)
+                    text: " : " + (parkings < 0 ? qsTr("Updating...") :
+                                                  qsTr("%n parking(s) available(s)", "", parkings))
                     color: "black"
                     font.pixelSize: Theme.fontSizeTiny
                 }
@@ -83,7 +82,7 @@ Item {
                 Image {
                     height: Theme.fontSizeSmall
                     width: Theme.fontSizeSmall
-                    source: "image://theme/icon-s-time?black"
+                    source: "image://theme/icon-m-refresh?black"
                     fillMode: Image.PreserveAspectCrop
                 }
                 Text {

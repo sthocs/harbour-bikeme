@@ -54,9 +54,6 @@ QList<Station*> CityBikesParser::parseStationsList(QString allStations, bool wit
             station->available_bike_stands = stationJson["empty_slots"].toInt();
             station->available_bikes = stationJson["free_bikes"].toInt();
             station->bike_stands = station->available_bikes + station->available_bike_stands;
-            if (stationJson["extra"].toObject().contains("status")) {
-                station->opened = stationJson["extra"].toObject()["status"].toString() == "OPEN";
-            }
             if (stationJson["extra"].toObject().contains("last_update")) {
                 station->last_update = QDateTime::fromMSecsSinceEpoch(stationJson["extra"].toObject()["last_update"].toDouble());
             }

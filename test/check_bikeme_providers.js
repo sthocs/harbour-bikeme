@@ -251,7 +251,8 @@ describe('Providers', function() {
                                                     assert.isNumber(stations[randomStationIndex].num_bikes_available);
                                                     assert.isNumber(stations[randomStationIndex].num_docks_available);
                                                     //assert.isNumber(stations[randomStationIndex].is_renting, "is_renting field of city " + currentCity);
-                                                    assert.isNumber(stations[randomStationIndex].last_reported);
+                                                    assert.isNumber(stations[randomStationIndex].last_reported, "Missing last_reported field, station " +
+                                                    stations[randomStationIndex].station_id + " (" + feed.url + ")");
                                                 }
                                             }
                                             if (++executedRequests == 2) {
@@ -384,8 +385,8 @@ var tests = {
                     assert.isDefined(station.fields.adresse, "Adresse is missing");
                     assert.isNumber(station.fields.geo["0"], "Lat is missing");
                     assert.isNumber(station.fields.geo["1"], "Lon is missing");
-                    assert.isNumber(station.fields.nbVelosDispo, "nbVelosDispo is missing");
-                    assert.isNumber(station.fields.nbPlacesDispo, "nbPlacesDispo is missing");
+                    assert.isNumber(station.fields.nbvelosdispo, "nbvelosdispo is missing");
+                    assert.isNumber(station.fields.nbplacesdispo, "nbplacesdispo is missing");
                 });
                 done();
             });

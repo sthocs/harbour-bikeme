@@ -23,8 +23,8 @@ QList<Station*> ParserLille::parseStationsList(QString allStationsDetails, bool 
         station->coordinates = coord;
         if (withDetails) {
             station->opened = stationJson["etat"].toString().compare("EN SERVICE") == 0;
-            station->available_bike_stands = stationJson["nbPlacesDispo"].toInt();
-            station->available_bikes = stationJson["nbVelosDispo"].toInt();
+            station->available_bike_stands = stationJson["nbplacesdispo"].toInt();
+            station->available_bikes = stationJson["nbvelosdispo"].toInt();
             station->bike_stands = station->available_bike_stands + station->available_bikes;
             station->last_update = QDateTime::fromString(stationJson["record_timestamp"].toString(), "yyyy-MM-ddTHH:mm:ss");
         }

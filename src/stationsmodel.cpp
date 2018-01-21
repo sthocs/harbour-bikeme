@@ -144,6 +144,7 @@ QHash<int, QByteArray> StationsModel::roleNames() const {
     roles[OpenedRole] = "opened";
     roles[CoordinatesRole] = "coordinates";
     roles[BikesNbRole] = "available_bikes";
+    roles[ElecBikesNbRole] = "available_electric_bikes";
     roles[FreeSlotsNbRole] = "available_bike_stands";
     roles[LastUpdateRole] = "last_update";
     return roles;
@@ -167,6 +168,8 @@ QVariant StationsModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(_list.at(index.row())->coordinates);
     case BikesNbRole:
         return _list.at(index.row())->available_bikes;
+    case ElecBikesNbRole:
+        return _list.at(index.row())->available_electric_bikes;
     case FreeSlotsNbRole:
         return _list.at(index.row())->available_bike_stands;
     case LastUpdateRole:

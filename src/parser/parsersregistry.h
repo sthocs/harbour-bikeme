@@ -7,6 +7,7 @@
 #include "france/parserlille.h"
 #include "france/rennesparser.h"
 #include "france/parsersmoove.h"
+#include "france/parsersmovengo.h"
 #include "france/parserveloway.h"
 #include "germany/nextbikeparser.h"
 #include "kazakhstan/parserastana.h"

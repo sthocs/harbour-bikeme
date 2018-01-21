@@ -265,7 +265,7 @@
         <source>%n bike(s) available(s)</source>
         <translation>
             <numerusform>%n bike available</numerusform>
-            <numerusform>%n bikes available</numerusform>
+            <numerusform>%n bikes availables</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -278,6 +278,13 @@
     <message>
         <source>Updating...</source>
         <translation>Updating...</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation>
+            <numerusform>%n electric bike available</numerusform>
+            <numerusform>%n electric bikes availables</numerusform>
+        </translation>
     </message>
 </context>
 </TS>

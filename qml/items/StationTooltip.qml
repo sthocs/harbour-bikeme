@@ -8,6 +8,7 @@ Item {
 
     property bool opened: false
     property int bikes: -1
+    property int electricBikes: -1
     property int parkings: -1
     property string last_update: "N/A"
     property string name: ""
@@ -60,6 +61,25 @@ Item {
                 }
             }
             Row {
+                visible: electricBikes > -1
+                width: parent.width
+                anchors.margins: Theme.paddingSmall
+                Image {
+                    source: "../icons/icon-bikeme-elec.svg"
+                    sourceSize.height: Theme.fontSizeSmall
+                    sourceSize.width: Theme.fontSizeSmall
+                }
+                Text {
+                    visible: opened
+                    width: parent.width - Theme.fontSizeSmall
+                    text: " : " + (electricBikes < 0 ? qsTr("Updating...") :
+                                  qsTr("%n electric bike(s) available(s)", "", electricBikes))
+                    color: "black"
+                    font.pixelSize: Theme.fontSizeTiny
+                    wrapMode: Text.WordWrap
+                }
+            }
+            Row {
                 anchors.margins: Theme.paddingSmall
                 Image {
                     source: "../icons/parking.svg"
@@ -79,6 +99,7 @@ Item {
             Row {
                 width: parent.width
                 anchors.margins: Theme.paddingSmall
+                visible: last_update !== "N/A"
                 Image {
                     height: Theme.fontSizeSmall
                     width: Theme.fontSizeSmall
@@ -116,7 +137,8 @@ Item {
     Rectangle {
         id: arrow
         x: body.width / 2 - width / 2
-        y: body.height - (height * Math.sqrt(2) / 2) // move up by half diagonal -> actual height will be height / 2
+        y: body.height - (height * Math.sqrt(2) / 2) // rotated by 45 and moved up by half diagonal
+                                                     // -> actual height will be height / 2
         width: Theme.iconSizeMedium; height: Theme.iconSizeMedium
         color: "white"
         rotation: 45

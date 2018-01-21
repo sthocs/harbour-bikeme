@@ -23,6 +23,7 @@ public:
         OpenedRole,
         CoordinatesRole,
         BikesNbRole,
+        ElecBikesNbRole,
         FreeSlotsNbRole,
         LastUpdateRole
     };

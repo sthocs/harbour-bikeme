@@ -26,13 +26,14 @@ struct ProviderInfo {
 };
 
 struct CityInfo {
-    CityInfo() : id(0), zoom(0), copyright(QString()), stationsDataModes(NoMode) {}
+    CityInfo() : id(0), hasElectricBikes(false), zoom(0), copyright(QString()), stationsDataModes(NoMode) {}
     int id;
     QString id_str;
     QString name;
     QString commercialName;
     QString providerName;
     QString countryCode;
+    bool hasElectricBikes;
     QUrl autoDiscoveryUrl;
     QUrl stationsInfoUrl;
     QUrl allStationsDetailsUrl;
@@ -50,6 +51,7 @@ class City : public QObject
     Q_PROPERTY(QString providerName READ getProviderName NOTIFY providerNameChanged)
     Q_PROPERTY(QString countryCode READ getCountryCode NOTIFY countryCodeChanged)
     Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
+    Q_PROPERTY(bool hasElectricBikes READ hasElectricBikes NOTIFY hasElectricBikesChanged)
     Q_PROPERTY(QUrl stationsListUrl READ getStationsListUrl NOTIFY stationsListUrlChanged)
     Q_PROPERTY(QUrl allStationsDetailsUrl READ getAllStationsDetailsUrl NOTIFY allStationsDetailsUrlChanged)
     Q_PROPERTY(QString singleStationDetailsUrlTemplate READ getSingleStationDetailsUrlTemplate NOTIFY singleStationDetailsUrlTemplateChanged)
@@ -63,6 +65,7 @@ public:
     QString getName() const { return _info.name; }
     QString getCommercialName() const { return _info.commercialName; }
     QString getCountryCode() const { return _info.countryCode; }
+    bool hasElectricBikes() const { return _info.hasElectricBikes; }
     QUrl getAutoDiscoveryUrl() const { return _info.autoDiscoveryUrl; }
     QUrl getStationsListUrl() const { return _info.stationsInfoUrl; }
     QUrl getAllStationsDetailsUrl() const { return _info.allStationsDetailsUrl; }
@@ -85,6 +88,7 @@ signals:
     void nameChanged();
     void countryCodeChanged();
     void providerNameChanged();
+    void hasElectricBikesChanged();
     void stationsListUrlChanged();
     void allStationsDetailsUrlChanged();
     void singleStationDetailsUrlTemplateChanged();

@@ -1,5 +1,13 @@
 [
     {
+        "provider": "Smovengo",
+        "name": "Paris",
+        "commercial_name": "Velib'",
+        "country_code": "FR",
+        "allStationsDetailsUrl": "https://www.velib-metropole.fr/webapi/map/details?gpsTopLatitude=49&gpsTopLongitude=2.85&gpsBotLatitude=48.7&gpsBotLongitude=2&zoomLevel=19",
+        "hasElectricBikes": true
+    },
+    {
         "provider": "Transpole",
         "name": "Lille",
         "commercial_name": "V'Lille",

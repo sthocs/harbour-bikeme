@@ -25,7 +25,7 @@ Page {
     property int selectedStationNumber: 0
     property bool isSelectedStationInFav: false
     property bool displayAllStatus: configManager.getSetting("displayAllStatus") !== "false"
-    property bool displayAvailableParking: false
+    property int displayItem: 0
 
     property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
@@ -227,6 +227,7 @@ Page {
                 lastUpdatedTime.text = qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(station.last_update));
                 tooltip.opened = station.opened;
                 tooltip.bikes = station.available_bikes;
+                tooltip.electricBikes = station.available_electric_bikes;
                 tooltip.parkings = station.available_bike_stands;
                 tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(station.last_update);
             }
@@ -268,7 +269,15 @@ Page {
             sourceItem: StationMarker {
                 displayAllStatus: interactiveMap.displayAllStatus
                 opened: model.opened
-                available: displayAvailableParking ? model.available_bike_stands : model.available_bikes
+                available: {
+                    switch (displayItem) {
+                        case 0: return model.available_bikes;
+                        case 1: return model.available_electric_bikes;
+                        case 2: return model.available_bike_stands;
+                    }
+
+                    displayItem ? model.available_bike_stands : model.available_bikes
+                }
                 selected: number != 0 && number === selectedStationNumber
             }
 
@@ -297,6 +306,7 @@ Page {
                         numberOfParking.text = ":";
                         lastUpdatedTime.text = qsTr("Updated:");
                         tooltip.bikes = -1;
+                        tooltip.electricBikes = -1;
                         tooltip.parkings = -1;
                         tooltip.last_update = "N/A";
                         stations.fetchStationInformation(stationsProxy.sourceRow(index));
@@ -304,6 +314,7 @@ Page {
                     else {
                         tooltip.opened = opened;
                         tooltip.bikes = available_bikes;
+                        tooltip.electricBikes = available_electric_bikes;
                         tooltip.parkings = available_bike_stands;
                         tooltip.last_update = Utils.makeLastUpdateDateHumanReadable(last_update);
                     }
@@ -372,7 +383,7 @@ Page {
         source: isSelectedStationInFav ? "image://theme/icon-m-favorite-selected" : "image://theme/icon-m-favorite"
         anchors {
             right: centerPosIcon.left
-            rightMargin: Theme.paddingLarge
+            rightMargin: Theme.paddingSmall
             bottom: parent.bottom
             bottomMargin: Theme.paddingMedium
         }
@@ -402,7 +413,7 @@ Page {
         source: findMe ? "image://theme/icon-m-gps?" + Theme.highlightColor : "image://theme/icon-m-gps"
         anchors {
             right: parent.right
-            rightMargin: Theme.paddingMedium
+            rightMargin: Theme.paddingSmall
             bottom: parent.bottom
             bottomMargin: Theme.paddingMedium
         }
@@ -545,15 +556,42 @@ Page {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        displayAvailableParking = false;
+                        displayItem = 0;
                     }
                 }
 
             }
             Colorize {
-                visible: displayAvailableParking
+                visible: displayItem !== 0
                 anchors.fill: displayAvailableBikesBtn
                 source: displayAvailableBikesBtn
+                hue: 0
+                saturation: 0
+                lightness: 0
+            }
+        }
+        Item {
+            visible: city.hasElectricBikes
+            width: Theme.itemSizeSmall
+            height: Theme.itemSizeSmall
+
+            Image {
+                id: displayAvailableElecBikesBtn
+                source: "../icons/icon-bikeme-elec.svg"
+                sourceSize.height: Theme.itemSizeSmall
+                sourceSize.width: Theme.itemSizeSmall
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        displayItem = 1;
+                    }
+                }
+
+            }
+            Colorize {
+                visible: displayItem !== 1
+                anchors.fill: displayAvailableElecBikesBtn
+                source: displayAvailableElecBikesBtn
                 hue: 0
                 saturation: 0
                 lightness: 0
@@ -571,12 +609,12 @@ Page {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        displayAvailableParking = true;
+                        displayItem = 2;
                     }
                 }
             }
             Colorize {
-                visible: !displayAvailableParking
+                visible: displayItem !== 2
                 anchors.fill: displayAvailablePlacesBtn
                 source: displayAvailablePlacesBtn
                 hue: 0

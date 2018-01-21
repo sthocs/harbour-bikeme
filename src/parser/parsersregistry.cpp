@@ -7,6 +7,7 @@ ParsersRegistry::ParsersRegistry()
 void ParsersRegistry::registerParsers()
 {
     qRegisterMetaType<JCDecauxParser>("JCDecaux");
+    qRegisterMetaType<ParserSmovengo>("Smovengo");
     qRegisterMetaType<NextbikeParser>("Nextbike");
     qRegisterMetaType<ParserVeloway>("Veloway");
     qRegisterMetaType<ParserLille>("Transpole");

@@ -13,6 +13,7 @@ class Station : public QObject
     Q_PROPERTY(QString address READ getAddress)
     Q_PROPERTY(bool opened READ isOpened)
     Q_PROPERTY(int available_bikes READ getAvailableBikes)
+    Q_PROPERTY(int available_electric_bikes READ getAvailableElectricBikes)
     Q_PROPERTY(int available_bike_stands READ getAvailableBikeStands)
     Q_PROPERTY(QDateTime last_update READ getLastUpdate)
 public:
@@ -25,6 +26,7 @@ public:
     bool opened;
     int bike_stands;
     int available_bikes;
+    int available_electric_bikes;
     int available_bike_stands;
     QDateTime last_update;
 
@@ -33,6 +35,7 @@ public:
     QString getAddress() const { return address; }
     bool isOpened() const { return opened; }
     int getAvailableBikes() const { return available_bikes; }
+    int getAvailableElectricBikes() const { return available_electric_bikes; }
     int getAvailableBikeStands() const { return available_bike_stands; }
     QDateTime getLastUpdate() const { return last_update; }
 

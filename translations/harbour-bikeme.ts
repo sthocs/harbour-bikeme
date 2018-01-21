@@ -275,5 +275,11 @@
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 </TS>

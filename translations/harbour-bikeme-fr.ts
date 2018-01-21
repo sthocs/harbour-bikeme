@@ -279,5 +279,12 @@
         <source>Updating...</source>
         <translation>Mise à jour...</translation>
     </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation>
+            <numerusform>%n vélo électrique disponible</numerusform>
+            <numerusform>%n vélos électriques disponibles</numerusform>
+        </translation>
+    </message>
 </context>
 </TS>

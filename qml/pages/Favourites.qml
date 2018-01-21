@@ -104,6 +104,27 @@ Page {
                         height: 1
                     }
                     Image {
+                        visible: city.hasElectricBikes
+                        source: "../icons/icon-bikeme-elec.svg"
+                        sourceSize.height: Theme.fontSizeSmall
+                        sourceSize.width: Theme.fontSizeSmall
+                        anchors.leftMargin: Theme.paddingSmall
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label {
+                        visible: city.hasElectricBikes
+                        text: " : " + (opened && available_electric_bikes != -1 ?
+                                           available_electric_bikes : 0)
+                        color: Theme.primaryColor
+                        font.pixelSize: Theme.fontSizeMedium
+                        font.bold: true
+                    }
+                    Item {
+                        visible: city.hasElectricBikes
+                        width: Theme.paddingLarge
+                        height: 1
+                    }
+                    Image {
                         source: "../icons/parking.svg"
                         sourceSize.height: Theme.fontSizeSmall
                         sourceSize.width: Theme.fontSizeSmall
@@ -122,11 +143,12 @@ Page {
                         height: 1
                     }
                     Label {
+                        anchors.verticalCenter: parent.verticalCenter
                         visible: Utils.isValidDate(last_update)
                         text: opened ? qsTr("Updated: %1").arg(Utils.makeLastUpdateDateHumanReadable(model.last_update)) :
                                        qsTr("Closed")
                         color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeMedium
+                        font.pixelSize: Theme.fontSizeExtraSmall
                     }
                 }
             }

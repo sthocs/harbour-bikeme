@@ -18,7 +18,6 @@ QList<Station*> RennesParser::parseStationsList(QString allStationsDetails, bool
         Station* station = new Station();
         station->number = stationJson["idstation"].toInt();
         station->name = stationJson["nom"].toString();
-        station->address = stationJson["nom"].toString();
         QJsonArray position = stationJson["coordonnees"].toArray();
         QGeoCoordinate coord(position.at(0).toDouble(), position.at(1).toDouble());
         station->coordinates = coord;
@@ -27,7 +26,7 @@ QList<Station*> RennesParser::parseStationsList(QString allStationsDetails, bool
             station->available_bike_stands = stationJson["nombreemplacementsdisponibles"].toInt();
             station->available_bikes = stationJson["nombrevelosdisponibles"].toInt();
             station->bike_stands = station->available_bike_stands + station->available_bikes;
-            station->last_update = QDateTime::fromString(stationJson["lastupdate"].toString().left(19), "yyyy-MM-ddTHH:mm:ss");
+            station->last_update = QDateTime::fromString(stationJson["lastupdate"].toString(), Qt::ISODate);
         }
         else {
             station->opened = true;

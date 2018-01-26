@@ -16,7 +16,7 @@ QList<Station*> ParserMoscow::parseStationsList(QString allStations, bool withDe
         QJsonObject stationJson = stationsArray[i].toObject();
         Station* station = new Station();
         station->number = stationJson["Id"].toString().toInt();
-        station->name = stationJson["Address"].toString();
+        station->name = stationJson["Name"].toString();
         station->address = stationJson["Address"].toString();
         QJsonObject position = stationJson["Position"].toObject();
         QGeoCoordinate coord(position["Lat"].toDouble(), position["Lon"].toDouble());

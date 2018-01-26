@@ -17,8 +17,9 @@ QList<Station*> ParserVeloway::parseStationsList(QString allStations, bool withD
         Station* station = new Station();
         QJsonObject stationJson = stations[i].toObject();
         station->number = stationJson["id"].toString().toInt();
+        station->name = stationJson["name"].toString();
         QString wcom = stationJson["wcom"].toString();
-        station->name = !wcom.isEmpty() ? wcom : stationJson["name"].toString();
+        station->address = !wcom.isEmpty() ? wcom : NULL;
         QGeoCoordinate coord(stationJson["lat"].toString().toDouble(),
                 stationJson["lng"].toString().toDouble());
         station->coordinates = coord;

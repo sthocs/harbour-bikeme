@@ -382,6 +382,7 @@ var tests = {
                 carto.forEach(function(station) {
                     assert.isNumber(station.fields.libelle, "Libelle is missing");
                     assert.isString(station.fields.etat, "Etat is missing");
+                    assert.isDefined(station.fields.nom, "Nom is missing");
                     assert.isDefined(station.fields.adresse, "Adresse is missing");
                     assert.isNumber(station.fields.geo["0"], "Lat is missing");
                     assert.isNumber(station.fields.geo["1"], "Lon is missing");
@@ -481,6 +482,7 @@ var tests = {
                 assert.isTrue(Array.isArray(carto.Items));
                 carto.Items.forEach(function(station) {
                     assert.isString(station.Id, "Id is missing");
+                    assert.isDefined(station.Name, "Name is missing");
                     assert.isDefined(station.Address, "Address is missing");
                     assert.isNumber(station.Position.Lat, "Lat is missing");
                     assert.isNumber(station.Position.Lon, "Lon is missing");

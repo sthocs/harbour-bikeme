@@ -218,6 +218,9 @@ Page {
                     alertPopup.visible = true;
                 }
             }
+            if (!displayAllStatus) {
+                favouritesModel.refreshAll();
+            }
         }
         onStationUpdated: {
             if (station.number === selectedStationNumber) {
@@ -237,6 +240,7 @@ Page {
             refreshLabel.text = errorMsg;
             refreshLabel.visible = true;
             stationNameLabel.text = "Error";
+            tooltip.opened = false;
         }
     }
 
@@ -291,25 +295,28 @@ Page {
                     isSelectedStationInFav = Db.isFavourite(city.identifier, number);
                     stationTooltip.visible = true;
                     stationTooltip.coordinate = parent.coordinate;
-                    tooltip.name = name;
-                    tooltip.address = address;
+                    tooltip.name = decodeURIComponent(name);
+                    tooltip.address = decodeURIComponent(address);
                     if (!displayAllStatus) {
                         refreshLabel.visible = false;
                         if (!city.isSingleStationModeSupported()) {
                             alertMsg.text = qsTr("Only \"all status\" mode available for this city.")
                             alertPopup.visible = true;
+                            stationTooltip.visible = false;
                             displayAllStatus = true;
                             refreshAll();
                         }
-                        stationNameLabel.text = qsTr("Updating...");
-                        numberOfBikes.text = ":";
-                        numberOfParking.text = ":";
-                        lastUpdatedTime.text = qsTr("Updated:");
-                        tooltip.bikes = -1;
-                        tooltip.electricBikes = -1;
-                        tooltip.parkings = -1;
-                        tooltip.last_update = "N/A";
-                        stations.fetchStationInformation(stationsProxy.sourceRow(index));
+                        else {
+                            stationNameLabel.text = qsTr("Updating...");
+                            numberOfBikes.text = ":";
+                            numberOfParking.text = ":";
+                            lastUpdatedTime.text = qsTr("Updated:");
+                            tooltip.bikes = -1;
+                            tooltip.electricBikes = -1;
+                            tooltip.parkings = -1;
+                            tooltip.last_update = "N/A";
+                            stations.fetchStationInformation(stationsProxy.sourceRow(index));
+                        }
                     }
                     else {
                         tooltip.opened = opened;

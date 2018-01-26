@@ -16,7 +16,7 @@ QList<Station*> ParserLille::parseStationsList(QString allStationsDetails, bool 
         QJsonObject stationJson = stations[i].toObject()["fields"].toObject();
         Station* station = new Station();
         station->number = stationJson["libelle"].toInt();
-        station->name = stationJson["adresse"].toString();
+        station->name = stationJson["nom"].toString();
         station->address = stationJson["adresse"].toString();
         QJsonArray position = stationJson["geo"].toArray();
         QGeoCoordinate coord(position.at(0).toDouble(), position.at(1).toDouble());
@@ -26,7 +26,7 @@ QList<Station*> ParserLille::parseStationsList(QString allStationsDetails, bool 
             station->available_bike_stands = stationJson["nbplacesdispo"].toInt();
             station->available_bikes = stationJson["nbvelosdispo"].toInt();
             station->bike_stands = station->available_bike_stands + station->available_bikes;
-            station->last_update = QDateTime::fromString(stationJson["record_timestamp"].toString(), "yyyy-MM-ddTHH:mm:ss");
+            station->last_update = QDateTime::fromString(stations[i].toObject()["record_timestamp"].toString(), Qt::ISODate);
         }
         else {
             station->opened = true;

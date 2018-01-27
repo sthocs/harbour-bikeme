@@ -33,8 +33,6 @@ Page {
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
 
-    Component.onCompleted: loadFavourites()
-
 
     //! Container for map element
     Rectangle {
@@ -218,7 +216,9 @@ Page {
                     alertPopup.visible = true;
                 }
             }
-            if (!displayAllStatus) {
+            window.cover.favouritesModel = favouritesModel;
+            if (!withDetails) {
+                console.log("Refreshing favourites...")
                 favouritesModel.refreshAll();
             }
         }
@@ -248,7 +248,7 @@ Page {
         id: favouritesModel
         sourceModel: stations
         Component.onCompleted: {
-            window.cover.favouritesModel = favouritesModel
+            loadFavourites();
         }
     }
 

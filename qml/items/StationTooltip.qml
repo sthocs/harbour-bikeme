@@ -13,6 +13,13 @@ Item {
     property string last_update: "N/A"
     property string name: ""
     property string address: ""
+    property bool favourited: false
+
+    signal favouriteClicked()
+
+    MouseArea {
+        anchors.fill: body
+    }
 
     Rectangle {
         id: body
@@ -130,6 +137,39 @@ Item {
                     color: "black"
                     font.pixelSize: Theme.fontSizeTiny
                     wrapMode: Text.WordWrap
+                }
+            }
+            Rectangle {
+                height: Theme.paddingSmall
+                width: parent.width
+            }
+            Row {
+                width: parent.width
+                anchors.margins: Theme.paddingSmall
+
+                Image {
+                    id: favIcon
+                    height: Theme.iconSizeSmall
+                    width: Theme.iconSizeSmall
+                    anchors.leftMargin: Theme.paddingMedium
+                    source: favourited ? "image://theme/icon-m-favorite-selected?gold" : "image://theme/icon-m-favorite?black"
+                    fillMode: Image.PreserveAspectCrop
+                }
+                Text {
+                    width: parent.width - Theme.fontSizeSmall
+                    height: Theme.iconSizeSmall
+                    verticalAlignment: Text.AlignVCenter
+                    text: '<a href="#">' + (favourited ? qsTr("Remove from favourites") : qsTr("Add to favourites")) + '</a>'
+                    color: "black"
+                    linkColor: "dodgerblue"
+                    font.underline: true
+                    font.bold: true
+                    font.pixelSize: Theme.fontSizeTiny
+                    wrapMode: Text.WordWrap
+                    onLinkActivated: {
+                        tooltip.favouriteClicked()
+                        favourited = !favourited
+                    }
                 }
             }
         }

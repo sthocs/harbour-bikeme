@@ -286,5 +286,13 @@
             <numerusform>%n electric bikes availables</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Remove from favourites</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Add to favourites</translation>
+    </message>
 </context>
 </TS>

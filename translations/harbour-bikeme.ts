@@ -281,5 +281,13 @@
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

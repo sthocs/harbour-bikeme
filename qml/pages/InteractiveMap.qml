@@ -101,6 +101,17 @@ Page {
                 visible: false
                 sourceItem: StationTooltip {
                     id: tooltip
+                    onFavouriteClicked: {
+                        if (isSelectedStationInFav) {
+                            favouritesModel.remove(selectedStationNumber);
+                            Db.removeFavourite(city.identifier, selectedStationNumber);
+                        }
+                        else {
+                            favouritesModel.add(selectedStationNumber);
+                            Db.addFavourite(city.identifier, selectedStationNumber);
+                        }
+                        isSelectedStationInFav = !isSelectedStationInFav;
+                    }
                 }
                 anchorPoint.x: tooltip.width / 2
                 anchorPoint.y: tooltip.height + Theme.iconSizeSmall / 4 * 5
@@ -297,6 +308,7 @@ Page {
                     stationTooltip.coordinate = parent.coordinate;
                     tooltip.name = decodeURIComponent(name);
                     tooltip.address = decodeURIComponent(address);
+                    tooltip.favourited = isSelectedStationInFav;
                     if (!displayAllStatus) {
                         refreshLabel.visible = false;
                         if (!city.isSingleStationModeSupported()) {
@@ -381,36 +393,6 @@ Page {
                 stopGeolocation();
                 interactiveMap.destroy();
                 pageStack.pop();
-            }
-        }
-    }
-
-    /* Button to add the selected station in favourites */
-    Image {
-        source: isSelectedStationInFav ? "image://theme/icon-m-favorite-selected" : "image://theme/icon-m-favorite"
-        anchors {
-            right: centerPosIcon.left
-            rightMargin: Theme.paddingSmall
-            bottom: parent.bottom
-            bottomMargin: Theme.paddingMedium
-        }
-        sourceSize.height: Theme.iconSizeMedium
-        sourceSize.width: Theme.iconSizeMedium
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                if (selectedStationNumber !== 0) {
-                    if (isSelectedStationInFav) {
-                        favouritesModel.remove(selectedStationNumber);
-                        Db.removeFavourite(city.identifier, selectedStationNumber);
-                    }
-                    else {
-                        favouritesModel.add(selectedStationNumber);
-                        Db.addFavourite(city.identifier, selectedStationNumber);
-                    }
-                    isSelectedStationInFav = !isSelectedStationInFav;
-                }
             }
         }
     }

@@ -286,5 +286,13 @@
             <numerusform>%n vélos électriques disponibles</numerusform>
         </translation>
     </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Retirer des favoris</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Ajouter aux favoris</translation>
+    </message>
 </context>
 </TS>

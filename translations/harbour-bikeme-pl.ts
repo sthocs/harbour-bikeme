@@ -251,4 +251,31 @@
         <translation>Początkowy poziom powiększenia mapy</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation><numerusform>%n dostępny rower</numerusform><numerusform>%n dostępne rowery</numerusform><numerusform>%n dostępnych rowerów</numerusform><numerusform>%n dostępnych rowerów</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation><numerusform>%n dostępne miejsce parkingowe</numerusform><numerusform>%n dostępne miejsca parkingowe</numerusform><numerusform>%n dostępnych miejsc parkingowych</numerusform><numerusform>%n dostępnych miejsc parkingowych</numerusform></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Aktualizowanie...</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation><numerusform>%n rower elektryczny jest dostępny</numerusform><numerusform>%n rowery elektryczne są dostępne</numerusform><numerusform>%n rowerów elektrycznych jest dostępnych</numerusform><numerusform>%n rowerów elektrycznych jest dostępnych</numerusform></translation>
+    </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Usuń z ulubionych</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Dodaj do ulubionych</translation>
+    </message>
+</context>
 </TS>

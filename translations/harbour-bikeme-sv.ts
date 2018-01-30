@@ -251,4 +251,31 @@
         <translation>Kartans inledande zoomnivå</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation><numerusform>%n cykel tillgänglig</numerusform><numerusform>%n cyklar tillgängliga</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation><numerusform>%n parkeringsplats tillgänglig</numerusform><numerusform>%n parkeringsplatser tillgängliga</numerusform></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Uppdaterar...</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation><numerusform>%n elcykel tillgänglig</numerusform><numerusform>%n elcyklar tillgängliga</numerusform></translation>
+    </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Ta bort från favoriter</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Lägg till i favoriter</translation>
+    </message>
+</context>
 </TS>

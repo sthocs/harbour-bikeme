@@ -246,5 +246,36 @@
         <source>Open map on my position</source>
         <translation>Prikaži zemljevid in označi moj položaj</translation>
     </message>
+    <message>
+        <source>Map initial zoom level</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 </TS>

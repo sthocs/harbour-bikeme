@@ -251,4 +251,31 @@
         <translation>Масштаб карты при запуске приложения</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation><numerusform>%n велосипед доступен</numerusform><numerusform>%n велосипеда доступно</numerusform><numerusform>%n велосипедов доступно</numerusform><numerusform>%n велосипедов доступно</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation><numerusform>%n парковка доступна</numerusform><numerusform>%n парковки доступны</numerusform><numerusform>%n парковок доступны</numerusform><numerusform>%n парковок доступно</numerusform></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Обновляется...</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation><numerusform>%n электровелосипед доступен</numerusform><numerusform>%n электровелосипеда доступно</numerusform><numerusform>%n электровелосипедов доступно</numerusform><numerusform>%n электровелосипедов доступно</numerusform></translation>
+    </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Удалить из избранного</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Добавить в избранное</translation>
+    </message>
+</context>
 </TS>

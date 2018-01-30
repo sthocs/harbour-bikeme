@@ -251,4 +251,31 @@
         <translation>Nivel de zoom inicial en mapa</translation>
     </message>
 </context>
+<context>
+    <name>StationTooltip</name>
+    <message numerus="yes">
+        <source>%n bike(s) available(s)</source>
+        <translation><numerusform>%n bici disponible</numerusform><numerusform>%n bicis disponibles</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n parking(s) available(s)</source>
+        <translation><numerusform>%n aparcamiento libre</numerusform><numerusform>%n aparcamientos libres</numerusform></translation>
+    </message>
+    <message>
+        <source>Updating...</source>
+        <translation>Actualizando...</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n electric bike(s) available(s)</source>
+        <translation><numerusform>%n bici eléctrica disponible</numerusform><numerusform>%n bicis eléctricas disponibles</numerusform></translation>
+    </message>
+    <message>
+        <source>Remove from favourites</source>
+        <translation>Eliminar de favoritos</translation>
+    </message>
+    <message>
+        <source>Add to favourites</source>
+        <translation>Añadir a favoritos</translation>
+    </message>
+</context>
 </TS>

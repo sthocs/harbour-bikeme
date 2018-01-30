@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 Item {
@@ -169,6 +169,9 @@ Item {
                     onLinkActivated: {
                         tooltip.favouriteClicked()
                         favourited = !favourited
+                        if (favourited) {
+                            starAnim.start()
+                        }
                     }
                 }
             }
@@ -182,5 +185,25 @@ Item {
         width: Theme.iconSizeMedium; height: Theme.iconSizeMedium
         color: "white"
         rotation: 45
+    }
+
+    SequentialAnimation {
+        id: starAnim
+        SequentialAnimation {
+            YAnimator {
+                target: favIcon;
+                from: 0
+                to: -15
+                easing.type: Easing.OutExpo;
+                duration: 200
+            }
+            YAnimator {
+                target: favIcon;
+                from: -15
+                to: 0
+                easing.type: Easing.OutBounce;
+                duration: 800
+            }
+        }
     }
 }

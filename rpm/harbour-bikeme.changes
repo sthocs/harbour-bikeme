@@ -1,3 +1,8 @@
+* Wed Jan 31 2018 Sthocs <sthocs@hotmail.com> 0.9-1
+- Station tooltip
+- Support for electric bikes
+- Favourites cover also in Map view
+
 * Mon Nov 13 2017 Sthocs <sthocs@hotmail.com> 0.8.1-1
 - Use native icon to show position
 - Map initial zoom level setting

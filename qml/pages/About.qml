@@ -105,7 +105,7 @@ Regular users: Save your favourites stations and see their status directly on th
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryColor
-                text: "2014 - 2017 Sthocs"
+                text: "2014 - 2018 Sthocs"
             }
 
             Item {
@@ -118,7 +118,7 @@ Regular users: Save your favourites stations and see their status directly on th
                 color: Theme.primaryColor
                 font.pixelSize: Theme.fontSizeExtraSmall
                 wrapMode: Text.WordWrap
-                text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski, sponka, subedito.ru, carmenfdezb");
+                text: qsTr("Many thanks for the translations: %1").arg("ZB, eson, atlochowski, sponka, subedito.ru, carmenfdezb, pljmn, adrianocolvero");
             }
         }
     }

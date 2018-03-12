@@ -104,7 +104,9 @@ TRANSLATIONS += translations/harbour-bikeme-en.ts \
     translations/harbour-bikeme-sv.ts \
     translations/harbour-bikeme-pl.ts \
     translations/harbour-bikeme-sl_SI.ts \
-    translations/harbour-bikeme-ru.ts
+    translations/harbour-bikeme-ru.ts \
+    translations/harbour-bikeme-nl.ts \
+    translations/harbour-bikeme-pt_BR.ts
 
 data.files = data
 data.path = /usr/share/$${TARGET}

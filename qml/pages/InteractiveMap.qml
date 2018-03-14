@@ -362,6 +362,11 @@ Page {
                 updateFilter();
             }
         }
+
+        function isPositionAcquired() {
+            return positionSource.active && positionSource.position.horizontalAccuracyValid &&
+                            positionSource.position.horizontalAccuracy < 500
+        }
     }
 
     function startGeolocation() {
@@ -423,8 +428,7 @@ Page {
 
     Image {
         id: centerPosIcon
-        source: positionSource.active && positionSource.position.horizontalAccuracyValid &&
-                positionSource.position.horizontalAccuracy < 500 ? "image://theme/icon-cover-location" : "image://theme/icon-cover-location?gray"
+        source: positionSource.isPositionAcquired() ? "image://theme/icon-cover-location" : "image://theme/icon-cover-location?gray"
         anchors {
             right: gpsIcon.left
             rightMargin: Theme.paddingMedium
@@ -438,8 +442,7 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if (positionSource.active && positionSource.position.horizontalAccuracyValid &&
-                        positionSource.position.horizontalAccuracy < 500) {
+                if (positionSource.isPositionAcquired()) {
                     map.center = map.toCoordinate(Qt.point(map.width / 2, map.height / 2));
                     var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
                                                        positionSource.position.coordinate.longitude)
@@ -447,6 +450,15 @@ Page {
                     updateFilter();
                 }
             }
+        }
+
+        SequentialAnimation {
+            id: blinkCenterPosIcon
+            loops: Animation.Infinite
+            alwaysRunToEnd: true
+            running: findMe && !positionSource.isPositionAcquired()
+            PropertyAnimation { target: centerPosIcon; property: "opacity"; to: 0; duration: 700 }
+            PropertyAnimation { target: centerPosIcon; property: "opacity"; to: 1; duration: 700 }
         }
     }
 

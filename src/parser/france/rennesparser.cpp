@@ -16,7 +16,7 @@ QList<Station*> RennesParser::parseStationsList(QString allStationsDetails, bool
     for (int i = 0; i < stations.size(); ++i) {
         QJsonObject stationJson = stations[i].toObject()["fields"].toObject();
         Station* station = new Station();
-        station->number = stationJson["idstation"].toInt();
+        station->number = stationJson["idstation"].toString().toInt();
         station->name = stationJson["nom"].toString();
         QJsonArray position = stationJson["coordonnees"].toArray();
         QGeoCoordinate coord(position.at(0).toDouble(), position.at(1).toDouble());

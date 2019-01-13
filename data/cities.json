@@ -45,24 +45,10 @@
     },
     {
         "provider": "Smoove",
-        "name": "Lorient",
-        "commercial_name": "Vélo",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://www.lorient-velo.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
         "name": "Avignon",
         "commercial_name": "Vélopop",
         "country_code": "FR",
         "allStationsDetailsUrl": "http://www.velopop.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Valence",
-        "commercial_name": "Libélo",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://www.velo-libelo.fr/tvcstations.xml"
     },
     {
         "provider": "Smoove",

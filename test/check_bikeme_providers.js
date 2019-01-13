@@ -172,15 +172,20 @@ describe('Providers', function() {
                         var discoveryUrlIndex = headers.indexOf("Auto-Discovery URL");
                         var countryCodeIndex = headers.indexOf("Country Code");
                         var locationIndex = headers.indexOf("Location");
+                        var nameIndex = headers.indexOf("Name");
+                        var systemIdIndex = headers.indexOf("System ID");
                         output.forEach(function(line) {
                             addCity(line[countryCodeIndex], line[locationIndex]);
                         });
                         var randomLineIndex = Math.floor((Math.random() * output.length));
                         var citiesTested = 0;
+                        var nbErrors = 0; // TODO count number of errors and fail at the end
                         output.forEach(function(line) {
-                            var currentCity = line[locationIndex];
+                            var currentCity = line[nameIndex];
                             get_data(line[discoveryUrlIndex], function(jsonData, err) {
                                 if (err) {
+                                    ++nbErrors;
+                                    console.log("Error for system " + currentCity +": " + err);
                                     if (++citiesTested == output.length) {
                                         done();
                                     }
@@ -190,7 +195,7 @@ describe('Providers', function() {
                                     var cityUrls = JSON.parse(jsonData);
                                 }
                                 catch(e) {
-                                    assert.fail(jsonData, "", "Bad json for city " + currentCity + ": " + jsonData)
+                                    assert.fail(jsonData, "", "Bad json for system " + currentCity + "(" + line[discoveryUrlIndex] + "): " + jsonData)
                                 }
                                 if (!cityUrls.data) {
                                     console.log("Data not defined for " + currentCity + ": " + jsonData);
@@ -211,13 +216,14 @@ describe('Providers', function() {
                                                     console.log(res);
                                                     assert.fail(res, "", "Invalid JSON for station_information. City: " + currentCity + ": " + e);
                                                 }
-                                                if (stations.length == 0) {
+                                                if (stations.length === 0 || stations.length === 1) {
                                                     console.log("No stations for " + currentCity + ": " + res);
                                                 }
                                                 else {
                                                     var randomStationIndex = Math.floor((Math.random() * stations.length));
                                                     var idRegex = /.*\d+.*/g;
-                                                    assert.isTrue(idRegex.test(stations[randomStationIndex].station_id), "station: " + stations[randomStationIndex].station_id);
+                                                    assert.isTrue(idRegex.test(stations[randomStationIndex].station_id),
+                                                        `${currentCity}: station_id must contain a number: ${stations[randomStationIndex].station_id}`);
                                                     assert.isString(stations[randomStationIndex].name);
                                                     assert.isNumber(stations[randomStationIndex].lat);
                                                     assert.isNumber(stations[randomStationIndex].lon);
@@ -243,16 +249,17 @@ describe('Providers', function() {
                                                 }
                                                 var randomStationIndex = Math.floor((Math.random() * stations.length));
                                                 var idRegex = /.*\d+.*/g;
-                                                if (stations.length == 0) {
+                                                if (stations.length === 0 || stations.length === 1) {
                                                     console.log("No stations for " + currentCity + ": " + res);
                                                 }
                                                 else {
-                                                    assert.isTrue(idRegex.test(stations[randomStationIndex].station_id), "station: " + stations[randomStationIndex].station_id);
+                                                    assert.isTrue(idRegex.test(stations[randomStationIndex].station_id),
+                                                        `${currentCity}: station_id must contain a number: ${stations[randomStationIndex].station_id}`);
                                                     assert.isNumber(stations[randomStationIndex].num_bikes_available);
                                                     assert.isNumber(stations[randomStationIndex].num_docks_available);
-                                                    //assert.isNumber(stations[randomStationIndex].is_renting, "is_renting field of city " + currentCity);
-                                                    assert.isNumber(stations[randomStationIndex].last_reported, "Missing last_reported field, station " +
-                                                    stations[randomStationIndex].station_id + " (" + feed.url + ")");
+                                                    assert.isNumber(stations[randomStationIndex].is_renting, "is_renting field of city " + currentCity);
+                                                    assert.isNumber(stations[randomStationIndex].last_reported, "Missing last_reported field, city " + currentCity +
+                                                                    " station " + stations[randomStationIndex].station_id + " (" + feed.url + ")");
                                                 }
                                             }
                                             if (++executedRequests == 2) {
@@ -405,7 +412,7 @@ var tests = {
                 var carto = JSON.parse(jsonData).records;
                 assert.isTrue(Array.isArray(carto));
                 carto.forEach(function(station) {
-                    assert.isNumber(station.fields.idstation, "Libelle is missing");
+                    assert.isNumber(parseInt(station.fields.idstation), "idstation is missing");
                     assert.isString(station.fields.etat, "Etat is missing");
                     assert.isDefined(station.fields.nom, "Name is missing");
                     assert.isNumber(station.fields.coordonnees["0"], "Lat is missing");
@@ -494,7 +501,38 @@ var tests = {
         }).on('error', function(e) {
             assert.fail(e, undefined, "Request has failed: " + e);
         });
-    }
+    },
+    Smovengo: function(country, name, url, done) {
+        var jsonData = "";
+        https.get(url, function(res) {
+            res.on('data', function(d) {
+                jsonData += d;
+            });
+            res.on('end', function() {
+                try {
+                    var carto = JSON.parse(jsonData);
+                }
+                catch (e) {
+                    console.log("Bad response for Paris: " + e + ": " + jsonData);
+                }
+                assert.isTrue(Array.isArray(carto));
+                carto.forEach(function(station) {
+                    assert.isString(station.station.code, "station.code is missing");
+                    assert.isDefined(station.station.name, "station.name is missing");
+                    assert.isString(station.station.state, "station.state is missing");
+                    assert.isNumber(station.station.gps.latitude, "station.latitude is missing");
+                    assert.isNumber(station.station.gps.longitude, "station.longitude is missing");
+                    assert.isNumber(station.nbBike, "nbBike is missing");
+                    assert.isNumber(station.nbEbike, "nbEbike is missing: " + JSON.stringify(station));
+                    assert.isNumber(station.nbFreeDock, "nbFreeDock is missing");
+                    assert.isNumber(station.nbFreeEDock, "nbFreeEDock is missing");
+                });
+                done();
+            });
+        }).on('error', function(e) {
+            assert.fail(e, undefined, "Request has failed: " + e);
+        });
+    },
 }
 
 // Helper for GET method, handling redirections and user agent
@@ -509,6 +547,10 @@ function get_data(url, callback, followRedirect) {
         if (res.statusCode == 301 && followRedirect) {
             console.log("Redirecting to " + res.headers['location']);
             get_data(res.headers['location'], callback);
+            return;
+        }
+        if (res.statusCode != 200) {
+            callback(undefined, res.statusMessage);
             return;
         }
         

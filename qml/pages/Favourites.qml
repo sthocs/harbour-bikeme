@@ -10,6 +10,7 @@ Page {
 
     property string coverLabel: "Favourites"
     property int nbRefreshingStations: 0
+    property int nbFavs: 0
 
     property City city
 
@@ -17,6 +18,18 @@ Page {
         id: stations
 
         onStationsLoaded: {
+            // Quick fix to remove invalid favs from DB
+            if (favouritesModel.count != nbFavs) {
+                console.log('Cleaning favourites DB...');
+                var favs = Db.getFavourites(city.identifier);
+                favs.forEach(function(fav) {
+                    if (!stations.exists(fav.number)) {
+                        console.log('Removing invalid station ' + fav.number);
+                        Db.removeFavourite(city.identifier, fav.number);
+                    }
+                });
+            }
+
             if (!withDetails) {
                 favouritesModel.refreshAll();
             }
@@ -201,6 +214,7 @@ Page {
 
         Component.onCompleted: {
             var favs = Db.getFavourites(city.identifier);
+            nbFavs = favs.length;
             var numbers = [];
             favs.forEach(function(fav) {
                 numbers.push(fav.number);

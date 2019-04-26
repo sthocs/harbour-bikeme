@@ -1,3 +1,8 @@
+* Thu Mar 15 2018 Sthocs <sthocs@hotmail.com> 0.9.2-1
+- New translation: Dutch (Belgium)
+- Fixed Moscow stations names
+- Removed dead systems (Valence (fr) and Lorient)
+
 * Thu Mar 15 2018 Sthocs <sthocs@hotmail.com> 0.9.1-1
 - New translations: Dutch and Brazilian Portuguese
 - Blinking "center position" icon while there is no GPS fix

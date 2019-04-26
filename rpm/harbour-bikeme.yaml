@@ -1,6 +1,6 @@
 Name: harbour-bikeme
 Summary: Find a bike with your Sailfish OS device!
-Version: 0.9.1
+Version: 0.9.2
 Release: 1
 Group: Qt/Qt
 URL: https://openrepos.net/users/sthocs
@@ -27,8 +27,9 @@ Requires:
 - qt5-qtdeclarative-import-positioning
 - sailfishsilica-qt5 >= 0.10.9
 Files:
+- '%defattr(644,root,root,-)'
 - '%{_datadir}/icons/hicolor/*/apps/%{name}.png'
 - '%{_datadir}/applications/%{name}.desktop'
 - '%{_datadir}/%{name}'
-- '%{_bindir}'
+- '%attr(755,-,-) %{_bindir}'
 PkgBR: []

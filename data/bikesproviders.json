@@ -8,7 +8,7 @@
     },
     {
         "name": "Nextbike",
-        "url": "https://api.nextbike.net/maps/nextbike-live.json?list_cities=!",
+        "url": "https://api.nextbike.net/maps/nextbike-live.json?list_cities=1",
         "allStationsDetailsUrl": "https://api.nextbike.net/maps/nextbike-live.json?city=%1"
     },
     {

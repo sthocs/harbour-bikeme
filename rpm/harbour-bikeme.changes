@@ -1,4 +1,8 @@
-* Thu Mar 15 2018 Sthocs <sthocs@hotmail.com> 0.9.2-1
+* Thu Dec 19 2019 Sthocs <sthocs@hotmail.com> 0.9.3-1
+- Updated HERE credentials, thanks HERE for having deleted my former app without notice
+- Fixed Nextbike feed
+
+* Thu Mar 15 2019 Sthocs <sthocs@hotmail.com> 0.9.2-1
 - New translation: Dutch (Belgium)
 - Fixed Moscow stations names
 - Removed dead systems (Valence (fr) and Lorient)

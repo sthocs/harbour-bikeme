@@ -94,7 +94,7 @@ describe('Providers', function() {
         var randomCityToTest = 50;
         it('Cities list', function(done) {
             var jsonData = "";
-            https.get('https://api.nextbike.net/maps/nextbike-live.json?list_cities=!', function(res) {
+            https.get('https://api.nextbike.net/maps/nextbike-live.json?list_cities=1', function(res) {
                 res.on('data', function(d) {
                     jsonData += d;
                 });

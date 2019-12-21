@@ -42,7 +42,14 @@ QList<City*> NabsaParser::parseCities(QString systemsList, ProviderInfo& provide
 void NabsaParser::parseCityUrls(QString cityUrls, City* city)
 {
     QJsonDocument doc = QJsonDocument::fromJson(cityUrls.toUtf8());
-    QJsonArray feedsArray = doc.object()["data"].toObject()["en"].toObject()["feeds"].toArray();
+    QJsonObject data = doc.object()["data"].toObject();
+    QJsonArray feedsArray;
+    if (data.contains("en")) {
+        feedsArray = data["en"].toObject()["feeds"].toArray();
+    } else {
+        QStringList languages = data.keys();
+        feedsArray = data[languages[0]].toObject()["feeds"].toArray();
+    }
     for (int i = 0; i < feedsArray.size(); ++i) {
         QJsonObject feed = feedsArray[i].toObject();
         if (feed["name"].toString() == "station_information") {

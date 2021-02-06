@@ -48,8 +48,8 @@ Page {
                 name : mapPlugin;
 
                 parameters: [
-                    PluginParameter { name: "app_id"; value: "xVZRW0UNFmrrSNbaHNJq" },
-                    PluginParameter { name: "app_code"; value: "juUB8_LvQcf9EWQQegL4cw" }
+                    PluginParameter { name: "app_id"; value: "" },
+                    PluginParameter { name: "app_code"; value: "" }
                 ]
             }
             anchors.fill: parent
@@ -117,7 +117,7 @@ Page {
                 anchorPoint.y: tooltip.height + Theme.iconSizeSmall / 4 * 5
             }
 
-            MapMouseArea {
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     stationTooltip.visible = false
@@ -299,7 +299,7 @@ Page {
             anchorPoint.x: Theme.iconSizeSmall / 2 // 16
             anchorPoint.y: Theme.iconSizeSmall / 4 * 5 // 40
 
-            MapMouseArea {
+            MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     selectedStationNumber = number;
@@ -396,7 +396,6 @@ Page {
             anchors.fill: parent
             onClicked: {
                 stopGeolocation();
-                interactiveMap.destroy();
                 pageStack.pop();
             }
         }

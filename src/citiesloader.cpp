@@ -159,8 +159,13 @@ void CitiesLoader::bikeProviderFetched()
     }
 
     QString citiesString = QString::fromUtf8(reply->readAll());
-    QFile citiesFile(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)
-                   + QDir::separator() + providerInfo.name);
+    QString cacheLocation = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    QDir cacheDirectory(cacheLocation);
+    if (!cacheDirectory.exists()) {
+        qInfo() << "Creating cache directory" << cacheLocation;
+        cacheDirectory.mkpath(".");
+    }
+    QFile citiesFile(cacheLocation + QDir::separator() + providerInfo.name);
     if (!citiesFile.open(QIODevice::WriteOnly)) {
         qWarning() << "Couldn't open" << providerInfo.name;
     }

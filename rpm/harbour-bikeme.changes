@@ -1,3 +1,7 @@
+* Sat Feb 06 2021 Sthocs <sthocs@hotmail.com> 0.9.4-1
+- fix(cache): QFile was not creating the intermediate dirs anymore
+- fix: MapMouseArea removed in QtLocation 5.4
+
 * Thu Dec 19 2019 Sthocs <sthocs@hotmail.com> 0.9.3-1
 - Updated HERE credentials, thanks HERE for having deleted my former app without notice
 - Fixed Nextbike feed

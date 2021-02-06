@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nl">
 <context>
     <name>About</name>
     <message>
@@ -151,11 +153,17 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n stad</numerusform><numerusform>%n steden</numerusform></translation>
+        <translation>
+            <numerusform>%n stad</numerusform>
+            <numerusform>%n steden</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n fout</numerusform><numerusform>%n fouten</numerusform></translation>
+        <translation>
+            <numerusform>%n fout</numerusform>
+            <numerusform>%n fouten</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -255,11 +263,17 @@
     <name>StationTooltip</name>
     <message numerus="yes">
         <source>%n bike(s) available(s)</source>
-        <translation><numerusform>%n fiets beschikbaar</numerusform><numerusform>%n fietsen beschikbaar</numerusform></translation>
+        <translation>
+            <numerusform>%n fiets beschikbaar</numerusform>
+            <numerusform>%n fietsen beschikbaar</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n parking(s) available(s)</source>
-        <translation><numerusform>%n parkeerplaats beschikbaar</numerusform><numerusform>%n parkeerplaatsen beschikbaar</numerusform></translation>
+        <translation>
+            <numerusform>%n parkeerplaats beschikbaar</numerusform>
+            <numerusform>%n parkeerplaatsen beschikbaar</numerusform>
+        </translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -267,7 +281,10 @@
     </message>
     <message numerus="yes">
         <source>%n electric bike(s) available(s)</source>
-        <translation><numerusform>%n elektrische fiets beschikbaar</numerusform><numerusform>%n elektrische fietsen beschikbaar</numerusform></translation>
+        <translation>
+            <numerusform>%n elektrische fiets beschikbaar</numerusform>
+            <numerusform>%n elektrische fietsen beschikbaar</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove from favourites</source>

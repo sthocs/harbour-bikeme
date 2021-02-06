@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ru">
 <context>
     <name>About</name>
     <message>
@@ -151,11 +153,19 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>город</numerusform><numerusform>города</numerusform><numerusform>городов</numerusform><numerusform>города</numerusform></translation>
+        <translation>
+            <numerusform>город</numerusform>
+            <numerusform>города</numerusform>
+            <numerusform>городов</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>ошибка</numerusform><numerusform>ошибки</numerusform><numerusform>ошибок</numerusform><numerusform>ошибки</numerusform></translation>
+        <translation>
+            <numerusform>ошибка</numerusform>
+            <numerusform>ошибки</numerusform>
+            <numerusform>ошибок</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -255,11 +265,19 @@
     <name>StationTooltip</name>
     <message numerus="yes">
         <source>%n bike(s) available(s)</source>
-        <translation><numerusform>%n велосипед доступен</numerusform><numerusform>%n велосипеда доступно</numerusform><numerusform>%n велосипедов доступно</numerusform><numerusform>%n велосипедов доступно</numerusform></translation>
+        <translation>
+            <numerusform>%n велосипед доступен</numerusform>
+            <numerusform>%n велосипеда доступно</numerusform>
+            <numerusform>%n велосипедов доступно</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n parking(s) available(s)</source>
-        <translation><numerusform>%n парковка доступна</numerusform><numerusform>%n парковки доступны</numerusform><numerusform>%n парковок доступны</numerusform><numerusform>%n парковок доступно</numerusform></translation>
+        <translation>
+            <numerusform>%n парковка доступна</numerusform>
+            <numerusform>%n парковки доступны</numerusform>
+            <numerusform>%n парковок доступны</numerusform>
+        </translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -267,7 +285,11 @@
     </message>
     <message numerus="yes">
         <source>%n electric bike(s) available(s)</source>
-        <translation><numerusform>%n электровелосипед доступен</numerusform><numerusform>%n электровелосипеда доступно</numerusform><numerusform>%n электровелосипедов доступно</numerusform><numerusform>%n электровелосипедов доступно</numerusform></translation>
+        <translation>
+            <numerusform>%n электровелосипед доступен</numerusform>
+            <numerusform>%n электровелосипеда доступно</numerusform>
+            <numerusform>%n электровелосипедов доступно</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove from favourites</source>

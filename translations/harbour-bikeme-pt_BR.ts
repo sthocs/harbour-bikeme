@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pt_BR">
 <context>
     <name>About</name>
     <message>
@@ -19,7 +21,7 @@
     </message>
     <message>
         <source>This app helps you to find a bike or a free parking spot for various self-service bicycle schemes arround the world:&lt;ul&gt;%1&lt;li&gt;And more!&lt;/li&gt;&lt;/ul&gt;BikeMe provides a simple interactive map displaying all stations by city, their number of available bikes and free parking spots, and the geolocation.&lt;br /&gt;Click on %2 to activate the geolocation and on %3 to center the map on your position.&lt;br/&gt;Regular users: Save your favourites stations and see their status directly on the cover!</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -151,11 +153,17 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n Cidades</numerusform><numerusform>%n Cidades</numerusform></translation>
+        <translation>
+            <numerusform>%n Cidades</numerusform>
+            <numerusform>%n Cidades</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n Erros</numerusform><numerusform>%n Erros</numerusform></translation>
+        <translation>
+            <numerusform>%n Erros</numerusform>
+            <numerusform>%n Erros</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -255,11 +263,17 @@
     <name>StationTooltip</name>
     <message numerus="yes">
         <source>%n bike(s) available(s)</source>
-        <translation><numerusform>%n bikes disponíveis</numerusform><numerusform>%n bikes disponíveis</numerusform></translation>
+        <translation>
+            <numerusform>%n bikes disponíveis</numerusform>
+            <numerusform>%n bikes disponíveis</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n parking(s) available(s)</source>
-        <translation><numerusform>%n estacionamentos disponíveis</numerusform><numerusform>%n estacionamentos disponíveis</numerusform></translation>
+        <translation>
+            <numerusform>%n estacionamentos disponíveis</numerusform>
+            <numerusform>%n estacionamentos disponíveis</numerusform>
+        </translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -267,7 +281,10 @@
     </message>
     <message numerus="yes">
         <source>%n electric bike(s) available(s)</source>
-        <translation><numerusform>%n bikes elétricas disponíveis</numerusform><numerusform>%n bikes elétricas disponíveis</numerusform></translation>
+        <translation>
+            <numerusform>%n bikes elétricas disponíveis</numerusform>
+            <numerusform>%n bikes elétricas disponíveis</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove from favourites</source>

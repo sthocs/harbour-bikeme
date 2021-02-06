@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl_SI" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="sl_SI">
 <context>
     <name>About</name>
     <message>
@@ -151,11 +153,21 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n mesto</numerusform><numerusform>%n mesti</numerusform><numerusform>%n mesta</numerusform><numerusform>%n mest</numerusform></translation>
+        <translation>
+            <numerusform>%n mesto</numerusform>
+            <numerusform>%n mesti</numerusform>
+            <numerusform>%n mesta</numerusform>
+            <numerusform>%n mest</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n napaka</numerusform><numerusform>%n napaki</numerusform><numerusform>%n napake</numerusform><numerusform>%n napak</numerusform></translation>
+        <translation>
+            <numerusform>%n napaka</numerusform>
+            <numerusform>%n napaki</numerusform>
+            <numerusform>%n napake</numerusform>
+            <numerusform>%n napak</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -248,34 +260,49 @@
     </message>
     <message>
         <source>Map initial zoom level</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StationTooltip</name>
     <message numerus="yes">
         <source>%n bike(s) available(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n parking(s) available(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>Updating...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished">Posodabljam ...</translation>
     </message>
     <message numerus="yes">
         <source>%n electric bike(s) available(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove from favourites</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Add to favourites</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

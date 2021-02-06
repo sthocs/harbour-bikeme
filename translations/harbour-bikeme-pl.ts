@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl">
 <context>
     <name>About</name>
     <message>
@@ -151,11 +153,19 @@
     <name>ProgressInfoBar</name>
     <message numerus="yes">
         <source>%n Cities</source>
-        <translation><numerusform>%n Miasto</numerusform><numerusform>%n Miasta</numerusform><numerusform>%n Miast</numerusform><numerusform>%n Miast</numerusform></translation>
+        <translation>
+            <numerusform>%n Miasto</numerusform>
+            <numerusform>%n Miasta</numerusform>
+            <numerusform>%n Miast</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n Error(s)</source>
-        <translation><numerusform>%n Błąd</numerusform><numerusform>%n Błędy</numerusform><numerusform>%n Błędów</numerusform><numerusform>%n Błędów</numerusform></translation>
+        <translation>
+            <numerusform>%n Błąd</numerusform>
+            <numerusform>%n Błędy</numerusform>
+            <numerusform>%n Błędów</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -255,11 +265,19 @@
     <name>StationTooltip</name>
     <message numerus="yes">
         <source>%n bike(s) available(s)</source>
-        <translation><numerusform>%n dostępny rower</numerusform><numerusform>%n dostępne rowery</numerusform><numerusform>%n dostępnych rowerów</numerusform><numerusform>%n dostępnych rowerów</numerusform></translation>
+        <translation>
+            <numerusform>%n dostępny rower</numerusform>
+            <numerusform>%n dostępne rowery</numerusform>
+            <numerusform>%n dostępnych rowerów</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n parking(s) available(s)</source>
-        <translation><numerusform>%n dostępne miejsce parkingowe</numerusform><numerusform>%n dostępne miejsca parkingowe</numerusform><numerusform>%n dostępnych miejsc parkingowych</numerusform><numerusform>%n dostępnych miejsc parkingowych</numerusform></translation>
+        <translation>
+            <numerusform>%n dostępne miejsce parkingowe</numerusform>
+            <numerusform>%n dostępne miejsca parkingowe</numerusform>
+            <numerusform>%n dostępnych miejsc parkingowych</numerusform>
+        </translation>
     </message>
     <message>
         <source>Updating...</source>
@@ -267,7 +285,11 @@
     </message>
     <message numerus="yes">
         <source>%n electric bike(s) available(s)</source>
-        <translation><numerusform>%n rower elektryczny jest dostępny</numerusform><numerusform>%n rowery elektryczne są dostępne</numerusform><numerusform>%n rowerów elektrycznych jest dostępnych</numerusform><numerusform>%n rowerów elektrycznych jest dostępnych</numerusform></translation>
+        <translation>
+            <numerusform>%n rower elektryczny jest dostępny</numerusform>
+            <numerusform>%n rowery elektryczne są dostępne</numerusform>
+            <numerusform>%n rowerów elektrycznych jest dostępnych</numerusform>
+        </translation>
     </message>
     <message>
         <source>Remove from favourites</source>

@@ -2,12 +2,13 @@
     "name": "check_bikeme_providers",
     "version": "0.1.0",
     "dependencies": {
-        "chai": "4.1.2",
-        "mocha": "4.0.1",
-        "xmldoc": "1.1.0",
-        "csv-parse": "1.2.4"
+        "chai": "^4.3.4",
+        "mocha": "^8.3.2",
+        "xmldoc": "^1.1.2",
+        "csv-parse": "^4.15.3",
+        "node-fetch": "^2.6.1"
     },
     "scripts": {
-        "test": "mocha check_bikeme_providers.js -t 15000"
+        "test": "mocha -t 15000"
     }
 }

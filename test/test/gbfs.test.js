@@ -5,15 +5,18 @@ const assert = require('chai').assert;
 const helpers = require('../helpers');
 
 describe("NABSA", async () => {
-  it("All city should have the same format", async () => {
+  it("Cities should have the same format", async () => {
     const res = await fetch("https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv");
     const csvData = await res.text();
     const rows = csvparse(csvData);
     rows.splice(0, 1);
-    for (const row of rows) {
-      console.log(`testing ${row}`);
-      await testCity(row);
+    const testedRows = new Array(50);
+    for (let i = 0; i < 50; ++i) {
+      testedRows[i] = rows[getRandomInt(0, rows.length)];
     }
+    await Promise.all(testedRows.map(async (row) => {
+      await testCity(row);
+    }));
   });
 });
 
@@ -21,14 +24,21 @@ async function testCity(csvLine) {
   const res = await fetch(csvLine[5]); // Auto-discovery URL
   try {
     const cityUrls = await res.json();
-    console.log(cityUrls);
     if (!cityUrls.data) {
       assert.fail(`Data not defined for ${csvLine[5]}: ${jsonData}`);
     }
-    if (!cityUrls.data.en) {
-      assert.fail(`City ${csvLine[5]} is missing 'en' field`);
+    let feeds;
+    if (cityUrls.data.en) {
+      feeds = cityUrls.data.en.feeds
+    } else if (cityUrls.data.feeds) {
+      feeds = cityUrls.data.feeds;
+    } else {
+      console.log('taking first key: ' + [Object.keys(cityUrls.data)[0]]);
+      feeds = cityUrls.data[Object.keys(cityUrls.data)[0]].feeds;
     }
-    const feeds = cityUrls.data.en.feeds;
+    if (!feeds) {
+      assert.fail(`No feeds found for ${csvLine[5]}`);
+    }
     await Promise.all(feeds.map(async (feed) => {
       if (feed.name == "station_information") {
         const res = await fetch(feed.url);
@@ -76,4 +86,10 @@ async function testCity(csvLine) {
     console.log(e);
     assert.fail(`Error while parsing json for ${csvLine[5]}: ${e}`);
   }
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 }

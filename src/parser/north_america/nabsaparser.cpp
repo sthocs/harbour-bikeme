@@ -46,6 +46,8 @@ void NabsaParser::parseCityUrls(QString cityUrls, City* city)
     QJsonArray feedsArray;
     if (data.contains("en")) {
         feedsArray = data["en"].toObject()["feeds"].toArray();
+    } else if (data.contains("feeds")) {
+        feedsArray = data["feeds"].toArray();
     } else {
         QStringList languages = data.keys();
         feedsArray = data[languages[0]].toObject()["feeds"].toArray();

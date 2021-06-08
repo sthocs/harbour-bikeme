@@ -30,13 +30,6 @@
         "allStationsDetailsUrl": "https://www.velobleu.org/cartoV2/libProxyCarto.asp"
     },
     {
-        "provider": "Veloway",
-        "name": "Calais",
-        "commercial_name": "Vel'In",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "https://www.vel-in.fr/cartoV2/libProxyCarto.asp"
-    },
-    {
         "provider": "Smoove",
         "name": "Montpellier",
         "commercial_name": "Vélomagg",
@@ -45,31 +38,10 @@
     },
     {
         "provider": "Smoove",
-        "name": "Avignon",
-        "commercial_name": "Vélopop",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://www.velopop.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
         "name": "Strasbourg",
         "commercial_name": "Vélhop",
         "country_code": "FR",
         "allStationsDetailsUrl": "http://velhop.strasbourg.eu/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Belfort",
-        "commercial_name": "",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://cli-velo-belfort.gir.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Clermont-Ferrand",
-        "commercial_name": "C.vélo",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://cli-velo-clermont.gir.fr/tvcstations.xml"
     },
     {
         "provider": "Smoove",
@@ -85,13 +57,6 @@
         "country_code": "GB",
         "allStationsDetailsUrl": "https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml",
         "copyright": "Powered by TfL Open Data"
-    },
-    {
-        "provider": "Bixi",
-        "name": "Montreal",
-        "commercial_name": "Bixi Montreal",
-        "country_code": "CA",
-        "allStationsDetailsUrl": "https://secure.bixi.com/data/stations.json"
     },
     {
         "provider": "Velobike",

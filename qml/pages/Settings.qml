@@ -100,10 +100,20 @@ Page {
             onValueChanged: {
                 configManager.saveSetting("zoomLevel", value);
             }
-         }
+        }
+        TextSwitch {
+            text: qsTr("Ignore SSL errors")
+            onCheckedChanged: {
+                configManager.saveSetting("ignoreSslErrors", checked)
+            }
+
+            Component.onCompleted: {
+                checked = configManager.getSetting("ignoreSslErrors") === "true";
+            }
+        }
         Item {
             width: parent.width
-            height: Theme.paddingLarge * 5
+            height: Theme.paddingLarge * 2.5
         }
         Button {
             anchors.horizontalCenter: parent.horizontalCenter

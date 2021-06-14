@@ -260,6 +260,10 @@
         <source>Map initial zoom level</source>
         <translation>Масштаб карты при запуске приложения</translation>
     </message>
+    <message>
+        <source>Ignore SSL errors</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StationTooltip</name>

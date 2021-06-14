@@ -260,6 +260,10 @@
         <source>Map initial zoom level</source>
         <translation>Początkowy poziom powiększenia mapy</translation>
     </message>
+    <message>
+        <source>Ignore SSL errors</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StationTooltip</name>

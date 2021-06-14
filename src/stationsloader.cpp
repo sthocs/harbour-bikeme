@@ -4,11 +4,25 @@
 #include <QFile>
 #include <QStandardPaths>
 
+#include "configmanager.h"
 #include "parser/bikedataparser.h"
 
 StationsLoader::StationsLoader(QObject *parent) : QObject(parent)
 {
     _networkAccessManager = new QNetworkAccessManager(this);
+    connect(_networkAccessManager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)),
+            this,
+            SLOT(handleSslErrors(QNetworkReply*, QList<QSslError>)));
+}
+
+void StationsLoader::handleSslErrors(QNetworkReply* reply, QList<QSslError> list) {
+    ConfigManager config;
+    qDebug() << reply->error();
+    qDebug() << list;
+    if (config.getSetting("ignoreSslErrors") == "true") {
+        qDebug() << "ignoreSslErrors is enabled, ignoring error...";
+        reply->ignoreSslErrors();
+    }
 }
 
 StationsLoader::~StationsLoader()

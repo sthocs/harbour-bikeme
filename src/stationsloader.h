@@ -32,6 +32,7 @@ public slots:
     void stationsListFetched();
     void stationDetailsFetched();
     void stationsRealTimeDataFetched();
+    void handleSslErrors(QNetworkReply*, QList<QSslError>);
 
 private:
     void parseCityUrls(QString urls);

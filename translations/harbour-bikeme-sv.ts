@@ -258,6 +258,10 @@
         <source>Map initial zoom level</source>
         <translation>Kartans inledande zoomnivå</translation>
     </message>
+    <message>
+        <source>Ignore SSL errors</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StationTooltip</name>

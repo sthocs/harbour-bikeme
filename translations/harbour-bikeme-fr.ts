@@ -258,6 +258,10 @@
         <source>Map initial zoom level</source>
         <translation>Zoom initial de la carte</translation>
     </message>
+    <message>
+        <source>Ignore SSL errors</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StationTooltip</name>

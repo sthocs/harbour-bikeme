@@ -63,7 +63,8 @@
         "name": "Moscow",
         "commercial_name": "Velobike",
         "country_code": "RU",
-        "allStationsDetailsUrl": "https://velobike.ru/proxy/parkings/"
+        "allStationsDetailsUrl": "https://velobike.ru/proxy/parkings/",
+        "hasElectricBikes": true
     },
     {
         "provider": "EcoBici",

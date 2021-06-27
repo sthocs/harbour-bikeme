@@ -86,13 +86,22 @@ Page {
                 id: meIcon
                 z: 2
                 coordinate: positionSource.position.coordinate
-                visible: positionReceived
+                visible: findMe && positionReceived
                 sourceItem: Image {
                     id: dot
                     source: "image://theme/icon-m-dot?DodgerBlue"
                 }
                 anchorPoint.x: dot.width / 2
                 anchorPoint.y: dot.height / 2
+            }
+
+            MapCircle {
+                center: positionSource.position.coordinate
+                visible: findMe && positionSource.position.horizontalAccuracy > 100
+                radius: positionSource.position.horizontalAccuracy
+                color: 'DodgerBlue'
+                opacity: 0.2
+                border.width: 0
             }
 
             MapQuickItem {
@@ -348,12 +357,11 @@ Page {
         id: positionSource
 
         //! Desired interval between updates in milliseconds
-        updateInterval: 5000
+        updateInterval: 2500
         active: false
 
         onPositionChanged: {
-            if (!positionReceived && active && position.horizontalAccuracyValid &&
-                    position.horizontalAccuracy < 500) { // First time we receive a valid position, go to it.
+            if (!positionReceived && isPositionAcquired()) { // First time we receive a valid position, go to it.
                 positionReceived = true;
                 // Keep coordinates in a different object to avoid map auto-centering.
                 var pos = QtPositioning.coordinate(positionSource.position.coordinate.latitude,
@@ -365,7 +373,7 @@ Page {
 
         function isPositionAcquired() {
             return positionSource.active && positionSource.position.horizontalAccuracyValid &&
-                            positionSource.position.horizontalAccuracy < 500
+                            positionSource.position.horizontalAccuracy < 10000
         }
     }
 
@@ -455,7 +463,7 @@ Page {
             id: blinkCenterPosIcon
             loops: Animation.Infinite
             alwaysRunToEnd: true
-            running: findMe && !positionSource.isPositionAcquired()
+            running: findMe && (!positionSource.position.horizontalAccuracyValid || positionSource.position.horizontalAccuracy > 200)
             PropertyAnimation { target: centerPosIcon; property: "opacity"; to: 0; duration: 700 }
             PropertyAnimation { target: centerPosIcon; property: "opacity"; to: 1; duration: 700 }
         }
@@ -534,6 +542,16 @@ Page {
         anchors.bottom: rightControls.top
         anchors.leftMargin: Theme.paddingMedium
         anchors.bottomMargin: Theme.paddingMedium
+    }
+    Label {
+        color: "white"
+        font.pixelSize: Theme.fontSizeTinyBase
+        visible: findMe && positionSource.position.horizontalAccuracyValid
+        anchors.right: parent.right
+        anchors.bottom: gpsIcon.top
+        anchors.rightMargin: Theme.paddingSmall
+        anchors.bottomMargin: 0
+        text: "GPS: " + positionSource.position.horizontalAccuracy + 'm'
     }
     Row {
         id: rightControls

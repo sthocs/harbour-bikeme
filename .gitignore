@@ -1,3 +1,4 @@
 harbour-bikeme.pro.user
+rpm/harbour-bikeme.spec
 test/node_modules/
 test/package-lock.json

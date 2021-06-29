@@ -1,3 +1,8 @@
+* Sun Jun 27 2021 Sthocs <sthocs@hotmail.com> 0.10-1
+- GPS improvements: consider position valid when accuracy < 10km (but display accuracy)
+- Added option to ignore SSL errors
+- Added electric bikes support for Moscow
+
 * Sat Feb 06 2021 Sthocs <sthocs@hotmail.com> 0.9.4-1
 - fix(cache): QFile was not creating the intermediate dirs anymore
 - fix: MapMouseArea removed in QtLocation 5.4

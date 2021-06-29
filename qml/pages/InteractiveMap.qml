@@ -551,7 +551,7 @@ Page {
         anchors.bottom: gpsIcon.top
         anchors.rightMargin: Theme.paddingSmall
         anchors.bottomMargin: 0
-        text: "GPS: " + positionSource.position.horizontalAccuracy + 'm'
+        text: "GPS Ø: " + positionSource.position.horizontalAccuracy + 'm'
     }
     Row {
         id: rightControls

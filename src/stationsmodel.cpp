@@ -86,7 +86,7 @@ void StationsModel::stationsRealTimeDataFetched(QString stationsRealTimeData)
     if (id > 0) {
         beginResetModel();
         BikeDataParser *parser = static_cast<BikeDataParser*>( QMetaType::create( id ) );
-        parser->parseStationsRealTimeData(stationsRealTimeData, _list);
+        parser->parseStationsRealTimeData(stationsRealTimeData, _list, _city->getCommercialName());
         delete parser;
         endResetModel();
         emit stationsLoaded(true);

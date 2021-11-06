@@ -40,7 +40,7 @@ public:
      * @param realTimeData The updated real-time data
      * @param stations The stations list which will be updated
      */
-    virtual void parseStationsRealTimeData(QString /* realTimeData */, QList<Station*> /* stations */) {}
+    virtual void parseStationsRealTimeData(QString /* realTimeData */, QList<Station*> /* stations */, QString /* commercialName */) {}
 
     /**
      * @brief Parse real-time data for a single station

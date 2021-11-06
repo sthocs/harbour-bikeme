@@ -8,6 +8,14 @@
 
 const QString NabsaParser::CSV_DELIMITER = QString("csvSux");
 
+bool hasElectricBikes(QString commercialName)
+{
+    if (commercialName == "BIXI Montréal" || commercialName == "Vélib' Metropole") {
+        return true;
+    }
+    return false;
+}
+
 QList<City*> NabsaParser::parseCities(QString systemsList, ProviderInfo& providerInfo)
 {
     QList<City*> citiesList;
@@ -32,6 +40,7 @@ QList<City*> NabsaParser::parseCities(QString systemsList, ProviderInfo& provide
         info.commercialName = csvCity.at(nameIndex);
         info.countryCode = csvCity.at(countryIndex);
         info.autoDiscoveryUrl = csvCity.at(urlIndex);
+        info.hasElectricBikes = hasElectricBikes(info.commercialName);
         City* city = new City();
         city->setInfo(info);
         citiesList.append(city);
@@ -89,7 +98,25 @@ QList<Station*> NabsaParser::parseStationsList(QString allStations, bool withDet
     return stationsList;
 }
 
-void NabsaParser::parseStationsRealTimeData(QString realTimeData, QList<Station *> stations)
+void handleProprietaryImplems(QString commercialName, Station* station,  QJsonObject stationJson) {
+    if (commercialName == "Vélib' Metropole") {
+        // Here is how it looks like: { "num_bikes_available_types":[{"mechanical":1},{"ebike":4}] } :facepalm:
+        QJsonArray bikesAvailableArray = stationJson["num_bikes_available_types"].toArray();
+        for (int i = 0; i < bikesAvailableArray.count(); ++i) {
+            if (!bikesAvailableArray[i].toObject().value("mechanical").isUndefined()) {
+                station->available_bikes = bikesAvailableArray[i].toObject()["mechanical"].toInt();
+            }
+            if (!bikesAvailableArray[i].toObject().value("ebike").isUndefined()) {
+                station->available_electric_bikes = bikesAvailableArray[i].toObject()["ebike"].toInt();
+            }
+        }
+    }
+    if (commercialName == "BIXI Montréal") {
+        station->available_electric_bikes = stationJson["num_ebikes_available"].toInt();
+    }
+}
+
+void NabsaParser::parseStationsRealTimeData(QString realTimeData, QList<Station *> stations, QString commercialName)
 {
     QRegExp stationIdRegex(".*(\\d+).*");
     QJsonDocument doc = QJsonDocument::fromJson(realTimeData.toUtf8());
@@ -117,6 +144,7 @@ void NabsaParser::parseStationsRealTimeData(QString realTimeData, QList<Station 
         station->available_bike_stands = stationJson["num_docks_available"].toInt();
         station->opened = stationJson["is_renting"].toInt() == 1;
         station->last_update = QDateTime::fromTime_t(stationJson["last_reported"].toDouble());
+        handleProprietaryImplems(commercialName, station, stationJson);
     }
 }
 

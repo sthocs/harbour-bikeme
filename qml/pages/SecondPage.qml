@@ -47,6 +47,7 @@ Page {
 
         header: PageHeader {
             title: city.name
+            description: city.commercialName
         }
         delegate: BackgroundItem {
             id: delegate

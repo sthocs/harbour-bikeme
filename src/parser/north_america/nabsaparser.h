@@ -9,7 +9,7 @@ public:
     virtual QList<City*> parseCities(QString cities, ProviderInfo& providerInfo);
     virtual void parseCityUrls(QString cityUrls, City* city);
     virtual QList<Station*> parseStationsList(QString allStations, bool withDetails);
-    virtual void parseStationsRealTimeData(QString realTimeData , QList<Station*> stations);
+    virtual void parseStationsRealTimeData(QString realTimeData , QList<Station*> stations, QString commercialName);
 
 private:
     static const QString CSV_DELIMITER;

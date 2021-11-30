@@ -84,10 +84,10 @@ QList<Station*> NabsaParser::parseStationsList(QString allStations, bool withDet
         Station* station = new Station();
         if (stationJson["station_id"].isString()) {
             stationIdRegex.indexIn(stationJson["station_id"].toString());
-            station->number = stationIdRegex.cap(1).toInt();
+            station->number = stationIdRegex.cap(1).toDouble();
         }
         else {
-            station->number = stationJson["station_id"].toInt();
+            station->number = stationJson["station_id"].toDouble();
         }
         station->name = stationJson["name"].toString();
         station->address = stationJson["address"].toString();
@@ -123,13 +123,13 @@ void NabsaParser::parseStationsRealTimeData(QString realTimeData, QList<Station 
     QJsonArray stationsArray = doc.object()["data"].toObject()["stations"].toArray();
     for (int i = 0; i < stationsArray.size() && i < stations.length(); ++i) {
         QJsonObject stationJson = stationsArray[i].toObject();
-        int stationNumber;
+        double stationNumber;
         if (stationJson["station_id"].isString()) {
             stationIdRegex.indexIn(stationJson["station_id"].toString());
-            stationNumber = stationIdRegex.cap(1).toInt();
+            stationNumber = stationIdRegex.cap(1).toDouble();
         }
         else {
-            stationNumber = stationJson["station_id"].toInt();
+            stationNumber = stationJson["station_id"].toDouble();
         }
         Station* station = stations.at(i); // normally, stations info and data are in the same order
         if (station->number != stationNumber) { // if it's not the case, search it

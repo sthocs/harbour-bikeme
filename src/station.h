@@ -19,7 +19,7 @@ class Station : public QObject
 public:
     explicit Station(QObject *parent = 0);
 
-    int number;
+    double number;
     QString name;
     QString address;
     QGeoCoordinate coordinates;
@@ -30,7 +30,7 @@ public:
     int available_bike_stands;
     QDateTime last_update;
 
-    int getNumber() const { return number; }
+    double getNumber() const { return number; }
     QString getName() const { return name; }
     QString getAddress() const { return address; }
     bool isOpened() const { return opened; }

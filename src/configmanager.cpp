@@ -3,9 +3,22 @@
 #include <QSettings>
 #include <QDir>
 #include <QStandardPaths>
+#include <QDebug>
 
 ConfigManager::ConfigManager()
+    : _settings(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/harbour-bikeme/harbour-bikeme/harbour-bikeme.conf", QSettings::NativeFormat)
 {
+    if (_settings.contains("migrated")) {
+        return;
+    }
+
+    qDebug() << "Copying settings...";
+    QSettings oldSettings;
+    for (const QString& key : oldSettings.childKeys()) {
+        _settings.setValue(key, oldSettings.value(key));
+    }
+
+    _settings.setValue("migrated", "true");
 }
 
 void ConfigManager::saveSetting(QString key, QString value)

@@ -5,3 +5,7 @@ Name=BikeMe
 Icon=harbour-bikeme
 Exec=harbour-bikeme
 
+[X-Sailjail]
+OrganizationName=harbour-bikeme
+ApplicationName=harbour-bikeme
+Permissions=Internet;Location

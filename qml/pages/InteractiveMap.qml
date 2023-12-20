@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtLocation 5.0
-import QtPositioning 5.3
+import QtLocation 5.4
+import QtPositioning 5.4
 import QtGraphicalEffects 1.0
 import harbour.bikeme 1.0
 
@@ -134,47 +134,38 @@ Page {
 
                 onDoubleClicked: {
                     map.center = map.toCoordinate(Qt.point(mouseX, mouseY));
-                    zoomAnimation.enabled = true
                     map.zoomLevel = (map.zoomLevel + 1) < map.maximumZoomLevel ? map.zoomLevel + 1 :
                                                                                  map.maximumZoomLevel;
-                    zoomAnimation.enabled = false
                     updateFilter();
                 }
             }
 
             Behavior on center {
-                id: centerAnimation
-                enabled: false
                 CoordinateAnimation {
+                    id: centerAnimation
                     duration: 600
                     easing.type: Easing.InOutQuad
+                    onRunningChanged: {
+                        if (!centerAnimation.running) {
+                            updateFilter();
+                        }
+                    }
                 }
             }
 
             Behavior on zoomLevel {
-                id: zoomAnimation
-                enabled: false
                 NumberAnimation {
+                    id: zoomAnimation
                     duration: 600
                     easing.type: Easing.InOutQuad
-                }
-            }
-
-            onCenterChanged: {
-                // Workaround for onPanFinished not triggered (http://bugreports.qt-project.org/browse/QTBUG-32638)
-                //TODO remove when (if) Sailfish OS finally ships QtLocation >= 5.3
-                if (stationsProxy.applyFilter && !refreshDisplayedStationsTimer.running) {
-                    refreshDisplayedStationsTimer.start()
+                    onRunningChanged: {
+                        if (!zoomAnimation.running) {
+                            updateFilter();
+                        }
+                    }
                 }
             }
         }
-    }
-
-    Timer {
-        id: refreshDisplayedStationsTimer
-        interval: 1000
-        repeat: false
-        onTriggered: updateFilter()
     }
 
     Rectangle {
@@ -220,7 +211,6 @@ Page {
         onCenterChanged: {
             map.center = center;
             updateFilter();
-            centerAnimation.enabled = true
         }
         onStationsLoaded: {
             stationLoadingLabel.visible = false;
@@ -657,10 +647,6 @@ Page {
 
 
     function updateFilter() {
-        if (refreshDisplayedStationsTimer.running) {
-            refreshDisplayedStationsTimer.stop();
-        }
-
         stationsProxy.filter(map.toCoordinate(Qt.point(0, 0)),
                              map.toCoordinate(Qt.point(map.width, map.height)));
         // This is a bit hacky: we limit the number of station on the maps, so some stations

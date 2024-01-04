@@ -105,7 +105,7 @@ Regular users: Save your favourites stations and see their status directly on th
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.secondaryColor
-                text: "2014 - 2021 Sthocs"
+                text: "2014 - 2024 Sthocs"
             }
 
             Item {

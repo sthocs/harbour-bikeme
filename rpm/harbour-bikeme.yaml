@@ -1,6 +1,6 @@
 Name: harbour-bikeme
 Summary: Find a bike with your Sailfish OS device!
-Version: 0.11
+Version: 0.11.1
 Release: 1
 Group: Qt/Qt
 URL: https://openrepos.net/users/sthocs
@@ -24,7 +24,8 @@ Requires:
 - qt5-plugin-geoservices-osm
 - qt5-plugin-geoservices-here
 - qml(QtLocation)
-- qt5-qtdeclarative-import-positioning
+- qt5-qtlocation
+- qt5-qtpositioning
 - sailfishsilica-qt5 >= 0.10.9
 Files:
 - '%defattr(644,root,root,-)'

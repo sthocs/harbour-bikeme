@@ -23,7 +23,6 @@ PkgConfigBR:
 Requires:
 - qt5-plugin-geoservices-osm
 - qt5-plugin-geoservices-here
-- qt5-qtdeclarative-import-location
 - qt5-qtdeclarative-import-positioning
 - sailfishsilica-qt5 >= 0.10.9
 Files:

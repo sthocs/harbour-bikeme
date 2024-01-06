@@ -23,34 +23,6 @@
         "allStationsDetailsUrl": "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&rows=300"
     },
     {
-        "provider": "Veloway",
-        "name": "Nice",
-        "commercial_name": "Vélo Bleu",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "https://www.velobleu.org/cartoV2/libProxyCarto.asp"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Montpellier",
-        "commercial_name": "Vélomagg",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://cli-velo-montpellier.gir.fr/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Strasbourg",
-        "commercial_name": "Vélhop",
-        "country_code": "FR",
-        "allStationsDetailsUrl": "http://velhop.strasbourg.eu/tvcstations.xml"
-    },
-    {
-        "provider": "Smoove",
-        "name": "Batumi",
-        "commercial_name": "Batumi Velo",
-        "country_code": "GE",
-        "allStationsDetailsUrl": "http://cli-velo-batumi.gir.fr/tvcstations.xml"
-    },
-    {
         "provider": "TfL",
         "name": "London",
         "commercial_name": "Barclays Cycle Hire",
@@ -59,25 +31,10 @@
         "copyright": "Powered by TfL Open Data"
     },
     {
-        "provider": "Velobike",
-        "name": "Moscow",
-        "commercial_name": "Velobike",
-        "country_code": "RU",
-        "allStationsDetailsUrl": "https://velobike.ru/proxy/parkings/",
-        "hasElectricBikes": true
-    },
-    {
-        "provider": "EcoBici",
-        "name": "Ciudad de México",
-        "commercial_name": "EcoBici",
-        "country_code": "MX",
-        "allStationsDetailsUrl": "https://www.ecobici.cdmx.gob.mx/availability_map/getJsonObject"
-    },
-    {
         "provider": "HSL",
         "name": "Helsinki",
         "commercial_name": "Helsinki City bikes",
         "country_code": "FI",
-        "allStationsDetailsUrl": "https://dev-api.digitransit.fi/routing/v1/routers/hsl/bike_rental"
+        "allStationsDetailsUrl": "https://api.digitransit.fi/routing/v1/routers/hsl/bike_rental?digitransit-subscription-key="
     }
 ]

@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QGeoCoordinate>
 #include <QRegExp>
+#include <QDebug>
 
 const QString NabsaParser::CSV_DELIMITER = QString("csvSux");
 
@@ -59,43 +60,42 @@ void NabsaParser::parseCityUrls(QString cityUrls, City* city)
         feedsArray = data["feeds"].toArray();
     } else {
         QStringList languages = data.keys();
+        if (languages.length() == 0) {
+            qDebug() << "Invalid city feed: " << city->getAutoDiscoveryUrl();
+            return;
+        }
         feedsArray = data[languages[0]].toObject()["feeds"].toArray();
     }
+    QString freeBikesStatusUrl;
     for (int i = 0; i < feedsArray.size(); ++i) {
         QJsonObject feed = feedsArray[i].toObject();
         if (feed["name"].toString() == "station_information") {
             city->setStationsListUrl(QUrl(feed["url"].toString()));
-        }
-        else if (feed["name"].toString() == "station_status") {
+        } else if (feed["name"].toString() == "station_status") {
             city->setStationsStatusUrl(QUrl(feed["url"].toString()));
+        } else if (feed["name"].toString() == "free_bike_status") {
+            freeBikesStatusUrl = feed["url"].toString();
         }
+    }
+    if (city->getStationsListUrl().isEmpty()) {
+        qDebug() << "No stations_status for " << city->getName() + ", using free_bike_status:" << freeBikesStatusUrl;
+        city->setStationsListUrl(freeBikesStatusUrl);
+        city->setStationDataModes(FreeBikes);
     }
 }
 
 QList<Station*> NabsaParser::parseStationsList(QString allStations, bool withDetails)
 {
     Q_UNUSED(withDetails)
-    QList<Station*> stationsList;
-    QRegExp stationIdRegex(".*(\\d+).*");
     QJsonDocument doc = QJsonDocument::fromJson(allStations.toUtf8());
     QJsonArray stationsArray = doc.object()["data"].toObject()["stations"].toArray();
-    for (int i = 0; i < stationsArray.size(); ++i) {
-        QJsonObject stationJson = stationsArray[i].toObject();
-        Station* station = new Station();
-        if (stationJson["station_id"].isString()) {
-            stationIdRegex.indexIn(stationJson["station_id"].toString());
-            station->number = stationIdRegex.cap(1).toDouble();
-        }
-        else {
-            station->number = stationJson["station_id"].toDouble();
-        }
-        station->name = stationJson["name"].toString();
-        station->address = stationJson["address"].toString();
-        QGeoCoordinate coord(stationJson["lat"].toDouble(), stationJson["lon"].toDouble());
-        station->coordinates = coord;
-        stationsList.append(station);
+    if (stationsArray.size() > 0) {
+        return _parseStations(stationsArray);
+    } else {
+        qDebug() << "System without stations, parsing bikes";
+        QJsonArray bikesArray = doc.object()["data"].toObject()["bikes"].toArray();
+        return _parseBikes(bikesArray);
     }
-    return stationsList;
 }
 
 void handleProprietaryImplems(QString commercialName, Station* station,  QJsonObject stationJson) {
@@ -167,4 +167,40 @@ void NabsaParser::updateCsvDelimiters(QString& csvData)
             i += CSV_DELIMITER.length() - 1;
         }
     }
+}
+
+QList<Station*> NabsaParser::_parseStations(QJsonArray stationsArray)
+{
+    QList<Station*> stationsList;
+    QRegExp stationIdRegex(".*(\\d+).*");
+    for (int i = 0; i < stationsArray.size(); ++i) {
+        QJsonObject stationJson = stationsArray[i].toObject();
+        Station* station = new Station();
+        if (stationJson["station_id"].isString()) {
+            stationIdRegex.indexIn(stationJson["station_id"].toString());
+            station->number = stationIdRegex.cap(1).toDouble();
+        }
+        else {
+            station->number = stationJson["station_id"].toDouble();
+        }
+        station->name = stationJson["name"].toString();
+        station->address = stationJson["address"].toString();
+        QGeoCoordinate coord(stationJson["lat"].toDouble(), stationJson["lon"].toDouble());
+        station->coordinates = coord;
+        stationsList.append(station);
+    }
+    return stationsList;
+}
+
+QList<Station*> NabsaParser::_parseBikes(QJsonArray bikesArray)
+{
+    QList<Station*> stationsList;
+    for (int i = 0; i < bikesArray.size(); ++i) {
+        QJsonObject stationJson = bikesArray[i].toObject();
+        Station* station = new Station();
+        QGeoCoordinate coord(stationJson["lat"].toDouble(), stationJson["lon"].toDouble());
+        station->coordinates = coord;
+        stationsList.append(station);
+    }
+    return stationsList;
 }

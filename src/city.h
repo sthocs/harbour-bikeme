@@ -11,7 +11,8 @@ enum StationsDataMode {
     StationsListOnly = 1,
     RealTimeDataOnly = 2,
     StationsListAndData = 4,
-    SingleStationData = 8
+    SingleStationData = 8,
+    FreeBikes = 16
 };
 Q_DECLARE_FLAGS(StationsDataModes, StationsDataMode)
 Q_DECLARE_OPERATORS_FOR_FLAGS(StationsDataModes)
@@ -78,8 +79,10 @@ public:
 
     Q_INVOKABLE bool isSingleStationModeSupported() const { return _info.stationsDataModes.testFlag(SingleStationData); }
     Q_INVOKABLE bool isAllStationModeSupported() const { return _info.stationsDataModes.testFlag(StationsListAndData) || _info.stationsDataModes.testFlag(RealTimeDataOnly); }
+    Q_INVOKABLE bool isFreeBikesSystem() const { return _info.stationsDataModes.testFlag(FreeBikes); }
 
     void setInfo(const CityInfo info) { _info = info; }
+    void setStationDataModes(StationsDataModes modes) { _info.stationsDataModes = modes; }
     void setAutoDiscoveryUrl(QUrl url) { _info.autoDiscoveryUrl = url; }
     void setStationsListUrl(QUrl url) { _info.stationsInfoUrl = url; }
     void setStationsStatusUrl(QUrl url) { _info.stationsStatusUrl = url; }

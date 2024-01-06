@@ -103,6 +103,11 @@ void StationsLoader::fetchAllStationsDetails()
         QNetworkReply *reply = _networkAccessManager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(stationsRealTimeDataFetched()));
     }
+    else if (_city->stationDataModes().testFlag(FreeBikes)) {
+        QNetworkRequest request(_city->getStationsListUrl());
+        QNetworkReply *reply = _networkAccessManager->get(request);
+        connect(reply, SIGNAL(finished()), this, SLOT(stationsListFetched()));
+    }
 }
 
 void StationsLoader::fetchStationDetails(Station *station)

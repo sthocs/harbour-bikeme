@@ -15,6 +15,8 @@ private:
     static const QString CSV_DELIMITER;
 
     void updateCsvDelimiters(QString& csvData);
+    QList<Station*> _parseStations(QJsonArray stations);
+    QList<Station*> _parseBikes(QJsonArray bikes);
 };
 Q_DECLARE_METATYPE(NabsaParser)
 

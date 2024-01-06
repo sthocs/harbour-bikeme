@@ -29,6 +29,7 @@ Page {
 
     property string mapPlugin: getMapPlugin()
     property int maxItemsOnMap: 200
+    property bool hasBeenCentered: false
 
     //! We stop retrieving position information when component is to be destroyed
     Component.onDestruction: positionSource.stop();
@@ -209,25 +210,28 @@ Page {
         id: stations
 
         onCenterChanged: {
-            map.center = center;
-            updateFilter();
+            if (!hasBeenCentered) {
+                map.center = center;
+                updateFilter();
+                hasBeenCentered = true;
+            }
         }
         onStationsLoaded: {
             stationLoadingLabel.visible = false;
             refreshLabel.visible = false;
             stationsProxy.applyFilter = count > maxItemsOnMap;
             if (!withDetails && displayAllStatus) {
-                if (interactiveMap.city.isAllStationModeSupported()) {
+                if (city.isAllStationModeSupported()) {
                     refreshAll();
                 }
-                else {
+                else if (!city.isFreeBikesSystem()) {
                     displayAllStatus = false;
                     alertMsg.text = qsTr("Can't display all status for this city.");
                     alertPopup.visible = true;
                 }
             }
             window.cover.favouritesModel = favouritesModel;
-            if (!withDetails) {
+            if (!withDetails && !city.isFreeBikesSystem()) {
                 console.log("Refreshing favourites...")
                 favouritesModel.refreshAll();
             }
@@ -300,6 +304,7 @@ Page {
 
             MouseArea {
                 anchors.fill: parent
+                enabled: !city.isFreeBikesSystem()
                 onClicked: {
                     selectedStationNumber = number;
                     isSelectedStationInFav = Db.isFavourite(city.identifier, number);

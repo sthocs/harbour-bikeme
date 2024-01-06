@@ -30,7 +30,8 @@ Page {
                 });
             }
 
-            if (!withDetails) {
+            if (!withDetails && !city.isFreeBikesSystem()) {
+                console.log("Refreshing favourites...");
                 favouritesModel.refreshAll();
             }
             window.cover.favouritesModel = favouritesModel

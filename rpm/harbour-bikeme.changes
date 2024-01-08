@@ -1,3 +1,8 @@
+* Mon Jan 08 2024 Sthocs <sthocs@hotmail.com> 0.12-1
+- feat: display free floating systems
+- removed broken cities
+- fix Harbour compatibility
+
 * Wed Dec 20 2023 Sthocs <sthocs@hotmail.com> 0.11.1-1
 - fix Harbour compatibility
 

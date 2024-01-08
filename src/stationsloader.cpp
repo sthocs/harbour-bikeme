@@ -76,12 +76,15 @@ void StationsLoader::fetchAllStationsList()
         parseStationsList(savedData, false);
         stationsFile.close();
 
-        if (!mustRefreshCache(stationsFile.fileName()) || _city->stationDataModes().testFlag(StationsListAndData)) {
-            return;
-        }
-        else {
-            qDebug() << "Will refresh stations list in background for " << _city->getName();
-            _refreshStationsInBackground = true;
+        // For free floating bikes, we want to refresh the "stations" list everytime
+        if (!_city->stationDataModes().testFlag(FreeBikes)) {
+            if (!mustRefreshCache(stationsFile.fileName()) || _city->stationDataModes().testFlag(StationsListAndData)) {
+                return;
+            }
+            else {
+                qDebug() << "Will refresh stations list in background for " << _city->getName();
+                _refreshStationsInBackground = true;
+            }
         }
     }
     QNetworkRequest request(_city->stationDataModes().testFlag(StationsListAndData) ?
